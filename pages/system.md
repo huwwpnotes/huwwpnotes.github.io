@@ -1,21 +1,29 @@
 ---
 layout: page
-title: Pentesting
-permalink: /pentesting/
+title: System
+permalink: /system/
 ---
 
 # Index
 * [Enumeration](#enumeration)
     * [nmap](#nmap)
-    * [Web App Enumeration](#web-app-enumeration)
+    * [Nessus](#nessus)
+    * [Metasploit Scanner Modules](metasploit-scanner-modules)
 * [Vulnerability Analysis](#vulnerability-anaylsis)
 * [Exploitation](#exploitation)
     * [The Metasploit Framework](#the-metasploit-framework)
     * [Payload Creation](#payload-creation)
+    * [Password Attacks](#password-attacks)
+    * [Exploit Delivery](#exploit-delivery)
 * [Post Exploitation](#post-Exploitation)
     * [Enumeration](#enumeration)
     * [Maintaining Access](#maintaining-access)
     * [Privilege Escalation](#privilege-escalation)
+* [Pentesting Methodology](#pentesting-methodology)
+* [Information Gathering](#information-gathering)
+* [Capturing Traffic](#capturing-traffic)
+
+---
 
 ## Enumeration
 
@@ -63,21 +71,18 @@ Version scan, all ports, run scripts, grab OS information and output to all form
 
 `nmamp -p- -A 192.168.1.1 -oA out.file`
 
-### Web App Enumeration
+## Nessus
 
-Scan the webserver and identify information/potential vulns
+Nessus Home is a vulnerability scanner.
 
-`nikto -h http://192.168.1.1`
+## Metasploit Scanner Modules
 
-Enumerate directories
+Metasploit has modules for scanning specific potential vulnerablities.
 
-`dirbuster`
-
-Proxy and Spider
-
-`burpsuite`
+You can also use the `check` function on some exploit modules to test if vulnerable without actually exploiting.
 
 ---
+
 
 ## Vulnerability Anaylsis
 
@@ -95,9 +100,21 @@ Take the results from enumeration and determine if there are any potential vulne
 
 `msfconsole`
 
+`msfcli`
+
 ### Payload Creation
 
 `msfvenom`
+
+`veil-evasion`
+
+`hyperion`
+
+## Password Attacks
+
+`john`
+
+## Exploit Delivery
 
 ---
 
@@ -105,6 +122,35 @@ Take the results from enumeration and determine if there are any potential vulne
 
 ### Enumeration
 
+`LinEnum.sh`
+
+`psexec`
+
+`mimikatz`
+
 ### Maintaining Access
 
 ### Privilege Escalation
+
+---
+
+## Pentesting Methodology
+
+http://www.pentest-standard.org/index.php/Main_Page
+
+---
+
+## Information Gathering
+
+* nslookup - Plus modes for mx, etc
+* the harvester - email addresses
+* google/whois
+* Maltego
+
+---
+
+## Capturing Traffic
+
+* `tcpdump`
+* `wireshark`
+* `ettercap`

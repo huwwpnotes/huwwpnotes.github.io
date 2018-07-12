@@ -13,6 +13,8 @@ permalink: /web/
 * [SQL Injection](#sql-injection)
 * [Cross Site Scripting](#cross-site-scripting)
 * [Deserialization](#deserialization)
+* [Other Tools](#other-tools)
+* [Methodology](#methodology)
 
 ## Enumeration
 
@@ -75,6 +77,18 @@ Above is just proof of concept, other functions exist.
 
 ## SQL Injection
 
+Suppose a SQL query like below, where parameters are received from user input
+
+```SQL
+SELECT id FROM users WHERE username='$username' AND password='$password';
+```
+
+If we managed to input data like below we could return unintended data.
+
+```SQL
+SELECT username FROM users WHERE username='' or '1'='1' AND password='' or '1'='1'
+```
+
 `sqlmap`
 
 ---
@@ -91,3 +105,28 @@ Wherever user input is reflect in the site test for XSS with:
 
 ## Deserialization
 
+---
+
+## Other Tools
+
+* FoxyProxy - simple proxy switcher for firefox
+* w3af - Web Application Scanner
+* wikto/Nikto - Web server scanner
+* Firebug/Chrome Dev tools - Inspecting client side
+* Hydra - Password brute forcing
+
+### Unix Commands
+
+* wget - easily download files
+* curl - can make post requests too
+* ncat - tcp/ip swiss army knife
+* socat - two way netcat
+* stunnel - ssl tunnel
+
+---
+
+## Methodology
+
+See:
+* The Web Application Hacker's Handbook - Chapter 21
+* https://jdow.io/blog/2018/03/18/web-application-penetration-testing-methodology/
