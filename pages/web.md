@@ -89,7 +89,10 @@ If we managed to input data like below we could return unintended data.
 SELECT username FROM users WHERE username='' or '1'='1' AND password='' or '1'='1'
 ```
 
-`sqlmap`
+We can also save a request in burp and feed it into `sqlmap` or fuzz with `sqlmap` directly.
+```
+sqlmap
+```
 
 ---
 
@@ -114,6 +117,7 @@ Wherever user input is reflect in the site test for XSS with:
 * wikto/Nikto - Web server scanner
 * Firebug/Chrome Dev tools - Inspecting client side
 * Hydra - Password brute forcing
+* wpscan - Scan wordpress
 
 ### Unix Commands
 

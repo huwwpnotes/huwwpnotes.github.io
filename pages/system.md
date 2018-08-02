@@ -110,6 +110,8 @@ Take the results from enumeration and determine if there are any potential vulne
 
 `hyperion`
 
+`unicorn`
+
 ## Password Attacks
 
 `john`
@@ -120,17 +122,37 @@ Take the results from enumeration and determine if there are any potential vulne
 
 ## Post Exploitation
 
-### Enumeration
+Try to work from `/dev/shm`, it's stored in memory
+
+#### Linux
+
+`sudo -l`
+
+`find / -perm -4000 2>/dev/null #find suids`
 
 `LinEnum.sh`
 
-`psexec`
+`LinuxPrivChecker.py`
+
+`UnixPrivEsc.sh`
+
+Manual
+
+#### Windows
+
+`systeminfo`
+
+`empire`
 
 `mimikatz`
 
-### Maintaining Access
+`meterpreter local_exploit_suggester`
 
-### Privilege Escalation
+`sherlock.ps1`
+
+`powerup.ps1`
+
+`Nishang`
 
 ---
 

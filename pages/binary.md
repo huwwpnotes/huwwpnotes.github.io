@@ -128,6 +128,12 @@ https://github.com/longld/peda
 
 `pattern_create 500 buffer.txt` will create a non-repeating string to help determine the exact memory addresses of buffer overlows
 
+###Checkec
+
+https://github.com/slimm609/checksec.sh
+
+Use checsec.sh to see what binary protections a file was compiled with (canaries, etc)
+
 ---
 
 ## Buffer Overflows
