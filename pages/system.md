@@ -174,5 +174,6 @@ http://www.pentest-standard.org/index.php/Main_Page
 ## Capturing Traffic
 
 * `tcpdump`
+* `tcpflow` helps logically parse pcap files
 * `wireshark`
 * `ettercap`

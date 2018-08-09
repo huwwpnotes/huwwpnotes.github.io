@@ -118,6 +118,7 @@ Wherever user input is reflect in the site test for XSS with:
 * Firebug/Chrome Dev tools - Inspecting client side
 * Hydra - Password brute forcing
 * wpscan - Scan wordpress
+* droopscan - scan Drupal & Silverstripe CMS
 
 ### Unix Commands
 
