@@ -120,6 +120,8 @@ in reverse order.
 
 `(gdb) x/200xg $rsp-500` get the 200g 500 back from the $rsp. Used to find nop sled for instance.
 
+`(gdb) p &a` if you need the address of variable a
+
 ### PEDA
 
 PEDA - Python Exploit Development Assistance for GDB extends and modernises GDB.
