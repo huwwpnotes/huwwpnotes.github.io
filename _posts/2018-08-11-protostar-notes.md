@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Protostart Notes
+title: Protostar Notes
 ---
 
 This is my notes for the Nebula VM.
