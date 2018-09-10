@@ -173,6 +173,13 @@ Assuming 64 bit, registers are 8 bytes long so in order to display the contents 
 
 For this example we will write a vulnerable C program and go through the process of crafting a python script to exploit it.
 
+### References
+
+http://www.thegreycorner.com/2010/01/beginning-stack-based-buffer-overflow.html
+
+http://insecure.org/stf/smashstack.html
+
+
 ---
 
 ## Reversing

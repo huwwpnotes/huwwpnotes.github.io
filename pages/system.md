@@ -81,8 +81,33 @@ Metasploit has modules for scanning specific potential vulnerablities.
 
 You can also use the `check` function on some exploit modules to test if vulnerable without actually exploiting.
 
----
+## SMB
 
+`nmap scripts` especially beyond the default one
+
+`enum4linux -a 192.168.1.1`
+
+`smbclient`
+
+`nmblookup`
+
+## Others
+
+`ntbscan` Netbios scan
+
+`onesixtyone` SNMP scan
+
+`snmpwalk` SNMP walk
+
+`snmpbulkwalk`
+
+`nprobe2` OS fingerprinting
+
+`rpclient`
+
+`unicornscan` alternative to nmap
+
+---
 
 ## Vulnerability Anaylsis
 
@@ -122,37 +147,107 @@ Take the results from enumeration and determine if there are any potential vulne
 
 ## Post Exploitation
 
-Try to work from `/dev/shm`, it's stored in memory
+### Privilege Escalation
 
 #### Linux
 
-`sudo -l`
+Atacking the kernel is the easiest route to Linux priviledge escalation, it is also the fast to test.
 
-`find / -perm -4000 2>/dev/null #find suids`
+We start with determining our version/checking for exploits.
 
-`LinEnum.sh`
+`uname -a` : Get the linux version
 
-`LinuxPrivChecker.py`
+`cat /etc/*release`: Get the distro version
+
+`searchsploit` against the kernel/distro for exploits
+
+This process can be automated (accuracy may vary) with
 
 `UnixPrivEsc.sh`
 
-Manual
+If we can not exploit the kernel for priv esc then we manually investigate potential misconfigurations.
+
+Try to work from `/dev/shm`, as it is stored in memory
+
+`sudo -l`: shows us all the programs we have sudo rights to (requires current user password)
+
+`find / -perm -4000 2>/dev/null`: finds all suid executables
+
+`LinEnum.sh`: comprehensive enumeration script
+
+`LinuxPrivChecker.py`: haven't used but well reviewed
+
+If nothing stands out then we go through g0tm1lk's guide.
+
+https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
+
+If all the above fails we are left with password attacks.
 
 #### Windows
 
-`systeminfo`
+First we start with trying to exploit the OS.
 
-`empire`
+`systeminfo`: Gives us OS/Version/Installed updates. We can google these for MS# or use the below scripts to try determine which ones to try. If we are using XP SP0 or SP1 there is a simple universal service exploit we can use to get system.
 
-`mimikatz`
+`Windows-Exploit-Suggester`: Takes the output of systeminfo and tells us if there are any viable exploits
 
-`meterpreter local_exploit_suggester`
+`sherlock.ps1`: Looks for missing patches for priv esc vectors, requires powershell
 
-`sherlock.ps1`
+`msfconsole local_exploit_suggester`: Run against a meterpreter sessions for suggested exploits
 
-`powerup.ps1`
+`meterpreter getsystem`: a meterpreter session can attempt to upgrade itself
 
-`Nishang`
+`windows-privesc-check`: General privesc scan script
+
+`powerup.ps1`: General privesc powershell script
+
+https://github.com/SecWiki/windows-kernel-exploits : Exploits with examples/precompiled
+
+If none of the above work then we need to attempt priv esc manually.
+
+Follow the fuzzysecurity guide
+http://www.fuzzysecurity.com/tutorials/16.html
+
+`SEDebugPriviledge` if a user has this we can exploit for admin
+
+If all the above fails we are left with password attacks
+
+`pwdump\fgdump`: Windows NT/2000/XP/2003 NTLM and LanMan Password Grabber. I think works up to Windows 10
+
+`windows credential editor`: Win XP-7, gets NTLM hashes, Kerberos tickets and plaintext passwords. Requires local admin
+
+While not priv esc, we can get current user credentials hash snarf via samba/http metasploit modules
+
+`mimikatz`: Extract plaintexts passwords, hash, PIN code and kerberos tickets from memory, pass-the-hash, pass-the-ticket, build Golden tickets, play with certificates or private keys. Most functions require admin. Win XP-10
+
+### Maintaining Access
+
+* upload reverse shell to web root
+* add/steal SSH keys
+* add user account/add to rdesktop users
+* upload nc/sbd/cryptcat etc and set up reverse shell
+
+#### Windows
+
+
+
+#### Linux
+
+### Pivoting
+
+`ssh forwarding`
+
+`proxy chains`
+
+`msf proxying`
+
+### Post Exploitation Frameworks
+
+`empire`: Powershell post exploitation framework
+
+`powersploit`: Powershell post exploitation framework
+
+`Nishang`: Powershell post exploitation framework
 
 ---
 
@@ -177,3 +272,4 @@ http://www.pentest-standard.org/index.php/Main_Page
 * `tcpflow` helps logically parse pcap files
 * `wireshark`
 * `ettercap`
+* `dsniff` find passwords, emails, usernames, etc in network traffic

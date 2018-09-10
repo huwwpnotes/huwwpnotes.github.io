@@ -32,6 +32,10 @@ Enumerating a web application is best performed manually with automated augmenta
 
 `nikto`
 
+### Scraping 
+
+`cewl`
+
 ---
 
 ## Authentication
