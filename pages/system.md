@@ -6,22 +6,9 @@ permalink: /system/
 
 # Index
 * [Enumeration](#enumeration)
-    * [nmap](#nmap)
-    * [Nessus](#nessus)
-    * [Metasploit Scanner Modules](metasploit-scanner-modules)
 * [Vulnerability Analysis](#vulnerability-anaylsis)
 * [Exploitation](#exploitation)
-    * [The Metasploit Framework](#the-metasploit-framework)
-    * [Payload Creation](#payload-creation)
-    * [Password Attacks](#password-attacks)
-    * [Exploit Delivery](#exploit-delivery)
 * [Post Exploitation](#post-Exploitation)
-    * [Enumeration](#enumeration)
-    * [Maintaining Access](#maintaining-access)
-    * [Privilege Escalation](#privilege-escalation)
-* [Pentesting Methodology](#pentesting-methodology)
-* [Information Gathering](#information-gathering)
-* [Capturing Traffic](#capturing-traffic)
 
 ---
 
@@ -127,7 +114,7 @@ nmap -sC -sV -sU 10.10.10.10 -oN nmap-full-udp
 
 #### 21: FTP
 
-Banner grab for version. Several clients are directly exploit.
+Banner grab for version. Several clients are directly exploitable.
 
 `ftp`: often allows anonymous login, which depending on allowed directories can disclose information, allow us to upload a reverse shell to web root, add a schedule task, etc.
 
