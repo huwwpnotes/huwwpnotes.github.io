@@ -29,7 +29,37 @@ permalink: /system/
 
 The key to enumeration is patience.
 
-### nmap
+### Passive Information Gathering
+
+* nslookup - Plus modes for mx, etc
+* the harvester - email addresses
+* google
+* Google Hacking Database (GHDB)
+* netcraft: Web server information gathering website 
+* whois: name server, registrar and contact info for domain names 
+* Maltego
+* recon-ng: a full-featured web reconnaissance framework written in Python #really cool 
+* shodan: IOT search engine
+
+### DNS Enumeration
+
+* `host`: DNS lookup utility + zone transfers 
+* `dnsenum`: 
+* `dnsrecon`: advanced, modern, automated, cool
+
+### Domain Wide Enumeration
+
+* `nmap ping sweep`: for live hosts
+* `nmblookup`
+* `ntbscan` Netbios scan
+* `onesixtyone` SNMP scan
+* `snmpwalk` SNMP walk
+* `snmpbulkwalk`
+* `nprobe2` OS fingerprinting
+
+### Targeted Enumeration
+
+#### nmap
 
 TCP SYN port scan (default)
 
@@ -71,43 +101,15 @@ Version scan, all ports, run scripts, grab OS information and output to all form
 
 `nmamp -p- -A 192.168.1.1 -oA out.file`
 
-## SMB
+alternative to nmap
 
-`nmap scripts` especially beyond the default one
-
-`enum4linux -a 192.168.1.1`
-
-`smbclient`
-
-`nmblookup`
-
-## Others
-
-`ntbscan` Netbios scan
-
-`onesixtyone` SNMP scan
-
-`snmpwalk` SNMP walk
-
-`snmpbulkwalk`
-
-`nprobe2` OS fingerprinting
-
-`rpclient`
-
-`unicornscan` alternative to nmap
+`unicornscan`
 
 ---
 
 ## Vulnerability Anaylsis
 
-Take the results from enumeration and determine if there are any potential vulnerabilities.
-
-`searchsploit`
-
-`google`
-
-### Common Ports and how to exploit
+### Common Ports and How to exploit
 
 #### 21: FTP
 
@@ -340,11 +342,51 @@ Usually a webserver, often Tomcat.
 
 `unicorn`
 
-## Password Attacks
+### Payload Compilation/Execution
 
-`john`
+Compile as 32 bit executable (Linux)
 
-## Exploit Delivery
+`gcc -Wall -m32 -o <output> <code>`
+
+Compile as 64 bit executable (Linux)
+
+`gcc -Wall -m64 -o <output> <code>`
+
+Compile windows code on Kali
+
+`i586-mingw32msvc-gcc <source>.c -o <outfile> -lws2_32`
+
+Run windows exploits on Kali
+
+`wine`
+
+### Password Attacks
+
+#### Offline Attacks
+
+* `crunch`:
+* `pwdump/fgdump`:
+* `Windows Credential Editor`
+* `cewl`
+* `john`: mutations
+
+#### Online Attacks
+
+* `hydra`
+* `medusa`
+* `ncrack`: can bruteforce Windows RDP
+
+#### Password Hash Attacks
+
+* `OpenWall`
+* `HashIdentifier`
+* `john`
+* `Pass the Hash`
+* `oclhashcat`
+
+### Exploit Delivery
+
+* `setoolkit`
 
 ---
 
@@ -454,6 +496,21 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 * add user account/add to rdesktop users
 * upload nc/sbd/cryptcat etc and set up reverse shell
 
+### Transferring Files
+
+* meterpreter upload
+* Linux: many options, wget, curl, ftp, check what is installed
+* Windows: TFTP (up to Windows XP by default), VBScript or Powershell, also check for FTP/Webdav/etc
+* Windows: Can use debug.exe to compile a program like nc as a last resort
+
+### Capturing Traffic
+
+* `tcpdump`
+* `tcpflow` helps logically parse pcap files
+* `wireshark`
+* `ettercap`
+* `dsniff` find passwords, emails, usernames, etc in network traffic
+
 ### Pivoting
 
 `ssh forwarding`
@@ -461,6 +518,14 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 `proxy chains`
 
 `msf proxying`
+
+`metasploit post modules`: have tcp scans/ping sweeps, etc
+
+`rinetd`: Port redirection 
+
+`HTTPTunnel`
+
+`stunnel`
 
 ### Post Exploitation Frameworks
 
@@ -470,32 +535,6 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 
 `Nishang`: Powershell post exploitation framework
 
----
-
-## Pentesting Methodology
-
-http://www.pentest-standard.org/index.php/Main_Page
-
----
-
-## Information Gathering
-
-* nslookup - Plus modes for mx, etc
-* the harvester - email addresses
-* google/whois
-* Maltego
-
----
-
-## Capturing Traffic
-
-* `tcpdump`
-* `tcpflow` helps logically parse pcap files
-* `wireshark`
-* `ettercap`
-* `dsniff` find passwords, emails, usernames, etc in network traffic
-
----
 
 ## Sources
 https://xapax.gitbooks.io/security/
