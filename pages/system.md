@@ -105,6 +105,20 @@ alternative to nmap
 
 `unicornscan`
 
+#### My scans proccess
+
+Quick Scan
+
+nmap -sC -sV -O 10.10.10.10 -oN nmap-sV-sC-O
+
+Full TCP Scan
+
+nmap -vv -Pn -sS -A -sC -p- -T 3 -script-args=unsafe=1 -n 10.10.10.10 -oN nmap-full-tcp 
+
+UDP Scan
+
+nmap -sC -sV -sU 10.10.10.10 -oN nmap-full-udp
+
 ---
 
 ## Vulnerability Anaylsis
@@ -573,3 +587,4 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 
 ## Sources
 https://xapax.gitbooks.io/security/
+https://github.com/codingo/Reconnoitre
