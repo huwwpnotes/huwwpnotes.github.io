@@ -282,8 +282,9 @@ Microsoft SQL
 
 `scanner/mssql/mssql_login`: metasploit module to brute force login
 
-#### 1521: Oracle Database
+`nmap -vv -sV -Pn -p 3306 --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=1433,smsql.username-sa,mssql.password-sa -on nmap-mssql 10.10.10.10`
 
+#### 1521: Oracle Database
 
 `tnscmd10g`
 
@@ -327,8 +328,6 @@ If you get this error, the server is set up to only allow login from 127.0.0.1, 
 `cat /etc/my.cnf`: config file path
 
 A file in the web root often has the creds for the database.
-
-`nmap -vv -sV -Pn -p 3306 --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=$port,smsql.username-sa,mssql.password-sa -oA $outputdir/$ip_$port_mssql_nmap_scan 10.10.10.10`
 
 #### 3389: Remote Desktop Protocol
 
