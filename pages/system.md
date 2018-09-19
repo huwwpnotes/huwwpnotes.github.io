@@ -8,7 +8,7 @@ permalink: /system/
 * [Enumeration](#enumeration)
 * [Vulnerability Analysis](#vulnerability-anaylsis)
 * [Exploitation](#exploitation)
-* [Post Exploitation](#post-Exploitation)
+* [Post Exploitation](#post-exploitation)
 
 ---
 
