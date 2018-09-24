@@ -126,9 +126,13 @@ Banner grab for version. Several clients are directly exploitable.
 
 Banner grab for version. Some are directly exploitable, others allow user enumeration.
 
+`medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.10.10.10 - 22 -M ssh`
+
+OpenSSH 2.3 - 7.7 has an enumerate users exploit.
+
 `auxiliary/scanner/ssh/ssh_enumusers`
 
-`medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.10.10.10 - 22 -M ssh`
+https://www.exploit-db.com/exploits/45233/
 
 #### 23: Telnet
 
