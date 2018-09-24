@@ -126,6 +126,8 @@ Banner grab for version. Several clients are directly exploitable.
 
 Banner grab for version. Some are directly exploitable, others allow user enumeration.
 
+`hydra -l root -P 500-worst-passwords.txt 10.10.10.10 ssh` default hydra seems faster than default medusa
+
 `medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.10.10.10 - 22 -M ssh`
 
 OpenSSH 2.3 - 7.7 has an enumerate users exploit.
