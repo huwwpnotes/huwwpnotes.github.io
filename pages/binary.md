@@ -155,30 +155,17 @@ Gcc compiler options: `gcc -fno-stack-protector -z execstack`
 
 Gcc flag for x86: `gcc -m32`
 
-### Exploiting
-
-> In order to overwrite RIP we have to determine its offset (last offset of rsp) and insert a valid address.
-
-1. Use peda to create a pattern
-2. Feed into program
-3. Get the address of the rsp `gdb-peda$ i r rsp`
-4. Get the contents of the rsp location `gdb-peda$ x/xg $rsp`
-
-Assuming 64 bit, registers are 8 bytes long so in order to display the contents (x) in hexadecimal (/x) we have to use (g)iant bytes. The equivalent command for x86 would be `gdb-peda$ x/xw $esp`
-
-5. Use peda to match the contents of the rsp to the created petern and determine how far along we are giving us the offset `gdb-peda$ pattern_offset 0x4133254164254148`
-6. Overwrite RSP with the address of our shellcode by feeding `offset * 'A' + shellcode_address`
-
-### Example 1
-
-For this example we will write a vulnerable C program and go through the process of crafting a python script to exploit it.
-
 ### References
 
 http://www.thegreycorner.com/2010/01/beginning-stack-based-buffer-overflow.html
 
 http://insecure.org/stf/smashstack.html
 
+### Great Windows Resources
+
+https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/
+
+https://github.com/justinsteven/dostackbufferoverflowgood
 
 ---
 
