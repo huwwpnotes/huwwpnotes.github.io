@@ -160,6 +160,8 @@ Server to server Simple Mail Transfer Protocol. Can not read mail, but can send 
 
 FTP over UDP. Has exploitable clients, may allow anonymous access.
 
+Can brute force files with metasploit or other scripts.
+
 #### 80: HTTP
 
 `nikto`
@@ -403,6 +405,12 @@ Run windows exploits on Kali
 `wine`
 
 ### Password Attacks
+
+`hash-identifier`
+
+`base64 -d`
+
+`fcrackzip`
 
 #### Offline Attacks
 
