@@ -253,6 +253,8 @@ Servers running SMB are often vulnerable to MS17-010
 
 `nmblookup`
 
+`nmap -p 445 -vv --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse 10.10.10.10`
+
 `nmap -sV -Pn -vv -p 139,$port --script=smb-vuln* --script-args=unsafe=1 -oN nmap-smb-vuln 10.10.10.10`
 
 `nmap -sV -Pn -vv -p $port --script=smb-enum-users,smb-enum-shares -on nmap-smb-enum 10.10.10.10`
