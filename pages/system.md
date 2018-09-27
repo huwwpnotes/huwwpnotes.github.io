@@ -37,6 +37,7 @@ The key to enumeration is patience.
 ### Domain Wide Enumeration
 
 * `nmap ping sweep`: for live hosts
+* `nmap -sT -A --top-ports=20 -iL nmap-ping-sweep-ips.txt -oA top20-port-scan-sT-A`: scan top 20 ports on live hosts
 * `nmblookup`
 * `ntbscan` Netbios scan
 * `onesixtyone` SNMP scan
