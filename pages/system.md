@@ -405,7 +405,7 @@ Compile as 64 bit executable (Linux)
 
 Compile windows code on Kali
 
-`i586-mingw32msvc-gcc <source>.c -o <outfile> -lws2_32`
+`mingw32`
 
 Run windows exploits on Kali
 
