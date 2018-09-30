@@ -115,13 +115,13 @@ UDP Scan
 
 #### 21: FTP
 
-Banner grab for version. Several clients are directly exploitable.
+Banner grab for version. Several clients are directly exploitable. Can sometimes 'bounce' to map from remote client, useful behind firewall.
 
 `ftp`: often allows anonymous login, which depending on allowed directories can disclose information, allow us to upload a reverse shell to web root, add a schedule task, etc.
 
 `hydra -L USER_LIST -P PASS_LIST -f -o phydra.txt -u 10.10.10.10 -s 21 ftp`
 
-`nmap -sV -Pn -vv -21 --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-syst,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oN nmap-ftp 10.10.10.10`
+`nmap -sV -Pn -vv -p21 --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-syst,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oN nmap-ftp 10.10.10.10`
 
 #### 22: SSH
 
@@ -199,7 +199,7 @@ retr 5
 
 #### 111: RPCBIND
 
-`rpcbind -p 192.168.1.101`: Get list of services running on rpc.
+`rpcinfo 192.168.1.101`: Get list of services running on rpc.
 
 #### 135: MS-RPC
 
@@ -477,7 +477,7 @@ Try to work from `/dev/shm`, as it is stored in memory
 
 `LinEnum.sh`: comprehensive enumeration script
 
-`LinuxPrivChecker.py`: haven't used but well reviewed
+`LinuxPrivChecker.py`: Automated enum script that suggests exploit, worth looking up others too though
 
 If nothing stands out then we go through g0tm1lk's guide.
 
