@@ -59,7 +59,7 @@ Full TCP Scan
 
 UDP Scan
 
-`nmap -sC -sV -sU 10.10.10.10 -oN nmap-udp`
+`nmap -sU 10.10.10.10 -oN nmap-udp`
 
 Then perform further script scans against identified services as below.
 
