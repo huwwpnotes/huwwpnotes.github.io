@@ -416,10 +416,15 @@ Run windows exploits on Kali
 * `hash-identifier`: identify hashes
 * `echo "skjgdg67dsg5d67g5sd7" | base64 -d`: decode base64
 * `fcrackzip`: crack zip files
-*`unshadow passwd shadow > unshadowed`: prepare unix passwords for cracking
-`john unshadowed`: brute force
-`john --wordlist=/usr/share/wordlists/rockyou.txt unshadowed`
-* Hashcat:
+
+#### John the Ripper
+```
+unshadow passwd shadow > unshadowed`: prepare unix passwords for cracking
+john unshadowed: brute force
+john --wordlist=/usr/share/wordlists/rockyou.txt unshadowed
+```
+
+#### Hashcat
 ```
 # Hashcat SHA512 $6$ shadow file  
 hashcat -m 1800 -a 0 hash.txt rockyou.txt --username
