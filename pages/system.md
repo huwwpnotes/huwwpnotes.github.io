@@ -259,7 +259,6 @@ mysql -h <Hostname> -u root
 mysql -h <Hostname> -u root@localhost
 mysql -h <Hostname> -u ""@localhost
 telnet 192.168.0.101 3306
-
 ```
 If you get this error, the server is set up to only allow login from 127.0.0.1, a normal security measure.
 
@@ -268,6 +267,12 @@ If you get this error, the server is set up to only allow login from 127.0.0.1, 
 `cat /etc/my.cnf`: config file path
 
 A file in the web root often has the creds for the database.
+
+If database is running as root user we can use this to priv esc. I used it against 5.14~
+
+```
+https://www.exploit-db.com/exploits/1518/
+```
 
 #### 3389: Remote Desktop Protocol
 
