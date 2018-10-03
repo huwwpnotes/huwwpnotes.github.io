@@ -163,10 +163,6 @@ Microsoft's RPC Port. RPCs can be made over raw TCP as well as over SMB. `PSExec
 
 `rpcclient -U "" 192.168.1.101`
 
-`ms03_026_dcom`
-
-`rpcclient -U \"\" 10.10.10.10`
-
 #### 137/8?: Netbios
 
 Allows communication between applications such as printer or other computer in Ethernet or token ring network via NETBIOS name. 
@@ -175,13 +171,7 @@ To retrieve NETBIOS name: `nbstat` request over UDP/137, if possible, or check t
 
 `nmblookup -A 10.10.10.10`
 
-`smbclient //MOUNT/share -I 10.10.10.10 N`
-
-`smbclient -L //10.10.10.10`
-
 `enum4linux -a 10.10.10.10`
-
-`rpcclient -U \"\" 10.10.10.10`
 
 #### 139/445: SMB/Samba
 
@@ -191,39 +181,19 @@ The ADMIN$ share can basically be thought of as a symbolic link to the path C:\W
 The IPC$ share is a little different. It does not map to the file system directly, instead providing an interface through which remote procedure calls (RPC) can be performed, as discussed below. 
 Servers running SMB are often vulnerable to MS17-010 
 
-`nmap scan for ms17-010 vuln`
-
-`Use auxiliary/scanner/smb/smb_ms17_010`
-
-`use exploit/windows/smb/ms17_010_eternalblue`
-
 `smbclient -L 192.168.1.102`
 
-`nbtscan -r 192.168.1.102`
-
-`enum4linux -a 192.168.1.120`
-
-`rpcclient -U "" 192.168.1.101`
-
-`nmblookup`
+`nmap -sV -Pn -vv -p $port --script=smb-enum-users,smb-enum-shares -on nmap-smb-enum 10.10.10.10`
 
 `nmap -p 445 -vv --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse 10.10.10.10`
 
 `nmap -sV -Pn -vv -p 139,$port --script=smb-vuln* --script-args=unsafe=1 -oN nmap-smb-vuln 10.10.10.10`
-
-`nmap -sV -Pn -vv -p $port --script=smb-enum-users,smb-enum-shares -on nmap-smb-enum 10.10.10.10`
 
 #### 143/993: IMAP
 
 #### 161/162: SNMP
 
 `onesixtyone` SNMP scan
-
-`snmpwalk` SNMP walk
-
-`snmpbulkwalk`
-
-`snmp-check -t 192.168.1.101 -c public`
 
 `snmp-check 10.10.10.10`
 
