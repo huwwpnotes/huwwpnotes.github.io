@@ -389,9 +389,9 @@ Run windows exploits on Kali
 
 #### John the Ripper
 ```
-unshadow passwd shadow > unshadowed`: prepare unix passwords for cracking
-john unshadowed: brute force
-john --wordlist=/usr/share/wordlists/rockyou.txt unshadowed
+unshadow passwd shadow > unshadowed #prepare unix passwords for cracking
+john unshadowed #brute force
+john --wordlist=/usr/share/wordlists/rockyou.txt unshadowed #brute force with custom wordlist
 ```
 
 #### Hashcat
@@ -424,7 +424,7 @@ hashcat -m 400 -a 0 --remove hash.txt rockyou.txt
 
 #### Linux
 
-Atacking the kernel is the easiest route to Linux priviledge escalation, it is also the fast to test.
+Atacking the kernel is the easiest route to Linux priviledge escalation, it is also the fastest to test.
 
 We start with determining our version/checking for exploits.
 
