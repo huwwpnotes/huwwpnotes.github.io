@@ -51,7 +51,7 @@ The key to enumeration is patience.
 
 Quick Scan
 
-````
+```
 nmap -sC -sV -O 10.10.10.10 -oN nmap-sV-sC-O
 ```
 
