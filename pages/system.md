@@ -81,7 +81,7 @@ Banner grab for version. Several clients are directly exploitable. Can sometimes
 
 `ftp`: often allows anonymous login, which depending on allowed directories can disclose information, allow us to upload a reverse shell to web root, add a schedule task, etc.
 
-````
+```
 hydra -L USER_LIST -P PASS_LIST -f -o phydra.txt -u 10.10.10.10 -s 21 ftp
 ```
 
@@ -111,7 +111,10 @@ https://www.exploit-db.com/exploits/45233/
 
 Banner grab for version, several clients are exploitable.
 
-`hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 192.168.1.101 telnet` : brute force with hydra
+brute force with hydra
+```
+hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 192.168.1.101 telnet
+```
 
 #### 25: SMTP
 
