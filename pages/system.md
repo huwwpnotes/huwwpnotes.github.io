@@ -51,15 +51,21 @@ The key to enumeration is patience.
 
 Quick Scan
 
-`nmap -sC -sV -O 10.10.10.10 -oN nmap-sV-sC-O`
+````
+nmap -sC -sV -O 10.10.10.10 -oN nmap-sV-sC-O
+```
 
 Full TCP Scan
 
-`nmap -p- --min-rate 10.10.10.10 -oN nmap-full-tcp`
+```
+nmap -p- --min-rate 10.10.10.10 -oN nmap-full-tcp
+```
 
 UDP Scan
 
-`nmap -sU 10.10.10.10 -oN nmap-udp`
+```
+nmap -sU 10.10.10.10 -oN nmap-udp
+```
 
 Then perform further script scans against identified services as below.
 
@@ -75,17 +81,25 @@ Banner grab for version. Several clients are directly exploitable. Can sometimes
 
 `ftp`: often allows anonymous login, which depending on allowed directories can disclose information, allow us to upload a reverse shell to web root, add a schedule task, etc.
 
-`hydra -L USER_LIST -P PASS_LIST -f -o phydra.txt -u 10.10.10.10 -s 21 ftp`
+````
+hydra -L USER_LIST -P PASS_LIST -f -o phydra.txt -u 10.10.10.10 -s 21 ftp
+```
 
-`nmap -sV -Pn -vv -p21 --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-syst,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oN nmap-ftp 10.10.10.10`
+```
+nmap -sV -Pn -vv -p21 --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-syst,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oN nmap-ftp 10.10.10.10
+```
 
 #### 22: SSH
 
 Banner grab for version. Some are directly exploitable, others allow user enumeration.
 
-`hydra -l root -P 500-worst-passwords.txt 10.10.10.10 ssh` default hydra seems faster than default medusa
+```
+hydra -l root -P 500-worst-passwords.txt 10.10.10.10 ssh #default hydra seems faster than default medusa
+```
 
-`medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.10.10.10 - 22 -M ssh`
+```
+medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.10.10.10 - 22 -M ssh
+```
 
 OpenSSH 2.3 - 7.7 has an enumerate users exploit.
 
