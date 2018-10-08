@@ -572,21 +572,50 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 
 ### Pivoting
 
-ssh forwarding
+#### SSH Forwarding
 
-https://chamibuddhika.wordpress.com/2012/03/21/ssh-tunnelling-explained/
+From within a SSH connection press ~ to open control sequences to set up/list forwarding etc.
+https://pen-testing.sans.org/blog/2015/11/10/protected-using-the-ssh-konami-code-ssh-control-sequences
 
-`proxychains`
+##### Local Fowarding
 
-`msf proxying`
+Make services on a remote system/network accessible to your attacking pc.
 
-`metasploit post modules`: have tcp scans/ping sweeps, etc
+From the attacking pc run
 
-`rinetd`: Port redirection 
+```
+ssh –L port:destination_host:destination_port username@pivot_host
+```
 
-`HTTPTunnel`
+**Use Case 1**: Connect to service that isn't reachable externally
 
-`stunnel`
+Say a host is running a web server that only it can reach.
+
+```
+ssh -L 90:127.0.0.1:80 username@pivot_host
+```
+
+Now if wget localhost:90 from the attacking machine we reach the web server on the pivot host.
+
+**Use Case 2:** Connect to service on third system through the pivot host
+
+Say a host is running a web server we can't reach but our ssh server can (dual homed, blocked by firewall, etc).
+
+```
+ssh -L 90:third system:80 username@pivot_host
+```
+
+Now if wget localhost:90 from the attacking machine we reach the web server on the third system.
+
+
+
+#### sshuttle
+
+sshuttle is a simple transparent ssh proxy. It handles forwarding on all ports without requiring a socks proxy. It requires python on the pivot host. It does not proxy DNS by default. It does not proxy ICMP at all.
+
+```
+sshuttle -vvr username@pivot_host 10.2.2.0/24 #the subnet to which all traffic should be forwarded through the pivot host
+```
 
 ### Post Exploitation Frameworks
 
