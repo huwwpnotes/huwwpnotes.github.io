@@ -577,7 +577,7 @@ While not priv esc, we can get current user credentials hash snarf via samba/htt
 From within a SSH connection press ~ to open control sequences to set up/list forwarding etc.
 https://pen-testing.sans.org/blog/2015/11/10/protected-using-the-ssh-konami-code-ssh-control-sequences
 
-##### Local Fowarding
+#### Local Fowarding
 
 Make services on a remote system/network accessible to your attacking pc.
 
@@ -607,7 +607,7 @@ ssh -L 90:third system:80 username@pivot_host
 
 Now if wget localhost:90 from the attacking machine we reach the web server on the third system.
 
-##### Reverse Forwarding
+#### Reverse Forwarding
 
 Make services on the attacker system accessible to the remote host.
 
@@ -631,7 +631,7 @@ The SSH server will be able to access TCP port 80 on 172.16.0.99 (a host accessi
 ssh -R 127.0.0.1:8000:172.16.0.99:80 10.0.0.1
 ```
 
-##### Dynamic Forwarding
+#### Dynamic Forwarding
 
 Sets up a dynamic portforward SOCKS proxy.
 
@@ -640,7 +640,7 @@ ssh -D 9050 10.0.0.1
 ```
 Then we use proxychains on our attacking machine to automatically forward connections to correct ports.
 
-##### sshuttle
+#### sshuttle
 
 sshuttle is a simple transparent ssh proxy. It handles forwarding on all ports without requiring a socks proxy. It requires python on the pivot host. It does not proxy DNS by default. It does not proxy ICMP at all.
 
