@@ -607,15 +607,58 @@ ssh -L 90:third system:80 username@pivot_host
 
 Now if wget localhost:90 from the attacking machine we reach the web server on the third system.
 
+##### Reverse Forwarding
 
+Make services on the attacker system accessible to the remote host.
 
-#### sshuttle
+```
+ssh -R [bind_address:]port:host:hostport username@pivot_host
+```
+
+**Use Case 1**: Forward connections to server's port to attacking system
+
+The SSH server will be able to access TCP port 80 on the attacking system by connecting to 127.0.0.1:8000 on the SSH server.
+
+```
+ssh -R 127.0.0.1:8000:127.0.0.1:80 username@pivot_host
+```
+
+**Use Case 2**: Forward connection to server's port to third machine through attacking machine
+
+The SSH server will be able to access TCP port 80 on 172.16.0.99 (a host accessible from the attacking machine) by connecting to 127.0.0.1:8000 on the SSH server.
+
+```
+ssh -R 127.0.0.1:8000:172.16.0.99:80 10.0.0.1
+```
+
+##### Dynamic Forwarding
+
+Sets up a dynamic portforward SOCKS proxy.
+
+```
+ssh -D 9050 10.0.0.1
+```
+Then we use proxychains on our attacking machine to automatically forward connections to correct ports.
+
+##### sshuttle
 
 sshuttle is a simple transparent ssh proxy. It handles forwarding on all ports without requiring a socks proxy. It requires python on the pivot host. It does not proxy DNS by default. It does not proxy ICMP at all.
 
 ```
 sshuttle -vvr username@pivot_host 10.2.2.0/24 #the subnet to which all traffic should be forwarded through the pivot host
 ```
+
+##### Notes on Exploits and SSH Tunnelling
+
+If possible use a bind shell, it should work through the tunnel as normal.
+
+If we need to use a reverse shell:
+* Set the pivot machine as LHOST, and >1024 port as LPORT.
+* Set a reverse forward from the pivot machine LHOST:LPORT to attacking machine ip:listening port
+
+ICMP and DNS shells can often connect back to us directly through firewalls in situations that require SSH tunnels.
+
+Attacks that perform commands or add users can be useful in these situations too.
 
 ### Post Exploitation Frameworks
 
