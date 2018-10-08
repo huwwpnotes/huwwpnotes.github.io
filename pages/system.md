@@ -124,15 +124,25 @@ hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 1
 
 Server to server Simple Mail Transfer Protocol. Can not read mail, but can send and verify users. Can interact manually with nc and specific commands, or use scripts for user enum.
 
-`nmap -script smtp-commands.nse 192.168.1.101`: to get server commands
-
-`smtp-user-enum -M VRFY -U /root/sectools/SecLists/Usernames/Names/names.txt -t 192.168.1.103`: use command to enum users
-
-`auxiliary/scanner/smtp/smtp_enum`
+Get server commands
+```
+nmap -script smtp-commands.nse 192.168.1.101
+```
+Use command to enum users
+```
+smtp-user-enum -M VRFY -U /root/sectools/SecLists/Usernames/Names/names.txt -t 192.168.1.103
+```
+Metasploit modules
+```
+auxiliary/scanner/smtp/smtp_enum
+````
 
 #### 53: DNS
 
-`dnsrecon -t axfr -d 10.10.10.10`
+Attempt a zone transer
+```
+dnsrecon -t axfr -d 10.10.10.10
+```
 
 #### 69: TFTP
 
@@ -144,17 +154,26 @@ Can brute force files with metasploit or other scripts.
 
 Check /robots.txt, /admin, /login etc for quick wins
 
-`nikto -h http://10.10.10.10`
+General web scanner
+```
+nikto -h http://10.10.10.10
+```
 
-`gobuster -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/common.txt -t 80`
+Brute force directories
+```
+gobuster -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/common.txt -t 80
+```
 
-`gobuster -s 200,204,301,302,307,403 -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/big.txt -t 80 -a 'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'`: spoofing heading
+A fairly comprehensive Gobuster scan, might need to add flags for extensions and directories ending in slashes
+```
+gobuster -s 200,204,301,302,307,403 -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/big.txt -t 80 -a 'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+```
 
 #### 88: Kerberos
 
 Kerberos on 88 usually fingers a Windows Domain Controller.
 
-`MS14-068`
+Check out MS14-068.
 
 #### 110/995: POP3
 
@@ -174,25 +193,34 @@ retr 5
 
 #### 111: RPCBIND
 
-`rpcinfo 192.168.1.101`: Get list of services running on rpc.
+Get list of services running on rpc.
+```
+rpcinfo 192.168.1.101
+```
 
 #### 135: MS-RPC
 
 Microsoft's RPC Port. RPCs can be made over raw TCP as well as over SMB. `PSExec` can play with rpc. 
 
-`nmap 192.168.0.101 --script=msrpc-enum`
-
-`rpcclient -U "" 192.168.1.101`
+```
+nmap 192.168.0.101 --script=msrpc-enum
+```
+```
+rpcclient -U "" 192.168.1.101
+```
 
 #### 137/8?: Netbios
 
 Allows communication between applications such as printer or other computer in Ethernet or token ring network via NETBIOS name. 
 NETBIOS name is 16 digits long character assign to a computer in workgroup by WINS for name resolution of an IP address into NETBIOS name. 
-To retrieve NETBIOS name: `nbstat` request over UDP/137, if possible, or check the DNS name. 
 
-`nmblookup -A 10.10.10.10`
+```
+nmblookup -A 10.10.10.10
+```
 
-`enum4linux -a 10.10.10.10`
+```
+enum4linux -a 10.10.10.10
+```
 
 #### 139/445: SMB/Samba
 
@@ -202,33 +230,52 @@ The ADMIN$ share can basically be thought of as a symbolic link to the path C:\W
 The IPC$ share is a little different. It does not map to the file system directly, instead providing an interface through which remote procedure calls (RPC) can be performed, as discussed below. 
 Servers running SMB are often vulnerable to MS17-010 
 
-`smbclient -L 192.168.1.102`
+```
+smbclient -L 192.168.1.102
+```
 
-`nmap -sV -Pn -vv -p $port --script=smb-enum-users,smb-enum-shares -on nmap-smb-enum 10.10.10.10`
+```
+nmap -sV -Pn -vv -p $port --script=smb-enum-users,smb-enum-shares -on nmap-smb-enum 10.10.10.10
+```
 
-`nmap -p 445 -vv --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse 10.10.10.10`
+```
+nmap -p 445 -vv --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse 10.10.10.10
+```
 
-`nmap -sV -Pn -vv -p 139,$port --script=smb-vuln* --script-args=unsafe=1 -oN nmap-smb-vuln 10.10.10.10`
+```
+nmap -sV -Pn -vv -p 139,$port --script=smb-vuln* --script-args=unsafe=1 -oN nmap-smb-vuln 10.10.10.10
+```
 
 #### 143/993: IMAP
 
+Connect with Telnet.
+
 #### 161/162: SNMP
 
-`onesixtyone` SNMP scan
-
-`snmp-check 10.10.10.10`
-
-`"nmap -sV -Pn -vv -p161 --script=snmp-netstat,snmp-processes -on nmap-snmp 10.10.10.1.`
+SNMP scan
+```
+onesixtyone
+``` 
+```
+snmp-check 10.10.10.10
+```
+```
+"nmap -sV -Pn -vv -p161 --script=snmp-netstat,snmp-processes -on nmap-snmp 10.10.10.1
+```
 
 #### 389/636: Ldap
 
-`ldapsearch -h 192.168.1.101 -p 389 -x -b "dc=mywebsite,dc=com"`
+```
+ldapsearch -h 192.168.1.101 -p 389 -x -b "dc=mywebsite,dc=com"
+```
 
 #### 443: HTTPS
 
 Check for Heartbleed, inspect certificate.
 
-`sslscan 192.168.101.1:443`
+```
+sslscan 192.168.101.1:443
+```
 
 #### 631: Cups
 
@@ -239,23 +286,33 @@ Check version, several privilege escalation vectors.
 
 Microsoft SQL
 
-`sqsh -S 192.168.1.101 -U sa`: connect with default service account
-
-`scanner/mssql/mssql_login`: metasploit module to brute force login
-
-`nmap -vv -sV -Pn -p 3306 --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=1433,smsql.username-sa,mssql.password-sa -on nmap-mssql 10.10.10.10`
+Connect with default service account
+```
+sqsh -S 192.168.1.101 -U sa
+```
+Metasploit module to brute force login
+```
+scanner/mssql/mssql_login
+```
+```
+nmap -vv -sV -Pn -p 3306 --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=1433,smsql.username-sa,mssql.password-sa -on nmap-mssql 10.10.10.10
+```
 
 #### 1521: Oracle Database
 
-`tnscmd10g`
-
-`auxiliary/scanner/oracle/sid_brute`
-
+```
+tnscmd10g
+```
+```
+auxiliary/scanner/oracle/sid_brute
+```
 https://medium.com/@netscylla/pentesters-guide-to-oracle-hacking-1dcf7068d573
 
 #### 2049: NFS
 
-`showmount -e 192.168.1.109`
+```
+showmount -e 192.168.1.109
+```
 
 ```
 mount 192.168.1.109:/ /tmp/NFS
@@ -264,7 +321,10 @@ mount -t 192.168.1.109:/ /tmp/NFS
 
 #### 2100: Oracle XML DB
 
-`ftp`: can connect with ftp
+Can connect with ftp
+```
+ftp
+```
 
 Searchsploit for exploits.
 Default logins: sys:sys scott:tiger
@@ -285,7 +345,7 @@ If you get this error, the server is set up to only allow login from 127.0.0.1, 
 
 `ERROR 1130 (HY000): Host '192.168.0.101' is not allowed to connect to this MySQL server`
 
-`cat /etc/my.cnf`: config file path
+**cat /etc/my.cnf**: config file path
 
 A file in the web root often has the creds for the database.
 
@@ -297,25 +357,37 @@ https://www.exploit-db.com/exploits/1518/
 
 #### 3389: Remote Desktop Protocol
 
-`rdesktop -u guest -p guest 10.11.1.5 -g 94%`
+```
+rdesktop -u guest -p guest 10.11.1.5 -g 50%
+```
 
 Can use nccrack or hydra to brute force
 
-`ncrack -vv --user Administrator -P /root/passwords.txt rdp://192.168.1.101`
+```
+ncrack -vv --user Administrator -P /root/passwords.txt rdp://192.168.1.101
+```
 
 Ms12-020 comes up in searches but there is no POC code, don't waste time.
 
 #### 5900: VNC
 
-`vncviewer 192.168.1.109`
+```
+vncviewer 192.168.1.109
+```
 
-`use post/windows/gather/credentials/vnc`
-
-`use auxiliary/scanner/vnc/vnc_login` bruteforce
-
-`use auxiliary/scanner/vnc/vnc_none_auth`
-
-`crowbar -b vnckey -s 10.10.10.10/32 -p IP -k PASS_FILE`
+```
+use post/windows/gather/credentials/vnc
+```
+Bruteforce
+```
+use auxiliary/scanner/vnc/vnc_login
+```
+```
+use auxiliary/scanner/vnc/vnc_none_auth
+```
+```
+crowbar -b vnckey -s 10.10.10.10/32 -p IP -k PASS_FILE
+```
 
 #### 8080: Common/Various
 
