@@ -473,19 +473,27 @@ unicorn
 
 Compile as 32 bit executable (Linux)
 
-`gcc -Wall -m32 -o <output> <code>`
+```
+gcc -Wall -m32 -o <output> <code>
+```
 
 Compile as 64 bit executable (Linux)
 
-`gcc -Wall -m64 -o <output> <code>`
+```
+gcc -Wall -m64 -o <output> <code>
+```
 
 Compile windows code on Kali
 
-`mingw32`
+```
+i686-w64-mingw32-gcc shell.c -o shell.exe <libraries>
+```
 
 Run windows exploits on Kali
 
-`wine`
+```
+wine exploit <params>
+```
 
 ### Password Attacks
 
