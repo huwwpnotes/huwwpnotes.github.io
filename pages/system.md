@@ -79,7 +79,7 @@ Then perform further script scans against identified services as below.
 
 Banner grab for version. Several clients are directly exploitable. Can sometimes 'bounce' to map from remote client, useful behind firewall.
 
-`ftp`: often allows anonymous login, which depending on allowed directories can disclose information, allow us to upload a reverse shell to web root, add a schedule task, etc.
+Often allows anonymous login, which depending on allowed directories can disclose information, allow us to upload a reverse shell to web root, add a schedule task, etc.
 
 ```
 hydra -L USER_LIST -P PASS_LIST -f -o phydra.txt -u 10.10.10.10 -s 21 ftp
@@ -542,52 +542,78 @@ Atacking the kernel is the easiest route to Linux priviledge escalation, it is a
 
 We start with determining our version/checking for exploits.
 
-`uname -a` : Get the linux version
-
-`cat /etc/*release`: Get the distro version
-
-`searchsploit` against the kernel/distro for exploits
-
+Get the linux version
+```
+uname -a
+```
+Get the distro version
+```
+cat /etc/*release
+```
+Search the kernel/distro for exploits
+```
+searchsploit
+``` 
 This process can be automated (accuracy may vary) with
-
-`UnixPrivEsc.sh`
-
+```
+UnixPrivEsc.sh
+```
 If we can not exploit the kernel for priv esc then we manually investigate potential misconfigurations.
 
-Try to work from `/dev/shm`, as it is stored in memory
+Try to work from **/dev/shm**, as it is stored in memory
 
-`sudo -l`: shows us all the programs we have sudo rights to (requires current user password)
-
-`find / -perm -4000 2>/dev/null`: finds all suid executables
-
-`LinEnum.sh`: comprehensive enumeration script
-
-`LinuxPrivChecker.py`: Automated enum script that suggests exploit, worth looking up others too though
-
+Fina all the programs we have sudo rights to (requires current user password)
+```
+sudo -l
+```
+Find all suid executables
+```
+find / -perm -4000 2>/dev/null
+```
+Comprehensive enumeration script
+```
+LinEnum.sh
+```
+Automated enum script that suggests exploit, worth looking up others too though
+```
+LinuxPrivChecker.py
+```
 If nothing stands out then we go through g0tm1lk's guide.
 
 https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
-
-If all the above fails we are left with password attacks.
 
 #### Windows
 
 First we start with trying to exploit the OS.
 
-`systeminfo`: Gives us OS/Version/Installed updates. We can google these for MS# or use the below scripts to try determine which ones to try. If we are using XP SP0 or SP1 there is a simple universal service exploit we can use to get system.
-
-`Windows-Exploit-Suggester`: Takes the output of systeminfo and tells us if there are any viable exploits
-
-`sherlock.ps1`: Looks for missing patches for priv esc vectors, requires powershell
-
-`msfconsole local_exploit_suggester`: Run against a meterpreter sessions for suggested exploits
-
-`meterpreter getsystem`: a meterpreter session can attempt to upgrade itself
-
-`windows-privesc-check`: General privesc scan script
-
-`powerup.ps1`: General privesc powershell script
-
+Get OS/Version/Installed updates. We can google these for MS# or use the below scripts to try determine which ones to try. If we are using XP SP0 or SP1 there is a simple universal service exploit we can use to get system.
+```
+systeminfo
+```
+Takes the output of systeminfo and tells us if there are any viable exploits
+```
+Windows-Exploit-Suggester
+```
+Looks for missing patches for priv esc vectors, requires powershell
+```
+sherlock.ps1
+```
+Run against a meterpreter session for suggested exploits
+```
+msfconsole local_exploit_suggester
+```
+A meterpreter session can attempt to upgrade itself
+```
+meterpreter getsystem
+``` 
+General privesc scan script
+```
+windows-privesc-check
+```
+General privesc powershell script
+```
+powerup.ps1
+```
 https://github.com/SecWiki/windows-kernel-exploits : Exploits with examples/precompiled
 
 If none of the above work then we need to attempt priv esc manually.
@@ -595,17 +621,26 @@ If none of the above work then we need to attempt priv esc manually.
 Follow the fuzzysecurity guide
 http://www.fuzzysecurity.com/tutorials/16.html
 
-`SEDebugPriviledge` if a user has this we can exploit for admin
-
+If a user has this flag we can exploit for admin
+```
+SEDebugPriviledge
+```
 If all the above fails we are left with password attacks
 
-`pwdump\fgdump`: Windows NT/2000/XP/2003 NTLM and LanMan Password Grabber. I think works up to Windows 10
-
-`windows credential editor`: Win XP-7, gets NTLM hashes, Kerberos tickets and plaintext passwords. Requires local admin
-
+Windows NT/2000/XP/2003 NTLM and LanMan Password Grabber. I think works up to Windows 10
+```
+pwdump\fgdump
+```
+Win XP-7, gets NTLM hashes, Kerberos tickets and plaintext passwords. Requires local admin
+```
+windows credential editor
+```
 While not priv esc, we can get current user credentials hash snarf via samba/http metasploit modules
 
-`mimikatz`: Extract plaintexts passwords, hash, PIN code and kerberos tickets from memory, pass-the-hash, pass-the-ticket, build Golden tickets, play with certificates or private keys. Most functions require admin. Win XP-10
+Extracts plaintexts passwords, hash, PIN code and kerberos tickets from memory, pass-the-hash, pass-the-ticket, build Golden tickets, play with certificates or private keys. Most functions require admin. Win XP-10
+```
+mimikatz
+```
 
 #### Common Remote Exploits for Windows Versions 
  
