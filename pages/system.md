@@ -790,6 +790,35 @@ ICMP and DNS shells can often connect back to us directly through firewalls in s
 
 Attacks that perform commands or add users can be useful in these situations too.
 
+#### Iptables
+
+The nucleur option to stop iptables blocking traffic is
+
+```
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+```
+
+#### Windows Firewall
+
+The nucleur options to stop Windows Firewall blocking traffic is
+
+```
+netSh Advfirewall set allprofiles state off
+```
+
+#### Port Forwarding from Windows without SSH install
+
+netsh can do it
+
 ### Post Exploitation Frameworks
 
 `empire`: Powershell post exploitation framework
