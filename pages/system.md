@@ -707,6 +707,10 @@ mimikatz
 From within a SSH connection press ~ to open control sequences to set up/list forwarding etc.
 https://pen-testing.sans.org/blog/2015/11/10/protected-using-the-ssh-konami-code-ssh-control-sequences
 
+https://serverfault.com/questions/379344/selecting-interface-for-ssh-port-forwarding
+
+https://superuser.com/questions/588591/how-to-make-ssh-tunnel-open-to-public
+
 #### Local Fowarding
 
 Make services on a remote system/network accessible to your attacking pc.
