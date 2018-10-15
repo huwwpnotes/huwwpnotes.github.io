@@ -789,6 +789,7 @@ If possible use a bind shell, it should work through the tunnel as normal.
 If we need to use a reverse shell:
 * Set the pivot machine as LHOST, and >1024 port as LPORT.
 * Set a reverse forward from the pivot machine LHOST:LPORT to attacking machine ip:listening port
+* If using msfconsole exploit `set DisablePayloadHandler true`
 
 ICMP and DNS shells can often connect back to us directly through firewalls in situations that require SSH tunnels.
 
