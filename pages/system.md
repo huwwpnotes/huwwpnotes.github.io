@@ -669,7 +669,8 @@ mimikatz
 ### Maintaining Access
 
 * upload reverse shell to web root
-* add/steal SSH keys
+* steal SSH keys
+* Add our `id_rsa.pub` to any `authorized_keys` for users we can write too
 * add user account/add to rdesktop users
 * upload nc/sbd/cryptcat etc and set up reverse shell
 
