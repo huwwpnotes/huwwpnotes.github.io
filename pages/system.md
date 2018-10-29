@@ -69,6 +69,12 @@ nmap -sU 10.10.10.10 -oN nmap-udp
 
 Then perform further script scans against identified services as below.
 
+If continually timing out try
+
+```
+-min-rtt-timeout 2
+```
+
 ---
 
 ## Vulnerability Anaylsis
