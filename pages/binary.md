@@ -140,12 +140,22 @@ Use checsec.sh to see what binary protections a file was compiled with (canaries
 
 ## Buffer Overflows
 
-> Our aim: Overwrite the RIP register with the address of our shellcode
+> Our aim: Overwrite the EIP/RIP register with the address of our shellcode
 
 Important Registers:
 1. EPB/RPB: register which points to base of the current the stack frame
 2. ESP/RSP: register which points to the top of the current stack frame
 3. EIP/RIP:  register which points to the next processor instruction
+
+### Basic Windows Buffer Overflows
+
+1. Use a script to reproduce the crash
+2. Identify the offsets
+3. Identify bad characters
+4. Find a useable JMP ESP
+5. Generate shellcode
+6. Pad with NOPs
+7. Exploit
 
 ### Disabling OS and Compiler Security
 
