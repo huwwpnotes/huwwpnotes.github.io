@@ -468,6 +468,8 @@ msfvenom --list payloads
 # Migrate straight after exploit (meterpreter)
 PrependMigrate=true
 ```
+nishang
+`Invoke-PowerShellTcp.ps1`
 
 veil-evasion
 
