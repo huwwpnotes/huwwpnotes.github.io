@@ -225,7 +225,9 @@ Useful parameters:
 -cpb="bad chars in hex"      #don't include addresses with these chars
 ```
 *Make sure the address selected doesn't have any bad chars*
+
 *Try to find one in the original executable if possible for portability*
+
 *Make sure to check the security on the module we are using the address from*
 
 #### Generate shellcode
