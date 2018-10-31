@@ -204,7 +204,7 @@ badchars = (
 
 ````
 
-4. Find an address with a useable JMP ESP
+#### Find an address with a useable JMP ESP
 
 Use msf to find the hex for JMP ESP
 ```
