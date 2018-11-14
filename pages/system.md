@@ -236,11 +236,17 @@ The ADMIN$ share can basically be thought of as a symbolic link to the path C:\W
 The IPC$ share is a little different. It does not map to the file system directly, instead providing an interface through which remote procedure calls (RPC) can be performed. 
 Servers running SMB are often vulnerable to MS17-010 
 
+*Check the version number for direct exploits*
+
+If enum4linux and smbclient/rpcclient doesn't return the SMB/Samba version, there is a metasploit module for it. However the most reliable method is to set up wireshark with a display filter and make a connection.
+
+`
+tcp.port == 445
+`
+
 ```
 enum4linux -av 10.10.10.10
 ```
-
-*Check the version number for direct exploits*
 
 ```
 smbclient -L 192.168.1.102
