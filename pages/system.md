@@ -225,7 +225,7 @@ nmblookup -A 10.10.10.10
 ```
 
 ```
-enum4linux -a 10.10.10.10
+enum4linux -av 10.10.10.10
 ```
 
 #### 139/445: SMB/Samba
@@ -233,8 +233,14 @@ enum4linux -a 10.10.10.10
 Allows devices to perform a number of functions on each other over a (usually local) network. Usually used for file shares, sharing printers and RPC. Samba is the Linux implementation of this Windows protocol. 
 SMB runs directly over TCP (port 445) or over NetBIOS (usually port 139, rarely port 137 or 138). 
 The ADMIN$ share can basically be thought of as a symbolic link to the path C:\Windows. 
-The IPC$ share is a little different. It does not map to the file system directly, instead providing an interface through which remote procedure calls (RPC) can be performed, as discussed below. 
+The IPC$ share is a little different. It does not map to the file system directly, instead providing an interface through which remote procedure calls (RPC) can be performed. 
 Servers running SMB are often vulnerable to MS17-010 
+
+```
+enum4linux -av 10.10.10.10
+```
+
+*Check the version number for direct exploits*
 
 ```
 smbclient -L 192.168.1.102
