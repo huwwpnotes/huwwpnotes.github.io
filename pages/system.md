@@ -238,11 +238,7 @@ Servers running SMB are often vulnerable to MS17-010
 
 *Check the version number for direct exploits*
 
-If enum4linux and smbclient/rpcclient doesn't return the SMB/Samba version, there is a metasploit module for it. However the most reliable method is to set up wireshark with a display filter and make a connection.
-
-`
-tcp.port == 445
-`
+If enum4linux and smbclient/rpcclient doesn't return the SMB/Samba version, there is a metasploit module for it. However the most reliable method is to set up wireshark with a display filter `tcp.port == 445` and make a connection.
 
 ```
 enum4linux -av 10.10.10.10
