@@ -359,11 +359,13 @@ If you get this error, the server is set up to only allow login from 127.0.0.1, 
 
 `ERROR 1130 (HY000): Host '192.168.0.101' is not allowed to connect to this MySQL server`
 
+If you can access it from the web you can usually use it to outfile a shell to a public web path.
+
 **cat /etc/my.cnf**: config file path
 
 A file in the web root often has the creds for the database.
 
-If database is running as root user we can use this to priv esc. I used it against 5.14~
+If we have local access and the database is running as root user we can use this to priv esc. I used it against 5.14~
 
 ```
 https://www.exploit-db.com/exploits/1518/
