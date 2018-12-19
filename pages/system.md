@@ -170,6 +170,11 @@ Brute force directories
 gobuster -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/common.txt -t 80
 ```
 
+Check available requests
+```
+curl -vX options 192.168.1.1
+```
+
 A fairly comprehensive Gobuster scan, might need to add flags for extensions and directories ending in slashes
 ```
 gobuster -s 200,204,301,302,307,403 -u 10.10.10.10 -w /usr/share/wordlists/Seclists/Discovery/Web_Content/big.txt -t 80 -a 'Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
