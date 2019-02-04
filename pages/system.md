@@ -288,6 +288,10 @@ snmp-check 10.10.10.10
 ldapsearch -h 192.168.1.101 -p 389 -x -b "dc=mywebsite,dc=com"
 ```
 
+```
+nmap -p 389 --script ldap-search <host>
+```
+
 #### 443: HTTPS
 
 Check for Heartbleed, inspect certificate.
@@ -589,11 +593,13 @@ If we can not exploit the kernel for priv esc then we manually investigate poten
 
 Try to work from **/dev/shm**, as it is stored in memory
 
+It's a good idea to run commands like netstat, ps, find suids, etc locally and on the machine we are attacking then compare the output.
+
 Fina all the programs we have sudo rights to (requires current user password)
 ```
 sudo -l
 ```
-Find all suid executables
+Find all suid executables. It's a good idea to run this locally as well and compare.
 ```
 find / -perm -4000 2>/dev/null
 ```
