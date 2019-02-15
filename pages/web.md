@@ -105,7 +105,7 @@ Test for wherever user input is reflect in the site with:
 
 If a user is logged into a website (has an active session/token) and at the same times accesses a malicious website then a CSRF attack can occur.
 
-THe malicious website is designed to submit a request to the website the user is logged in to without the user being aware.
+The malicious website is designed to submit a request to the website the user is logged in to without the user being aware.
 Since the request will have the session cookie/token attached to it the website believes the request is valid and actions accordingly.
 
 The referral header is sometimes used to try and minimize the risk of this attack, although it introduces issues with adblockers and anonymity plugins and features of browsers.
