@@ -12,7 +12,7 @@ permalink: /web/
 * [PHP Injection](#php-injection)
 * [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
-* [Import Web Security Concepts](#important-web-security-concepts)
+* [Important Web Security Concepts](#important-web-security-concepts)
 * [Other Tools](#other-tools)
 * [Methodology](#methodology)
 
@@ -161,7 +161,7 @@ Above is just proof of concept, other functions exist.
 
 ---
 
-## Import Web Security Concepts
+## Important Web Security Concepts
 
 ### Same Origin Policiy
 
