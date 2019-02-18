@@ -10,7 +10,6 @@ permalink: /crypto/
 * [Hashing](#hashing)
 * [Nonces](#nonces)
 * [Challenge Response](#challenge-response)
-* [Windows](#windows)
 
 ---
 
@@ -49,22 +48,40 @@ Messages and often hashed and signed with a private key to ensure the sender + e
 
 ## Nonces
 
-A none is a one time key. Usually an arbitrary number that can be used just once in a cryptographic communication. It is similar in spirit to a nonce word, hence the name. It is often a random or pseudo-random number issued in an authentication protocol to ensure that old communications cannot be reused in replay attacks.
+A none is a one time key. Usually an arbitrary number that can be used just once in a cryptographic communication. It is often a random or pseudo-random number issued in an authentication protocol to ensure that old communications cannot be reused in replay attacks.
 
 ---
 
 ## Challenge Response
 
+In computer security, challenge–response authentication is a family of protocols in which one party presents a question ("challenge") and another party must provide a valid answer ("response") to be authenticated.
 
+CRA fundamentally depends on the existance of "one-way hashes". A one-way hash is a function that takes an input, and returns a "hash value". Popular one-way hash functions are MD4, MD5, SHA, and RIPE-MD.
 
----
+Let's call this one-way function h(). When the client connects to the server, the server makes up a random value, X. The server sends X to the client. The client sends the server h(X+P), where P is the password and + represents concatenation. The servers computes h(X+P) as well, and checks to see if the data from the client matches the computed value. If so, the client must know P.
 
-## Windows
+A practical example:
 
-### NTLM
+This example uses the common unix utility "md5sum", which hashes the data on stdin to a 128 bit hash, displayed as 32 hex digits.
 
-### Pass the Hash
+Assume the password is "mysecretpass" and both the client and the server know this.
 
-### Kerberus
+The client connects to the server.
 
----
+The server makes up some random data, say "sldkfjdslfkjweifj".
+
+The server sends this data to client.
+
+The client concatenates the random data with the password, resulting in "sldkfjdslfkjweifjmysecretpass"
+
+The client computes the MD5 hash of this value:
+
+5>doug@saturn:/home/doug$ echo sldkfjdslfkjweifjmysecretpass | md5sum
+4fab7ebffd7ef35d88494edb647bac37
+5>doug@saturn:/home/doug$
+
+The client sends "4fab7ebffd7ef35d88494edb647bac37" to the server.
+
+The server runs the same command, and since the server (hopefully) got the same result, it lets the user in.
+
+https://hcsw.org/reading/chalresp.txt
