@@ -8,6 +8,7 @@ permalink: /windows/
 
 * [Credential Management](#credential-management)
 * [Hash Attacks](#hashes)
+* [Kerberos](#kerberos)
 * [Useful Tools](#useful-tools)
 
 ## Credential Management
@@ -53,6 +54,7 @@ Cracking
 john --format=netntlmv2 hash.txt
 hashcat -m 5600 -a 3 hash.txt
 ```
+---
 
 ## Hash Attacks
 
@@ -153,6 +155,13 @@ However the NetNTLMv1/2 can be used against other hosts in what is known as a re
 A good walkthrough is here
 
 https://byt3bl33d3r.github.io/practical-guide-to-ntlm-relaying-in-2017-aka-getting-a-foothold-in-under-5-minutes.html
+
+---
+
+## Kerberos
+
+---
+
 
 ## Useful Tools
 
