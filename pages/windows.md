@@ -6,8 +6,8 @@ permalink: /windows/
 
 # Index
 
-* [Overview](#overview)
-* [NTLM Hashes](#ntlm-hashes)
+* [Password Overview](#password-overview)
+* [Hashes](#hashes)
 
 ## Password Overview
 
