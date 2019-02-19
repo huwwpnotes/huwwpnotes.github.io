@@ -160,6 +160,28 @@ https://byt3bl33d3r.github.io/practical-guide-to-ntlm-relaying-in-2017-aka-getti
 
 ## Kerberos
 
+A protocol that defines how clients interact with a network authentication service. Clients obtain tickets from the Kerberos Key Distribution Center (KDC), and they present these tickets to servers when connections are established. Kerberos tickets represent the client's network credentials. Windows 2000 and later uses Kerberos as its default authentication method, and fall back to NTLM if not available.
+
+### Authentication
+
+1. Client generates a Authenticator (signs it with it's private key/aka password)
+2. Authenticator is sent to Domain Controller (or KDC), which unlocks it and verifies (as it know the client's password)
+3. Domain generates a Ticket Granting Ticket (TGT) (and signs it with it's own private key) and sends to client
+4. Client keeps TGT in it's Kerberos tray
+5. When client wants access to a network resource it sends a copy of it's TGT back to the Domain Controller and requests access.
+7. Server validates access, generates a Ticket (sometimes called session key) for the resource, signs it with the resources private key and sends it back to the client
+8. The client connects to the network resource, sends the ticket, it decrypts with it's private key, validates and grants access.
+
+### Kerberos Attacks
+
+#### Pass the Tickets
+
+#### Kerberoasting
+
+#### Silver Tickets
+
+#### Golden Tickets
+
 ---
 
 
