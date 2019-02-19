@@ -6,12 +6,13 @@ permalink: /windows/
 
 # Index
 
-* [Password Overview](#password-overview)
-* [Hashes](#hashes)
+* [Credential Management](#credential-management)
+* [Hash Attacks](#hashes)
+* [Useful Tools](#useful-tools)
 
-## Password Overview
+## Credential Management
 
-When a local user account is created the password is stored in the Security Accounts Manager (SAM) database.
+When a local user account is created the password is stored in the Security Accounts Manager (SAM) database as a NTLM hash.
 
 When an AD account is created the password is stored in Ntds.dit, the main AD Database. The password hashes are encrypted using a key
 stored in the SYSTEM registry hive.
@@ -53,7 +54,7 @@ john --format=netntlmv2 hash.txt
 hashcat -m 5600 -a 3 hash.txt
 ```
 
-## Hashes
+## Hash Attacks
 
 ### Acquiring Remotely
 
@@ -152,3 +153,36 @@ However the NetNTLMv1/2 can be used against other hosts in what is known as a re
 A good walkthrough is here
 
 https://byt3bl33d3r.github.io/practical-guide-to-ntlm-relaying-in-2017-aka-getting-a-foothold-in-under-5-minutes.html
+
+## Useful Tools
+
+### Empire
+
+A post exploitation powershell framework.
+
+Listeners are like Metasploit handlers.
+
+Launcher/stagers are what we run on the target to get a connection back.
+
+Agents are connected targets. Once connected there are many powershell payloads that perform enumeration/privilege escalation.
+
+### CrackMapExec
+
+Allows you to perform login attempts, pass the hash, execute commands, mimikatz, policy & share querying accross a whole Active Directory.
+
+### BloodHound
+
+Graphically maps out an entire domain.
+
+### Powersploit
+
+A whole bunch of enumeration and priv-esc Powershell scripts.
+
+### Nishang
+
+Another set of enumeration and escalation Powershell scripts including some cool reverse shells.
+
+### Unicorn
+
+Generates shellcode and deliver straight into memory
+
