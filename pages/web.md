@@ -26,9 +26,25 @@ For example attacking a web login form
 
 `hydra 192.168.1.69 http-form-post "form_login.php:user=^USER^&pass=^PASS^:Bad login" -L users.txt -P pass.txt -o hydra-http-post-attack.txt`
 
+### SSL/TLS
+
+SSL/TLS are protocols used for encrypting information between two points.
+
+The SSL Handshake is Asymmetric and the sending of data uses symmetric encryption.
+
+The handshake protocol is:
+
+1. The client sends the SSL versions and ciphers it can use to the server
+2. Server selects a compatible version and cipher, then sends it's certificate + public key
+3. Client checks the certificate & then generates a pre-master key, encrypts it with the servers public key and sends it back
+4. Server decrypts the pre-master secret with it's private key, and then the client AND server both perform the same steps on the pre-master key to generate the *shared secret*
+5. Client and server exchange messages to test the shared secret and say that all future communications will be encrypted with it.
+
 ---
 
 ## SQL Injection
+
+SQL injection attack consists of insertion of a SQL query via the input data from the client to the application.
 
 Suppose a SQL query like below, where parameters are received from user input
 
@@ -130,6 +146,8 @@ Other things to try https://websec.wordpress.com/2010/02/22/exploiting-php-file-
 
 ## XML External Entity
 
+An XML External Entity attack is a type of attack against an application that parses XML input. This attack occurs when XML input containing a reference to an external entity is processed by a weakly configured XML parser.
+
 Local file inclusion
 
 ```XML
@@ -158,6 +176,8 @@ Above is just proof of concept, other functions exist.
 ---
 
 ## Deserialization
+
+Deserialization of untrusted data (user input) can escape whatever is parsing the data and sometimes perform code execution, include additional data, etc.
 
 ---
 
