@@ -12,6 +12,7 @@ permalink: /web/
 * [PHP Injection](#php-injection)
 * [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
+* [Storage](#storage)
 * [Important Web Security Concepts](#important-web-security-concepts)
 * [Other Tools](#other-tools)
 * [Methodology](#methodology)
@@ -191,6 +192,27 @@ Above is just proof of concept, other functions exist.
 ## Deserialization
 
 Deserialization of untrusted data (user input) can escape whatever is parsing the data and sometimes perform code execution, include additional data, etc.
+
+---
+
+## Storage
+
+HTML is a stateless protocol so continuity is achieved through storage.
+
+### Cookies
+
+Stores data that has to be sent back to the server with subsequent requests. Its expiration varies based on the type and the expiration duration can be set from either server-side or client-side (normally from server-side).
+Cookies are primarily for server-side reading (can also be read on client-side), localStorage and sessionStorage can only be read on client-side.
+Cookies can be made secure by setting the httpOnly flag as true for that cookie. This prevents client-side access to that cookie
+
+### Local Storage
+
+Stores data with no expiration date, and gets cleared only through JavaScript, or clearing the Browser cache / Locally Stored Data. Large storage capacity. Data is never natively sent to the server, can be achieved with JS.
+
+### Session Storage
+
+The sessionStorage object stores data only for a session, meaning that the data is stored until the browser (or tab) is closed.
+Data is never natively transferred to the server, can be achieved with JS.
 
 ---
 
