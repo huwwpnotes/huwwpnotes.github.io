@@ -115,6 +115,14 @@ Test for wherever user input is reflect in the site with:
     <script>alert('x')</script>
 ```
 
+### Reflected
+
+Reflected Cross-site Scripting (XSS) occur when an attacker injects browser executable code within a single HTTP response. The injected attack is not stored within the application itself; it is non-persistent and only impacts users who open a maliciously crafted link or third-party web page. The attack string is included as part of the crafted URI or HTTP parameters, improperly processed by the application, and returned to the victim.
+
+### DOM
+
+DOM-based Cross-Site Scripting is the de-facto name for XSS bugs which are the result of active browser-side content on a page, typically JavaScript, obtaining user input and then doing something unsafe with it which leads to execution of injected code.
+
 ---
 
 ## Cross Site Request Forgery (CSRF)
