@@ -10,6 +10,7 @@ permalink: /web/
 * [SQL Injection](#sql-injection)
 * [Cross Site Scripting](#cross-site-scripting)
 * [PHP Injection](#php-injection)
+* [Template Injection](#template-injection)
 * [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
 * [Storage](#storage)
@@ -155,6 +156,20 @@ If there is LFI the below might work
 `site.php?lfi_path=php://input%00`
 
 Other things to try https://websec.wordpress.com/2010/02/22/exploiting-php-file-inclusion-overview/
+
+---
+
+## Template Injection
+
+Template Injection occurs when user input is embedded in a template in an unsafe manner. Various website use templates to construct pages, these have a syntax that can be escaped. Client Side Template Injection and Server Side Template Injection exist.
+
+Can lead to full RCE as the templates are operated on by server side languages.
+
+Test for with
+
+```
+{7*7}
+```
 
 ---
 
