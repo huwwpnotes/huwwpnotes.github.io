@@ -245,6 +245,11 @@ HttpOnly is an additional flag included in a Set-Cookie HTTP response header. Us
 
 CORS is a mechanism that uses additional HTTP headers to tell a browser to let a web application running at one origin to access selected resources from a server at a different origin. 
 
+### Security.ttxt
+
+Websites often define channels for responsible disclosure in a security.txt or /.well-known/security.txt
+https://securitytxt.org/
+
 ---
 
 ## Other Tools
