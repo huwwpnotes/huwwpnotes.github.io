@@ -112,8 +112,13 @@ We can also inject a beefsuite hook that allows use to perform many XSS feats, a
 Test for wherever user input is reflect in the site with:
 
 ``` Javascript
+    <h1>Test<h1>
     <script>alert('x')</script>
+    <iframe src=javascript:alert(1)>
+    <img src=x onerror=alert(1)>
 ```
+
+Browsers often have XSS filters, but can be bypassed with iframes etc.
 
 ### Reflected
 
