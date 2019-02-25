@@ -150,6 +150,11 @@ The referral header is sometimes used to try and minimize the risk of this attac
 
 Ideally on the website that hosts the form a CSRF Token is assigned whenever a form is requested. Then when the form is submitted the token is attached. These should be unique and impossible to guess, so that when the malicious site attempts a request with the users cookies the CSRF doesn't match and nothing happens.
 
+*But I only have JSON APIs and no CORS enabled, how can those be susceptible to CSRF?*
+
+The only way for a browser to make a JSON content type request is through XHR. Before the browser can make such a request a preflight request will be made towards the server (remember the CSRF request will be cross origin). If the pre-flight response does not allow the cross origin request the browser will not make the call. However there have been bypasses to this in the past and it is bad practice.
+
+
 ---
 
 ## PHP Injection
