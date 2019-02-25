@@ -14,7 +14,7 @@ permalink: /web/
 * [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
 * [Storage](#storage)
-* [HTTP Parameter Polution}(#http-parameter-polution)
+* [HTTP Parameter Polution](#http-parameter-polution)
 * [Important Web Security Concepts](#important-web-security-concepts)
 * [Other Tools](#other-tools)
 * [Methodology](#methodology)
