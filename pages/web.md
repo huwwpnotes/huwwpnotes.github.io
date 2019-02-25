@@ -14,9 +14,11 @@ permalink: /web/
 * [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
 * [Storage](#storage)
+* [HTTP Parameter Polution}(#http-parameter-polution)
 * [Important Web Security Concepts](#important-web-security-concepts)
 * [Other Tools](#other-tools)
 * [Methodology](#methodology)
+
 
 ## Authentication
 
@@ -228,6 +230,14 @@ Stores data with no expiration date, and gets cleared only through JavaScript, o
 
 The sessionStorage object stores data only for a session, meaning that the data is stored until the browser (or tab) is closed.
 Data is never natively transferred to the server, can be achieved with JS.
+
+---
+
+## HTTP Parameter Polution
+
+Supplying multiple HTTP parameters with the same name may cause an application to interpret values in unanticipated ways.
+
+Test with curl against apis etc while entering multiple headers or the same body data values twice.
 
 ---
 
