@@ -410,6 +410,49 @@ the validity and integrity of the token in a secure way, all of this in a statel
 and portable approach (portable in the way that client and server technologies can
 be different including also the transport channel even if HTTP is the most often used)
 
+### JWT Structure
+
+```
+xxxxx.yyyyy.zzzzz
+header.payload.signature
+```
+
+#### Header
+
+The header states the type of token and algorithm to use. It is then base64 encoded.
+
+```
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+
+#### Payload
+
+The payload contrains the claims,  claims are statements about an entity (typically, the user) and additional data. The payload is then Base64Url encoded.
+
+```
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true
+}
+```
+
+#### Signature
+
+To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that. For example if you want to use the HMAC SHA256 algorithm, the signature will be created in the following way:
+
+```
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret)
+```
+
+The signature is used to verify the message wasn't changed along the way, and, in the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
+
 ---
 
 ## Important Web Security Concepts
