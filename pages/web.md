@@ -453,7 +453,25 @@ HMACSHA256(
 
 The signature is used to verify the message wasn't changed along the way, and, in the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
 
+### Attacks
+
+1. Change the alg to "none", remove the signature entirely but leave the trailing . , edit the payload as desired
+2. Crack the hash and resign
+
+```
+hashcat -m 16500 jwt_hash /usr/share/wordlists/rockyou.txt
+```
+Can use python to create new tokens
+```python
+>>> import jwt
+>>> encoded = jwt.encode({'some': 'payload'}, 'secret', algorithm='HS256')
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoicGF5bG9hZCJ9.4twFt5NiznN84AWoo1d7KO1T_yoc0Z6XOpOVswacPZg'
+>>> jwt.decode(encoded, 'secret', algorithms=['HS256'])
+{'some': 'payload'}
+```
+
 ---
+
 
 ## Important Web Security Concepts
 
