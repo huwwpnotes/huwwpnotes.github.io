@@ -276,6 +276,16 @@ Reflected Cross-site Scripting (XSS) occur when an attacker injects browser exec
 
 DOM-based Cross-Site Scripting is the de-facto name for XSS bugs which are the result of active browser-side content on a page, typically JavaScript, obtaining user input and then doing something unsafe with it which leads to execution of injected code.
 
+### Mitigation
+
+The basic premise of defending against XSS is output encoding any untrusted input that goes to the screen. If in doubt, treat everything (even data you populated in your DB as untrusted). Encode as the data is sent to the browser (not in your persisted data). In the case of Single Page Apps (SPA’s), you will need to encode in the client.
+
+Encode as HTML Entities in HTML Body
+
+Encode as HTML Entities in HTML Attribute
+
+Encode for javascript if outputting user input to javascript (this is a dangerous practice though).
+
 ---
 
 ## Cross Site Request Forgery (CSRF)
