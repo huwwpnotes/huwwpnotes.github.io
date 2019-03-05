@@ -13,6 +13,7 @@ permalink: /web/
 * [Template Injection](#template-injection)
 * [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
+* [Insecure Direct Object Reference](#insecure-direct-object-reference)
 * [Storage](#storage)
 * [HTTP Parameter Polution](#http-parameter-polution)
 * [JSON Web Tokens](#json-web-tokens)
@@ -368,6 +369,14 @@ Above is just proof of concept, other functions exist.
 ## Deserialization
 
 Deserialization of untrusted data (user input) can escape whatever is parsing the data and sometimes perform code execution, include additional data, etc.
+
+---
+
+## Insecure Direct Object Referenece
+
+Insecure Direct Object Referenece (IDOR) is where an application uses client-provided input to access data and objects AND this input is not properly handled allowing authorization bypasses/disclosure of private data.
+
+
 
 ---
 
