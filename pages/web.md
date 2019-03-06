@@ -14,6 +14,7 @@ permalink: /web/
 * [XML External Entity](#xml-external-entity)
 * [Deserialization](#deserialization)
 * [Insecure Direct Object Reference](#insecure-direct-object-reference)
+* [Insecure Communication](#insecure-communication)
 * [Storage](#storage)
 * [HTTP Parameter Polution](#http-parameter-polution)
 * [JSON Web Tokens](#json-web-tokens)
@@ -376,8 +377,12 @@ Deserialization of untrusted data (user input) can escape whatever is parsing th
 
 Insecure Direct Object Referenece (IDOR) is where an application uses client-provided input to access data and objects AND this input is not properly handled allowing authorization bypasses/disclosure of private data.
 
+---
 
+## Insecure Communication
 
+If a website transmite private data insecurely (i.e. not using https) anyone *on the wire* can listen in. A simple proof of concept, say a website posts a form submission to an endpoint. Set up wireshark, set a display filter of `http.request.method=="POST"` and capture in plaintext the form data.
+                         
 ---
 
 ## Storage
