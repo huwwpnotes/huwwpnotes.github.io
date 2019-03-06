@@ -517,7 +517,7 @@ CORS is a mechanism that uses additional HTTP headers to tell a browser to let a
 Websites often define channels for responsible disclosure in a security.txt or /.well-known/security.txt
 https://securitytxt.org/
 
-## Content Type
+### Content Type
 
 When editing and fuzzing with forms/endpoints make sure to change the content type of submissions/posts/put to match the data we are submitting or else it will likely error out.
 
