@@ -149,6 +149,10 @@ Attempt a zone transer
 ```
 dnsrecon -t axfr -d 10.10.10.10
 ```
+Query for info
+```
+dnsrecon -n 10.10.10.123 -d friendzone.red
+```
 
 #### 69: TFTP
 
