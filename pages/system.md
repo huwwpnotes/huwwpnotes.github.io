@@ -145,6 +145,24 @@ auxiliary/scanner/smtp/smtp_enum
 
 #### 53: DNS
 
+```
+#nslookup
+> SERVER 10.10.10.10
+> 127.0.0.1
+> 10.10.10.10
+> domain.guess
+```
+Reverse lookup of range
+```
+dnsrecon -r 127.0.0.0/24 -n 10.10.10.10
+```
+Using dig
+```
+dig axfr @10.10.10.10
+
+dig axfr domain.com @10.10.10.10
+```
+
 Attempt a zone transer
 ```
 dnsrecon -t axfr -d 10.10.10.10
