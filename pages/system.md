@@ -169,7 +169,13 @@ dnsrecon -t axfr -d 10.10.10.10
 ```
 Query for info
 ```
-dnsrecon -n 10.10.10.123 -d friendzone.red
+dnsrecon -n 10.10.10.10 -d domain.com
+```
+Once we have the DNS records we need to add to our resolv.conf so we can access them
+```
+vi /etc/resolv.conf
+
+nameserver 10.10.10.10
 ```
 
 #### 69: TFTP
