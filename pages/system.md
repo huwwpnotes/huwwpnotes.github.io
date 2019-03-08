@@ -249,8 +249,14 @@ If enum4linux and smbclient/rpcclient doesn't return the SMB/Samba version, ther
 enum4linux -av 10.10.10.10
 ```
 
+To find shares
 ```
 smbclient -L 192.168.1.102
+```
+
+To connect to a share
+```
+smbclient \\\\10.10.10.10\\Sharename -U user%password
 ```
 
 ```
