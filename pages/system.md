@@ -645,6 +645,10 @@ Automated enum script that suggests exploit, worth looking up others too though
 ```
 LinuxPrivChecker.py
 ```
+See what process are running live by checking filesystem read/writes.
+```
+pspy
+```
 If nothing stands out then we go through g0tm1lk's guide.
 
 https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
