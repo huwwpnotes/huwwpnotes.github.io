@@ -630,7 +630,7 @@ Try to work from **/dev/shm**, as it is stored in memory
 
 It's a good idea to run commands like netstat, ps, find suids, etc locally and on the machine we are attacking then compare the output.
 
-Fina all the programs we have sudo rights to (requires current user password)
+Find all the programs we have sudo rights to (requires current user password)
 ```
 sudo -l
 ```
@@ -650,6 +650,11 @@ See what process are running live by checking filesystem read/writes.
 ```
 pspy
 ```
+If SELinux is running check available capabilities, pay attention to *ep*
+```
+getcap -r / 2>/dev/null
+```
+
 If nothing stands out then we go through g0tm1lk's guide.
 
 https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
