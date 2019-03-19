@@ -335,6 +335,17 @@ Check for Heartbleed, inspect certificate.
 sslscan 192.168.101.1:443
 ```
 
+### 512/513/514: R Services
+
+Run remote command unathenticated.
+```
+rsh <target> <command>
+```
+There are a variety of other r service programs that allow enumeration and interaction, but it's a legacy protocol not used much.
+```
+https://highon.coffee/blog/penetration-testing-tools-cheat-sheet/#r-services-enumeration
+```
+
 #### 631: Cups
 
 Common UNIX Printing System, usually not externally open, visible internally with `netstat`
