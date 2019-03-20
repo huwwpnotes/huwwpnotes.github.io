@@ -388,6 +388,24 @@ mount 192.168.1.109:/ /tmp/NFS
 mount -t 192.168.1.109:/ /tmp/NFS
 ```
 
+*Spoofing NFS Permissions*
+
+NFS before version 4 relies upon host trust, i.e. it grants permissions based upon user ID of the person accessing the share. These userids can be spoofed on the client side to grant unintended access and if *nosuid* and *no_root_squash* are not set can allow simple privilege escalation.
+
+Check the userid of the owner of the file in share.
+```
+ls -ln
+```
+Add a new user on your attacking machine and edit /etc/passwd so that it's uid matches the file in the share.
+```
+useradd testnfs
+vi /etc/passwd
+```
+Switch user to created account and have owner permissions. 
+
+If *no_root_squash* is not set then this works for root. If it is set then root files are set to UID of 'nobody' user.
+If *nosuid* is not set then we can spoof to root, upload an executable that performs privesc, set SUID to root and then run as a non privileged user (provided with have user access to machine) and privesc to root.
+
 #### 2100: Oracle XML DB
 
 Can connect with ftp
