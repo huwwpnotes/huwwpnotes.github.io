@@ -6,7 +6,7 @@ permalink: /networking/
 
 # Index
 
-* [tcp/ip](#tcp/ip)
+* [TCP/IP](#tcpip)
 * [DNS](#dns)
 * [NAT](#nat)
 * [DHCP](#dhcp)
