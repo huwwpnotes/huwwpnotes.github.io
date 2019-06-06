@@ -298,6 +298,10 @@ nmap -p 445 -vv --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vul
 ```
 nmap -sV -Pn -vv -p 139,$port --script=smb-vuln* --script-args=unsafe=1 -oN nmap-smb-vuln 10.10.10.10
 ```
+Shares can be mounted the browsed an interacted with locally
+```
+mount -t cifs //10.10.10.10/sharename mountpoint
+```
 
 #### 143/993: IMAP
 
