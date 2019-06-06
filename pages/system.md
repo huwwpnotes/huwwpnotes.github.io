@@ -735,7 +735,14 @@ If a user has this flag we can exploit for admin
 ```
 SEDebugPriviledge
 ```
-If all the above fails we are left with password attacks
+If all the above fails we are left with password attacks.
+
+We need the SAM and SYSTEM file to crack windows password. They are stored in different locations depending on windows versions, some are locked while windows is live. 
+
+Get hashes from sam and system file, can then be cracked with john or hashcat.
+```
+samdump2
+```
 
 Windows NT/2000/XP/2003 NTLM and LanMan Password Grabber. I think works up to Windows 10
 ```
