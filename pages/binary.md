@@ -374,3 +374,7 @@ Find strings
 ```
 In the Dissassembler Window (top left) right click > Search for > All Referenced Text Strings
 ```
+
+### dnSpy
+
+.NET debugger and assembly editor
