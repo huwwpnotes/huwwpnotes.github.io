@@ -366,4 +366,11 @@ Go to graph
 
 `v`
 
----
+### Immunity Debugger
+
+For working with Windows binaries.
+
+Find strings
+```
+In the Dissassembler Window (top left) right click > Search for > All Referenced Text Strings
+```
