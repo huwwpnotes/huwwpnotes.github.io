@@ -503,6 +503,21 @@ Can use python to create new tokens
 {'some': 'payload'}
 ```
 
+### Authenticating
+
+If we try to access a url and it returns this message, it means we can not access it without the relevant JWT.
+```
+{"success":false,"message":"Auth token is not supplied"}
+```
+If we have creds we can try, we can request a token using curl
+```
+curl -H "Content-Type: application/json" -X POST -d '{"username":"admin","password":"adminpassword"}' http://10.10.10.10:3000/login
+```
+Then we can pass the return token in the Authorization header to access the resource.
+
+```
+curl -X GET -H 'Authorization: Bearer (token)' http://10.10.10.10:3000/
+```
 ---
 
 
