@@ -55,6 +55,16 @@ The handshake protocol is:
 4. Server decrypts the pre-master secret with it's private key, and then the client AND server both perform the same steps on the pre-master key to generate the *shared secret*
 5. Client and server exchange messages to test the shared secret and say that all future communications will be encrypted with it.
 
+### OpenSSL
+
+OpenSSL is a versatile command line tool that can be used for a large variety of tasks related to Public Key Infrastructure (PKI) and HTTPS (HTTP over TLS). 
+
+https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs
+
+CSR: Certificate Signing Request -> A combination of a public key + information about a certificate (company, location, FQDN, etc)
+
+SSL Certificate: Generated using a CSR + private key
+
 ---
 
 ## SQL Injection
