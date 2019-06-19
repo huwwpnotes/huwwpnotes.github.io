@@ -834,7 +834,13 @@ mimikatz
 
 ### Capturing Traffic
 
-* `tcpdump`
+#### tcpdump
+Standard cmdline tool for capturing traffic.
+
+Capture icmcp traffic only (useful to see if a host can ping/reach us)
+```
+tcpdump -i tun0 icmp
+```
 * `tcpflow` helps logically parse pcap files
 * `wireshark`
 * `ettercap`
