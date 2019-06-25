@@ -344,6 +344,9 @@ from pwn import *
 
 context.binary = './vulnerable'
 p = process('./vulnerable', stdin=process.PTY)       #MAY NEED TO CHANGE STDIN/OUT args
+context(terminal=['tmux','new-window'])
+#context.log_level = 'DEBUG'    #Prints debugging messages
+#p = gdb.debug('./ret2win32')   #Allows us to interact with GDB running the process. Fpr GDB to catch SEGFAULT need the script to continue afterwards, i.e. add a raw_input()
 
 payload = "A" * 300
 
