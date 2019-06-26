@@ -308,6 +308,12 @@ The program remembers its place in the stack with the rsp register. The rsp regi
 
 Unlike in x86, where arguments are passed as the next line on the stack, arguments are passed in registers in 64-bit programs. This means we will need to find a way to control the RDI register.
 
+```
+The MOVAPS issue
+If you're using Ubuntu 18.04 and segfaulting on a movaps instruction in buffered_vfprintf() or do_system() in the 64 bit challenges then ensure the stack is 16 byte aligned before returning to GLIBC functions such as printf() and system().
+Try padding your ROP chain with an extra ret before returning into a function.
+```
+
 #### Update notes on GOT AND PLT, maybe calling conventions
 
 #### Determine security features 
