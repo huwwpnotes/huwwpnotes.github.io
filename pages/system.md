@@ -698,6 +698,8 @@ Try to work from **/dev/shm**, as it is stored in memory
 
 It's a good idea to run commands like netstat, ps, find suids, etc locally and on the machine we are attacking then compare the output.
 
+If systemctl is suid we can create a new service until file and start whatever we want (rshell) as root.
+
 Find all the programs we have sudo rights to (requires current user password)
 ```
 sudo -l
