@@ -298,9 +298,18 @@ except:
     print "Could not connect" 
 ```
 
-### Linux x64 Buffer Overflow
+### Linux Buffer Overflows
 
-Tools: GBD (peda), Python
+Tools
+```
+- rabin: part of radare2, gives overview information on binaries
+- gdb + PEDA: debugger with exploit development scripts
+- r2: dissassembler
+- pwntools: python library for interacting with processes
+- ROPgadget: identify rop gadgets in binaries
+```
+
+### Advinced Linux x64 ret2libc ropchain Buffer Overflow
 
 In 64 bit architecture, the rsp (register stack pointer) and rbp (register base pointer) registers are the focus.
 
@@ -335,7 +344,7 @@ RELRO     : Partial
 gdb-peda$ pattern create 300
 gdb-peda$ r
 *put pattern in overflow input*
-gdb-peda$ x/xg $rsp
+gdb-peda$ x/xg $rsp or gdb-peda$ pattern search
 0x7ffe8d904528: 0x41416d4141514141
 gdb-peda$ pattern offset 0x41416d4141514141
 4702159612987654465 found at offset: 136
