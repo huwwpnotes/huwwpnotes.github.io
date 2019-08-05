@@ -300,13 +300,40 @@ except:
 
 ### Linux Buffer Overflows
 
-Tools
+#### 1. Confirm architecture and check protections
+
 ```
-- rabin: part of radare2, gives overview information on binaries
-- gdb + PEDA: debugger with exploit development scripts
-- r2: dissassembler
-- pwntools: python library for interacting with processes
-- ROPgadget: identify rop gadgets in binaries
+rabin2 -I <binary>
+checksec <binary> (checksec is available with pwntools and peda)
+```
+RELRO: Relocation Read Only
+Stack: stack canary
+NX: no-execute bit, code on the stack won't be executed, likely need to perform a ROP chain
+PIE: Position independant code
+
+#### 2. Determine overflow offset
+
+```
+gdb-peda$ pattern create 200
+gdb-peda$ r OR c as required
+paste in pattern
+gdb-peda$ pattern search
+```
+
+#### 3. Gather information necessary to perform exploit
+
+```
+Check function names
+
+$ rabin2 -i <binary>
+
+Check user created function names
+
+$ rabin2 -qs <binary> | grep -ve imp -e ' 0 ' 
+
+Find strings
+
+$ rabin2 -z <binary>
 ```
 
 ### Advinced Linux x64 ret2libc ropchain Buffer Overflow
