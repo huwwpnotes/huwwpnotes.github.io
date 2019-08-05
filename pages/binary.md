@@ -322,19 +322,36 @@ gdb-peda$ pattern search
 
 #### 3. Gather information necessary to perform exploit
 
-```
 Check function names
-
+```
 $ rabin2 -i <binary>
+```
 
 Check user created function names
-
+```
 $ rabin2 -qs <binary> | grep -ve imp -e ' 0 ' 
+```
 
 Find strings
-
+```
 $ rabin2 -z <binary>
 ```
+
+If necessary find ROP gadgets in binary
+```
+$ ROPgadget --binary <binary>
+```
+
+Find sections of the binary we can write to (needed for some ROP chains)
+```
+$ rabin2 -S <binary>
+```
+
+#### 4. Develop Exploit
+
+Using the information gathered above we develop an exploit. `pwntools` is a powerful python library that makes interacting with processes simple. The basic format of an attack is offset + payload where the payload can be a memory address to a function or instruction we want to redirect the program too. These functions and instructions are somtimes in linked libraries which we can reach through ROP chains. Make sure to remember the different calling conventions between x86 and x64.
+
+
 
 ### Advinced Linux x64 ret2libc ropchain Buffer Overflow
 
