@@ -387,6 +387,25 @@ payload = offset + (pop rdi; pop rsi; pop rdx; ret) + arg1 + arg2 + arg3 + funct
 ```
 If multiple functions are present they are executed left to right, likely need a ret in between.
 
+#### Writing Arbitrary Data to Program Memory
+
+1. Put the data and the address we will write it to on the stack
+2. Pop the data and the address into different registers
+3. Find a move gadget to move the data to the address register (which moves it to our desired location)
+
+Note that in x32 we can only move four characters at a time, and in x64 we can only move 8.
+
+```
+Assuming the following theoretical Stack:
+|----------------|
+|/bin/cat flag   |  <- Command to execute
+|0x0804028       |  <- Memory address of .data
+|----------------|
+; x86 ASM: Move data from the stack into .data
+pop edi               ; pops "/bin/cat flag" into register edi
+pop edb               ; pops "0x0804028" into register edb
+mov edb, edi          ; moves "/bin/cat flag" into "0x0804028"
+```
 
 ### Advinced Linux x64 ret2libc ropchain Buffer Overflow
 
