@@ -373,11 +373,19 @@ payload = offset + function + (pop edi; pop ebp; ret) Gadget + argument 1 + argu
 payload = offset + function + (pop esi; pop edi; pop ebp; ret) Gadget + argument 1 + argument 2 + argument 3
 etc
 ```
+If multiple functions are present they are executed left to right, likely need a ret in between.
 
 ####  x64 Calling Conventions
+Single argument functions
 ```
 payload = offset + pop_rdi + argument + function
 ```
+Multiple argument functions
+```
+payload = offset + (pop rdi; pop rsi; ret) + arg1 + arg2 + function
+payload = offset + (pop rdi; pop rsi; pop rdx; ret) + arg1 + arg2 + arg3 + function
+```
+If multiple functions are present they are executed left to right, likely need a ret in between.
 
 
 ### Advinced Linux x64 ret2libc ropchain Buffer Overflow
