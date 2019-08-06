@@ -332,6 +332,11 @@ Check user created function names
 $ rabin2 -qs <binary> | grep -ve imp -e ' 0 ' 
 ```
 
+Check calls to functions
+```
+objdump -D <binary> | grep puts|system|etc
+```
+
 Find strings
 ```
 $ rabin2 -z <binary>
@@ -349,8 +354,22 @@ $ rabin2 -S <binary>
 
 #### 4. Develop Exploit
 
-Using the information gathered above we develop an exploit. `pwntools` is a powerful python library that makes interacting with processes simple. The basic format of an attack is offset + payload where the payload can be a memory address to a function or instruction we want to redirect the program too. These functions and instructions are somtimes in linked libraries which we can reach through ROP chains. Make sure to remember the different calling conventions between x86 and x64.
+When we are looking for functions to use, we are looking for calls within the program to that function. We would user 0x401050 to use puts in the below example.
+```
+objdump -D binary | grep puts
+0000000000401050 <puts@plt>:
+  401050:       ff 25 d2 2f 00 00       jmpq   *0x2fd2(%rip)        # 404028 <puts@GLIBC_2.2.5>
+```
 
+x32 Calling Conventions
+```
+payload = offset + function + argument
+```
+
+x64 Calling Conventions
+```
+payload = offset + pop_rdi + argument + function
+```
 
 
 ### Advinced Linux x64 ret2libc ropchain Buffer Overflow
