@@ -361,12 +361,20 @@ objdump -D binary | grep puts
   401050:       ff 25 d2 2f 00 00       jmpq   *0x2fd2(%rip)        # 404028 <puts@GLIBC_2.2.5>
 ```
 
-x32 Calling Conventions
+#### x32 Calling Conventions
+
+Single argument functions
 ```
 payload = offset + function + argument
 ```
+Multiple argument functions
+```
+payload = offset + function + (pop edi; pop ebp; ret) Gadget + argument 1 + argument 2
+payload = offset + function + (pop esi; pop edi; pop ebp; ret) Gadget + argument 1 + argument 2 + argument 3
+etc
+```
 
-x64 Calling Conventions
+####  x64 Calling Conventions
 ```
 payload = offset + pop_rdi + argument + function
 ```
