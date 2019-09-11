@@ -14,8 +14,6 @@ permalink: /system/
 
 ## Enumeration
 
-The key to enumeration is patience.
-
 ### Passive Information Gathering
 
 * nslookup - Plus modes for mx, etc
