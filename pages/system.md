@@ -245,6 +245,10 @@ nmap 192.168.0.101 --script=msrpc-enum
 ```
 rpcclient -U "" 192.168.1.101
 ```
+Enumerate users
+```
+./lookupsid.py Fred@10.10.10.10
+```
 
 #### 137/8?: Netbios
 
