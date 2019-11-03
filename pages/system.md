@@ -822,6 +822,12 @@ mimikatz
 
 `exploit/windows/smb/ms05_039_pnp`
 
+### Real World Windows Privesc
+
+- Responder relaying
+- Grabbing saved password from web browsers
+- Using procdump to get https passwords from browser memory
+
 ### Maintaining Access
 
 * upload reverse shell to web root
