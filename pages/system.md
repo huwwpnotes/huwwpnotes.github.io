@@ -212,6 +212,15 @@ Kerberos on 88 usually fingers a Windows Domain Controller.
 
 Check out MS14-068.
 
+```
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/f6d5221a8576125a07f42e08c591298335fef256/Methodology%20and%20Resources/Active%20Directory%20Attack.md#krb_as_rep-roasting
+```
+If you have a service account username but no passowrd and the user does not have pre-authentication enabled (unlikely in real world but possible for some services) an AS-REP roast can be performed.
+```
+python GetNPUsers.py htb.local/svc-name -dc-ip 10.10.10.10
+```
+
+
 #### 110/995: POP3
 
 POP3 fetches emails from a server.
