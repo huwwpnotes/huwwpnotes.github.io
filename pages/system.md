@@ -338,6 +338,8 @@ snmp-check 10.10.10.10
 #### 389/636: Ldap
 
 Ldap search has many more functions too. If we have the ability to capture packets on the box we can sometimes get the authentication out of the bind request.
+
+Attemp a null bind
 ```
 ldapsearch -h 192.168.1.101 -p 389 -x -b "dc=mywebsite,dc=com"
 ```
