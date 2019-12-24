@@ -114,6 +114,11 @@ python 45233.py --userList /usr/share/wordlists/metasploit/unix_users.txt 10.11.
 ```
 auxiliary/scanner/ssh/ssh_enumusers
 ```
+Encrypted ssh keys can be cracked with ssh2john.py
+```
+ssh2john id_rsa > key.txt
+john --wordlist=/usr/share/wordlist/rockyou --format=SSH key.txt
+```
 
 #### 23: Telnet
 
