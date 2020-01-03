@@ -525,6 +525,21 @@ use auxiliary/scanner/vnc/vnc_none_auth
 crowbar -b vnckey -s 10.10.10.10/32 -p IP -k PASS_FILE
 ```
 
+#### 6379: Redis
+
+An in-memory database, should not really be exposed, often has no authentication set.
+
+Can interact with 
+```
+nc or telnet
+redis-cli -h 10.10.10.10
+```
+Can write to web root/ssh keys/cron jobs for shell
+
+Has a master/slave relationship where you can spoof a Master, make the slave connect to you and load modules that give a shell.
+Available in Metasploit and github code repos.
+
+
 #### 8080: Common/Various
 
 Usually a webserver, often Tomcat.
