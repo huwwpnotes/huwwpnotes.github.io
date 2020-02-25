@@ -16,9 +16,19 @@ permalink: /web-methodology/
     1. Google dorks
 3. For each subdomain perform directory brute forcing
     1. Gobuster
-4. Identify points of interaction
+4. Test each "site" for information + low hanging fruit
+    1. nmap
+    2. Using components with Known Vulnerabilities
+    3. Security misconfiguration (open buckets, no auth control)
+5. Identify points of interaction
     1. Burp
-5. Test each point of interaction for vulnerabilities
-    1. xss
-
-### Subdomain Enumeration
+6. Test each point of interaction for vulnerabilities
+    1. Injection
+    2. XSS
+    3. CSRF
+    4. SSRF
+    5. File Inclusion
+7. Test for other issues
+    1. Access control failures
+    2. Logic failures
+    3. Cookies/JWT
