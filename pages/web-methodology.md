@@ -14,7 +14,7 @@ permalink: /web-methodology/
 1. Start up burp & cherrytree, set to spider mode while we explore.
 2. Begin subdomain enumeration
     1. Amass/Sublister/crtsh 
-        `amass enum -d domain.com > domain.txt`
+        `amass enum -active -d domain.com > domain.txt`
     2. massdns/gobuster for brute force
         `./subbrute.py -p domain.com > domainbrute.txt`
 3. Check for subdomain takeovers
