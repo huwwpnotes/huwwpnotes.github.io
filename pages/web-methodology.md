@@ -17,6 +17,7 @@ permalink: /web-methodology/
         `amass enum -active -d domain.com > domain.txt`
     2. massdns/gobuster for brute force?
     3. Subdomain wildcard detection https://gist.github.com/003random/dffed7fbad7117796fe6197422a91648
+    4. FDNS Dataset Query
 3. Check for subdomain takeovers
     1. subjack
         `subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3`
