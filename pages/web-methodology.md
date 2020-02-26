@@ -15,8 +15,7 @@ permalink: /web-methodology/
 2. Begin subdomain enumeration
     1. Amass/Sublister/crtsh 
         `amass enum -active -d domain.com > domain.txt`
-    2. massdns/gobuster for brute force
-        `./subbrute.py -p domain.com > domainbrute.txt`
+    2. massdns/gobuster for brute force?
 3. Check for subdomain takeovers
     1. subjack
         `subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3`
