@@ -29,6 +29,9 @@ permalink: /web-methodology/
     5. Use massdns to check if actually live
         ```
         cat domains.txt | ./bin/massdns -r lists/resolvers.txt -t A -o S -w results.txt
+        
+        For all live subdomains:
+        cat results.txt | cut -d ' ' -f 1
         ```
 3. Check for subdomain takeovers
     1. subjack
