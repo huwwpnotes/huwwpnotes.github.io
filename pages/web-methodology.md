@@ -14,20 +14,28 @@ permalink: /web-methodology/
 1. Start up burp & cherrytree, set to spider mode while we explore.
 2. Begin subdomain enumeration
     1. Amass
-        `amass enum -active -d domain.com > domain.txt`
+        ```
+        amass enum -active -d domain.com > domain.txt
+        ```
     2. subbrute for brute force
-        `./subbrute.py domain.txt > domainbrute.txt`
+        ```
+        ./subbrute.py domain.txt > domainbrute.txt
+        ```
     3. Subdomain wildcard detection https://gist.github.com/003random/dffed7fbad7117796fe6197422a91648
     4. FDNS Dataset Query
-        `zcat fdns.json.gz | grep -F '.example.com"'`
+        ```
+        zcat fdns.json.gz | grep -F '.example.com"'
+        ```
     5. Use massdns to check if actually live
         ```
         cat domains.txt | ./bin/massdns -r lists/resolvers.txt -t A -o S -w results.txt
         ```
 3. Check for subdomain takeovers
     1. subjack
-        `subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3`
-    2.
+        ```
+        subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
+        ```
+    2. Manual check of CNAMEs
      ```
     From massdns results get a list of CNAMEs
     cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
