@@ -19,7 +19,7 @@ permalink: /web-methodology/
         ```
     2. subbrute for brute force
         ```
-        ./subbrute.py domain.txt > domainbrute.txt
+        ./subbrute.py domain.com > domainbrute.txt
         ```
     3. Subdomain wildcard detection https://gist.github.com/003random/dffed7fbad7117796fe6197422a91648
     4. FDNS Dataset Query
