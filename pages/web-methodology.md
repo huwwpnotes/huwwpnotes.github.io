@@ -36,10 +36,10 @@ permalink: /web-methodology/
         subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
         ```
     2. Manual check of CNAMEs
-     ```
-    From massdns results get a list of CNAMEs
-    cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
-    ```
+        ```
+        From massdns results get a list of CNAMEs
+        cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
+        ```
 4. Screenshot at this point and probably after directory bruteforcing (aquatone, eyewitness, webscreenshot)
 5. For each subdomain perform directory brute forcing
     1. Gobuster
