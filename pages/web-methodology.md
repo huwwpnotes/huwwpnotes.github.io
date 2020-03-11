@@ -32,34 +32,33 @@ permalink: /web-methodology/
         
         For all live subdomains:
         cat results.txt | cut -d ' ' -f 1
+        
+        From massdns results get a list of CNAMEs
+        cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
+        ```
+    6. Check for live webservers on subdomains
+        ```
+        cat recon/example/domains.txt | httprobe
         ```
 3. Check for subdomain takeovers
     1. subjack
         ```
         subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
         ```
-    2. Manual check of CNAMEs
-        ```
-        From massdns results get a list of CNAMEs
-        cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
-        ```
-4. Screenshot at this point and probably after directory bruteforcing (aquatone, eyewitness, webscreenshot)
-5. For each subdomain perform directory brute forcing
+3. If allowed perform generic scanning
     1. Gobuster
-6. Test each "site" for information + low hanging fruit
-    1. nmap
-    2. Using components with Known Vulnerabilities
-    3. Security misconfiguration (open buckets, no auth control)
-7. Identify points of interaction
-    1. Burp
-    2. Parameter discovery: https://github.com/s0md3v/Arjun https://github.com/maK-/parameth
-8. Test each point of interaction for vulnerabilities
-    1. Injection
-    2. XSS
-    3. CSRF
-    4. SSRF
-    5. File Inclusion
-9. Test for other issues
-    1. Access control failures
-    2. Logic failures
-    3. Cookies/JWT
+    2. Nikto
+5. Crawl websites for URLs
+    1. Hakrawler
+        ```
+        cat domain(+gobuster results) | ~/go/bin/hakrawler -depth x -usewayback -wayback -linkfinder -plain > urls.txt
+        ```
+6. Check URLs for reflections in pages for potentials quick wins
+    1. kxss
+        ```
+        cat urls.txt | ./kxss
+        ```
+
+
+https://github.com/s0md3v/Arjun
+https://github.com/maK-/parameth
