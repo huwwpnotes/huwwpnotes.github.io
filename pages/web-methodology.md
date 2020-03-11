@@ -53,12 +53,38 @@ permalink: /web-methodology/
         ```
         cat domain(+gobuster results) | ~/go/bin/hakrawler -depth x -usewayback -wayback -linkfinder -plain > urls.txt
         ```
-6. Check URLs for reflections in pages for potentials quick wins
+6. Check URLs for reflections in pages for potential quick wins
     1. kxss
         ```
         cat urls.txt | ./kxss
         ```
 
+## DOM XSS
+
+### Sources
+* document.url
+* document.documenturi
+* location
+* location.href
+* location.search
+* location.pathname
+* location.hash
+* document.referrer
+* window.name
+
+### Sinks
+* eval
+* setTimeOut
+* setInterval
+* function
+* document.write
+* document.writeIn
+* innerhtml
+* outerhtml
+* location
+* location.href
+* location.replace
+* location.assign
 
 https://github.com/s0md3v/Arjun
 https://github.com/maK-/parameth
