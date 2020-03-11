@@ -58,6 +58,10 @@ permalink: /web-methodology/
         ```
         cat urls.txt | ./kxss
         ```
+    2. XSStrike
+        ```
+        xsstrike -u domain.com
+        ```
 
 ## DOM XSS
 
