@@ -45,34 +45,31 @@ permalink: /web-methodology/
         httprobe
         ```
     7. Wayback enumeration
-       ```
-       waybackurls
-       ```
+        ```
+        waybackurls
+        ```
     8. Platform Identification & CVE Searching for Webapps
-       ```
-       Retire.js
-       Wappalyzer
-       Builtwith
-       Burp Vulners Scanner
-       ```
+        ```
+        Retire.js
+        Wappalyzer
+        Builtwith
+        Burp Vulners Scanner
+        ```
     9. Javascript Examination
-       ```
-       ZAP Ajax Spider
-       Linkfinder (probably better than JSParser)
-       ```
-    10. Content Discovery
-       
-       ```
-       Gobuster
-       Robots Disallowed
-       Burp Content Discovery
-       ```
-       
+        ```
+        ZAP Ajax Spider
+        Linkfinder (probably better than JSParser)
+        ```
+    10. Content Discovery 
+        ```
+        Gobuster
+        Robots Disallowed
+        Burp Content Discovery
+        ```
     11. Parameter Bruting
-    
-       ```
-       parameth
-       ```
+        ```
+        parameth
+        ```
     
 3. Check for misconfigurations
     1. subjack
