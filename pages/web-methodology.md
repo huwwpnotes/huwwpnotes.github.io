@@ -61,13 +61,15 @@ permalink: /web-methodology/
        Linkfinder (probably better than JSParser)
        ```
     10. Content Discovery
-    
+       
        ```
        Gobuster
        Robots Disallowed
        Burp Content Discovery
        ```
+       
     11. Parameter Bruting
+    
        ```
        parameth
        ```
