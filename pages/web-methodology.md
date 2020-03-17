@@ -17,18 +17,13 @@ permalink: /web-methodology/
         ```
         amass enum -active -d domain.com > domain.txt
         ```
-    2. subbrute for brute force
-        ```
-        ./subbrute.py domain.com > domainbrute.txt
-        ```
-    3. Subdomain wildcard detection https://gist.github.com/003random/dffed7fbad7117796fe6197422a91648
-    4. FDNS Dataset Query
+    2. FDNS Dataset Query
         ```
         zcat fdns.json.gz | grep -F '.example.com"'
         ```
-    5. Use massdns to check if actually live
+    3. MassDNS
         ```
-        cat domains.txt | ./bin/massdns -r lists/resolvers.txt -t A -o S -w results.txt
+        ./subbrute.py domain.com  | ./bin/massdns -r lists/resolvers.txt -t A -o S -w results.txt
         
         For all live subdomains:
         cat results.txt | cut -d ' ' -f 1
@@ -36,9 +31,13 @@ permalink: /web-methodology/
         From massdns results get a list of CNAMEs
         cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
         ```
-    6. Check for live webservers on subdomains
+    4. Massscan to see what is running on hosts
         ```
-        cat recon/example/domains.txt | httprobe
+        massscan -p1-65535 -iL $TARGET_LIST --max-rate 100000 -oG $TARGET_OUTPUT (needs hostname)
+        ```
+    5. Brutespray for weak passwords on remote admin protocols
+        ```
+        brutespray.py
         ```
 3. Check for subdomain takeovers
     1. subjack
