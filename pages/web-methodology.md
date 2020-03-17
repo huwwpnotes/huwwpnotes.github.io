@@ -61,6 +61,7 @@ permalink: /web-methodology/
        Linkfinder (probably better than JSParser)
        ```
     10. Content Discovery
+    
        ```
        Gobuster
        Robots Disallowed
@@ -71,11 +72,15 @@ permalink: /web-methodology/
        parameth
        ```
     
-3. Check for subdomain takeovers
+3. Check for misconfigurations
     1. subjack
         ```
         subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
         ```
+    2. AWS
+       ```
+       s3scanner
+       ```
 5. Crawl websites for URLs
     1. Hakrawler
         ```
