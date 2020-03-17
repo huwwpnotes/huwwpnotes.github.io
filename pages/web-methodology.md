@@ -11,7 +11,7 @@ permalink: /web-methodology/
 
 ## Methodology
 
-1. Start up burp & cherrytree, set to spider mode while we explore.
+1. Start up burp & cherrytree, set to spider mode while we explore. Maybe look into xmind mapping.
 2. Begin subdomain enumeration
     1. Amass
         ```
@@ -39,14 +39,43 @@ permalink: /web-methodology/
         ```
         brutespray.py
         ```
+    6. Eyewitness for visual identification and/or httpprobe
+        ```
+        Eyewitness.py
+        httprobe
+        ```
+    7. Wayback enumeration
+       ```
+       waybackurls
+       ```
+    8. Platform Identification & CVE Searching for Webapps
+       ```
+       Retire.js
+       Wappalyzer
+       Builtwith
+       Burp Vulners Scanner
+       ```
+    9. Javascript Examination
+       ```
+       ZAP Ajax Spider
+       Linkfinder (probably better than JSParser)
+       ```
+    10. Content Discovery
+       ```
+       Gobuster
+       Robots Disallowed
+       Burp Content Discovery
+       ```
+    11. Parameter Bruting
+       ```
+       parameth
+       ```
+    
 3. Check for subdomain takeovers
     1. subjack
         ```
         subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
         ```
-3. If allowed perform generic scanning
-    1. Gobuster
-    2. Nikto
 5. Crawl websites for URLs
     1. Hakrawler
         ```
