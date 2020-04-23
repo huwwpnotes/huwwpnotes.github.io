@@ -6,6 +6,7 @@ permalink: /web-methodology/
 
 # Index
 * [Methodology](#methodology)
+* [DOM XSS](#dom)
 
 ---
 
@@ -85,15 +86,33 @@ permalink: /web-methodology/
         ```
         cat domain(+gobuster results) | ~/go/bin/hakrawler -depth x -usewayback -wayback -linkfinder -plain > urls.txt
         ```
-6. Check URLs for reflections in pages for potential quick wins
-    1. kxss
+       
+7. Directory brute force
+    1. Gobuster
+
+8. Burp Suite
+    1. Set up a proxy/spider/audit, have manually active while you test the site
         ```
-        cat urls.txt | ./kxss
+        - Change crawl to not submit forms/attempt to register users
+        - Change crawl max depth to 5
+        - Audit can easily get you IP banned
         ```
-    2. XSStrike
+    
+9. Manual testing
+    1. Client Side Controls
         ```
-        xsstrike -u domain.com
+        - Register a user, see if can include xss, null bytes, escape characters in name, address, etc
+        - Try register the same user with null byte, see if you can overtake
         ```
+    2. Access Controls
+        ```
+        - Create a user map what they have access to inside authentication
+        - Try to access without being logged in
+        - Create a second user and try to access the first users stuff
+        ```
+    3. IDOR
+    4. Upload Functions
+    
 
 ## DOM XSS
 
