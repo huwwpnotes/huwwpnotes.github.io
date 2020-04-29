@@ -88,7 +88,9 @@ permalink: /web-methodology/
         ```
     2. Validate if urls in txt file are live
         ```
-        cat file | xargs -n 1 curl --head -w "%{http_code} %{url_effective}\n" -s -o /dev/null -k
+        cat file | xargs -n 1 -P 50 curl --head -w "%{http_code} %{url_effective}\n" -s -o /dev/null -k
+        fails on apostrophe
+        cat file | grep -v \' | xargs ...
         ```
        
 7. Directory brute force
