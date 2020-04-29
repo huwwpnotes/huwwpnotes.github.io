@@ -86,6 +86,10 @@ permalink: /web-methodology/
         ```
         cat domain(+gobuster results) | ~/go/bin/hakrawler -depth x -usewayback -wayback -linkfinder -plain > urls.txt
         ```
+    2. Validate if urls in txt file are live
+        ```
+        cat file | xargs -n 1 curl --head -w "%{http_code} %{url_effective}\n" -s -o /dev/null -k
+        ```
        
 7. Directory brute force
     1. Gobuster
