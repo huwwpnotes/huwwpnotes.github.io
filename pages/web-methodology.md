@@ -34,7 +34,7 @@ permalink: /web-methodology/
         ```
     4. Massscan to see what is running on hosts
         ```
-        massscan -p1-65535 -iL $TARGET_LIST --max-rate 100000 -oG $TARGET_OUTPUT (needs hostname)
+        massscan -p1-65535 -iL $TARGET_LIST --max-rate 10000 -oG $TARGET_OUTPUT (needs IP not hostname)
         ```
     5. Brutespray for weak passwords on remote admin protocols
         ```
