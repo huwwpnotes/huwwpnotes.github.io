@@ -20,7 +20,8 @@ permalink: /web-methodology/
         ```
     2. FDNS Dataset Query
         ```
-        zcat fdns.json.gz | grep -F '.example.com"'
+        zcat fdns.json.gz | grep -F '.example.com"' > fqdns.txt
+        cat fqdns.txt | grep -F '.magisto.com"' | jq -r .name | sort | uniq > fqdns-cleaned.txt #might get cnames on wrong side
         ```
     3. MassDNS
         ```
