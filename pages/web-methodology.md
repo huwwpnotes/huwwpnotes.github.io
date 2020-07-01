@@ -10,6 +10,11 @@ permalink: /web-methodology/
 
 ---
 
+Todo:
+- Redo 5 onwards
+- Uplift Wordlists
+- Looks at frameworks from https://www.youtube.com/watch?v=p4JgIu1mceI 1:29 onwards
+
 ## Methodology
 
 1. Start up burp & cherrytree, set to spider mode while we explore. Maybe look into xmind mapping.
