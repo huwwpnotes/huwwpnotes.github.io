@@ -107,6 +107,7 @@ permalink: /web-methodology/
         ```
     3. AWS S3 Bucket Testing
         ```
+        s3scanner/Nuclei
         ```
         
         
