@@ -69,7 +69,7 @@ permalink: /web-methodology/
        ```
        github-subdomains.py
        ```
-    10. Brute Force
+    10. Bruteforce
        ```
        amass
        shuffledns
@@ -102,6 +102,8 @@ permalink: /web-methodology/
     2. Subdomain Takeover
         ```
         subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
+        SubOver
+        Nuclei
         ```
     3. AWS S3 Bucket Testing
         ```
