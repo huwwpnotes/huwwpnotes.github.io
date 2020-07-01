@@ -68,7 +68,7 @@ Todo:
     8. Javascript Link Discovery
        ```
        1. Subdomainizer
-       2. Subscraped
+       2. Subscraper
        ```
     9. Github Subdomain Discovery
        ```
