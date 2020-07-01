@@ -94,12 +94,20 @@ permalink: /web-methodology/
         httprobe
         ```
  
- 4. Other Enumeration
+ 4. Other Enumeration/Wide Recons
     1. Github Dorks
         ```
-        Gdorks.sh https://gist.githubusercontent.com/jhaddix/1fb7ab2409ab579178d2a79959909b33/raw/e9fea4c0f6982546d90d241bc3e19627a7083e5e/Gdorklinks.sh
+        Gdorklinks.sh https://gist.githubusercontent.com/jhaddix/1fb7ab2409ab579178d2a79959909b33/raw/e9fea4c0f6982546d90d241bc3e19627a7083e5e/Gdorklinks.sh
         ```
- 
+    2. Subdomain Takeover
+        ```
+        subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
+        ```
+    3. AWS S3 Bucket Testing
+        ```
+        ```
+        
+        
  5. Application Testing
     1. Wayback enumeration
         ```
@@ -128,15 +136,6 @@ permalink: /web-methodology/
         parameth
         ```
     
-6. Check for misconfigurations
-    1. subjack
-        ```
-        subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
-        ```
-    2. AWS
-       ```
-       s3scanner
-       ```
 7. Crawl websites for URLs
     1. Hakrawler
         ```
