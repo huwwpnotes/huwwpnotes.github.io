@@ -22,6 +22,9 @@ permalink: /web-methodology/
         ```
         zcat fdns.json.gz | grep -F '.example.com"' > fqdns.txt
         cat fqdns.txt | grep -F '.magisto.com"' | jq -r .name | sort | uniq > fqdns-cleaned.txt #might get cnames on wrong side
+        
+        Web service offering the same dataset, might be less accurate but fast
+        curl 'https://tls.bufferover.run/dns?q=.magisto.com 2>/dev/null | jq .Results > bufferover.txt
         ```
     3. MassDNS
         ```
@@ -33,47 +36,99 @@ permalink: /web-methodology/
         From massdns results get a list of CNAMEs
         cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
         ```
-    4. Massscan to see what is running on hosts
+    4. Builtwith
+       ```
+       Builtwith relationships tabs shows websites running same analytic tracking codes
+       ```
+    5. Google Dorks
+       ```
+       "® 2020 Businessname" inurl:businessname
+       
+       Copyright/privacy text etc
+       
+       site:business.com -www.business.com -obvious.business.com -etc
+       ```
+    6. Shodan
+       ```
+       search TLD
+       https://github.com/incogbyte/shosubgo
+       ```
+    7. Link Discovery
+       ```
+       Do one of:
+       1. Burp: Turn off active scanner, walk the site, spider all hosts discovered, can do recursively (over and over again). Export with analyze target
+       2. GoSpider
+       3. Hakrawler
+       ```
+    8. Javascript Link Discovery
+       ```
+       1. Subdomainizer
+       2. Subscraped
+       ```
+    9. Github Subdomain Discovery
+       ```
+       github-subdomains.py
+       ```
+    10. Brute Force
+       ```
+       amass
+       shuffledns
+       ```
+    11. Combine all the above and resolve for master list
+       ```
+       massdns/shuffledns
+       ```
+
+3. Service Identification
+    1. Massscan to see what is running on hosts
         ```
         massscan -p1-65535 -iL $TARGET_LIST --max-rate 10000 -oG $TARGET_OUTPUT (needs IP not hostname)
         ```
-    5. Brutespray for weak passwords on remote admin protocols
+    2. Brutespray for weak passwords on remote admin protocols
         ```
         brutespray.py
         ```
-    6. Eyewitness for visual identification and/or httpprobe
+    3. Eyewitness for visual identification and/or httpprobe
         ```
         Eyewitness.py
         httprobe
         ```
-    7. Wayback enumeration
+ 
+ 4. Other Enumeration
+    1. Github Dorks
+        ```
+        Gdorks.sh https://gist.githubusercontent.com/jhaddix/1fb7ab2409ab579178d2a79959909b33/raw/e9fea4c0f6982546d90d241bc3e19627a7083e5e/Gdorklinks.sh
+        ```
+ 
+ 5. Application Testing
+    1. Wayback enumeration
         ```
         waybackurls
         ```
-    8. Platform Identification & CVE Searching for Webapps
+    2. Platform Identification & CVE Searching for Webapps
         ```
         Retire.js
         Wappalyzer
         Builtwith
         Burp Vulners Scanner
         ```
-    9. Javascript Examination
+    3. Javascript Examination
         ```
         ZAP Ajax Spider
         Linkfinder (probably better than JSParser)
         ```
-    10. Content Discovery 
+    4. Content Discovery 
         ```
         Gobuster
         Robots Disallowed
         Burp Content Discovery
         ```
-    11. Parameter Bruting
+    5. Parameter Bruting
         ```
         parameth
         ```
     
-3. Check for misconfigurations
+6. Check for misconfigurations
     1. subjack
         ```
         subjack -w domain.txt -t 10 -timeout 30 -ssl -c fingerprints.json -v 3
@@ -82,7 +137,7 @@ permalink: /web-methodology/
        ```
        s3scanner
        ```
-5. Crawl websites for URLs
+7. Crawl websites for URLs
     1. Hakrawler
         ```
         cat domain(+gobuster results) | ~/go/bin/hakrawler -depth x -usewayback -wayback -linkfinder -plain > urls.txt
@@ -94,10 +149,10 @@ permalink: /web-methodology/
         cat file | grep -v \' | xargs ...
         ```
        
-7. Directory brute force
+8. Directory brute force
     1. Gobuster
 
-8. Burp Suite
+9. Burp Suite
     1. Set up a proxy/spider/audit, have manually active while you test the site
         ```
         - Change crawl to not submit forms/attempt to register users
@@ -105,7 +160,7 @@ permalink: /web-methodology/
         - Audit can easily get you IP banned
         ```
     
-9. Manual testing
+10. Manual testing
     1. Client Side Controls
         ```
         - Register a user, see if can include xss, null bytes, escape characters in name, address, etc
