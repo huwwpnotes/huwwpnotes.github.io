@@ -181,7 +181,20 @@ Todo:
         ```
     3. IDOR
     4. Upload Functions
-    
+
+## Open Redirect
+
+Walk the page with burpsuite, interact wherever you can. Once you are done Analyze the target, look for potential parameters (GET and POST) like:
+
+* url=
+* redirect=
+* next=
+* to=
+* goto=
+* etc
+
+Send these requests to burp intruder, set the payload for just these parameters and use an open redirect wordlist.
+
 
 ## DOM XSS
 
