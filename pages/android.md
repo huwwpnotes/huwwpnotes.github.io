@@ -18,22 +18,25 @@ Use apktool to break it down
 ```
 apktool d apk
 ```
+Check /res/raw, /assets/, AndroidManifest.xml and /res/values/strings.xml for quick wins
 Can then read through/grep for high value strings
 ```
 grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
 
-find . -type f | awk -F. '!a[$NF]++{print $NF} //show all file extensions in apk
+Show all file extensions in apk
+find . -type f | awk -F. '!a[$NF]++{print $NF} 
 
-grep -rE "https?://.*domain.*" . //find urls referencing domain
+//find urls referencing domain
+grep -rE "https?://.*domain.*" .
+
 ```
-Can use dex2jar to convert to apk to jar
+Use jadx to decompile to readable java code
 ```
-https://github.com/pxb1988/dex2jar
-d2j-dex2jar.sh -f ~/path/to/apk_to_decompile.apk
-```
-And then jd-gui to read as java code (nicer than apktool smali files which are java bytecode, more low level).
-Meant to be able to save all sources but crashes for me. Can use jadx to decompile apk/dex to java code and output.
-```
-https://tools.kali.org/reverse-engineering/jd-gui
 https://github.com/skylot/jadx
+mkdir decompile
+jadx company.apk -d decompile
+```
+Find byte strings (often used to encode stuff)
+```
+grep -ir "final byte\[\]" | grep "\}"
 ```
