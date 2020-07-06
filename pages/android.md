@@ -18,7 +18,7 @@ Use apktool to break it down
 ```
 apktool d apk
 ```
-Check /res/raw, /assets/, AndroidManifest.xml and /res/values/strings.xml for quick wins
+Check /res/raw, /assets/, AndroidManifest.xml and /res/values/strings.xml for quick wins. Check *.firebase.com/.json
 Can then read through/grep for high value strings
 ```
 grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
