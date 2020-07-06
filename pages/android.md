@@ -31,7 +31,9 @@ Can use dex2jar to convert to apk to jar
 https://github.com/pxb1988/dex2jar
 d2j-dex2jar.sh -f ~/path/to/apk_to_decompile.apk
 ```
-And then jd-gui to read as java code (nicer than apktool smali files which are java bytecode, more low level)
+And then jd-gui to read as java code (nicer than apktool smali files which are java bytecode, more low level).
+Meant to be able to save all sources but crashes for me. Can use jadx to decompile apk/dex to java code and output.
 ```
 https://tools.kali.org/reverse-engineering/jd-gui
+https://github.com/skylot/jadx
 ```
