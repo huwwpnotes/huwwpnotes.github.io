@@ -7,7 +7,7 @@ permalink: /android/
 # Index
 
 * [Basics](#basics)
-* [Insecure Storage](#insecurestorage)
+* [Insecure Storage](#insecure-storage)
 
 ## Basics
 
