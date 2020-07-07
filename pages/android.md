@@ -47,3 +47,14 @@ Find byte strings (often used to encode stuff)
 ```
 grep -ir "final byte\[\]" | grep "\}"
 ```
+
+## Insecure Storage
+
+Install the app on a real or emulated device. Login to accounts, associate with socials etc.
+Then open a shell on the device with adb and try to find those creds, often in databases.
+```
+adb shell phonename
+cd /data/data #path for most package data
+ls
+...
+```
