@@ -14,6 +14,12 @@ Download the apk
 ```
 https://apps.evozi.com/apk-downloader/
 ```
+Or pull it from your phone over ADB
+```
+adb shell pm list packages
+adb shell pm path com.example.someapp
+adb pull /data/app/com.example.someapp-2.apk
+```
 Use apktool to break it down
 ```
 apktool d apk
