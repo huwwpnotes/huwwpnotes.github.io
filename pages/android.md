@@ -84,6 +84,9 @@ Check if any values are under user contol.
 ```
 Check the AndroidManifest.xml
 cat AndroidManifest.xml | grep "activity" | grep "exported=\"true\""
+
+run through adb with
+adb shell am start -n com.packagename/.x.x.x.ActivityName
 ```
 
 ## Exported Content Providers
