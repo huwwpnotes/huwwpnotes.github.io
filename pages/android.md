@@ -78,15 +78,23 @@ adb logcat
 ```
 
 ## Exported Activitiees
-This element sets whether the activity can be launched by components of other application.
-The default value depends on whether the activity contains intent filters. The absence of any filters means that the activity can be invoked only by specifying its exact class name. 
-Check if any values are under user contol.
+Exported activities can be called by other apps on the phone.
 ```
 Check the AndroidManifest.xml
 cat AndroidManifest.xml | grep "activity" | grep "exported=\"true\""
 
 run through adb with
 adb shell am start -n com.packagename/.x.x.x.ActivityName
+```
+We want to see if the activity accepts any user input and if we can misuse it.
+Inspect the source code of the activity and look for calls to getIntent()
+```
+string x_value = getIntent().getStringExtra(x_key); //store into x_value the string after x_key in the intent
+
+run through adb with
+shell am start -n com.packagename/.x.ActivityName -e x_key "INJECT_HERE"
+
+https://www.youtube.com/watch?v=ZUikTuoCP_M
 ```
 
 ## Exported Content Providers
