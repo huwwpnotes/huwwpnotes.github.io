@@ -109,7 +109,7 @@ cat AndroidManifest.xml | grep "provider"
 ## Deeplinks
 
 A deep link is an intent filter system that allows users to directly enter a specific activity in an Android app.
-At minimum a deeplink must have <data> tag with an android:scheme attribute.
+At minimum a deeplink must have a "data" tag with an android:scheme attribute.
 Test for user controlled values.
 ```
 cat AndroidManifest.xml | grep "data:scheme"
