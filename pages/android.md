@@ -11,6 +11,7 @@ permalink: /android/
 * [Insecure Logging](#insecure-logging)
 * [Exported Activities](#exported-activities)
 * [Exported Content Providers](#exported-content-providers)
+* [Deeplinks](#deeplinks)
 
 
 ## Basics
@@ -103,4 +104,16 @@ Check if any values are under user contol.
 ```
 Check the AndroidManifest.xml
 cat AndroidManifest.xml | grep "provider"
+```
+
+## Deeplinks
+
+A deep link is an intent filter system that allows users to directly enter a specific activity in an Android app.
+At minimum a deeplink must have <data> tag with an android:scheme attribute.
+Test for user controlled values.
+```
+cat AndroidManifest.xml | grep "data:scheme"
+  
+run through adb with
+adb shell start -W -a android.intent.action.VIEW -d "URI" package
 ```
