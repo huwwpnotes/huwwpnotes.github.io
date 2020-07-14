@@ -7,6 +7,7 @@ permalink: /android/
 # Index
 
 * [Basics](#basics)
+* [Search Patterns](#search-patterns)
 * [Insecure Storage](#insecure-storage)
 * [Insecure Logging](#insecure-logging)
 * [Exported Activities](#exported-activities)
@@ -32,30 +33,33 @@ Use apktool to break it down
 apktool d apk
 ```
 Check /res/raw, /assets/, AndroidManifest.xml and /res/values/strings.xml for quick wins. Check *.firebase.com/.json
-Can then read through/grep for high value strings
-```
-grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
-
-Show all file extensions in apk
-find . -type f | awk -F. '!a[$NF]++{print $NF} 
-
-//find urls referencing domain
-grep -rE "https?://.*domain.*" .
-
-```
 Use jadx to decompile to readable java code
 ```
 https://github.com/skylot/jadx
 mkdir decompile
 jadx company.apk -d decompile
 ```
-Find byte strings (often used to encode stuff)
-```
-grep -ir "final byte\[\]" | grep "\}"
-```
 Check if Application backups are enabled
 ```
 cat AndroidManifest.xml | "grep android:allowBackup"
+```
+
+## Search Patterns
+Grep for high value strings
+```
+grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into"
+```
+Show all file extensions in apk
+```
+find . -type f | awk -F. '!a[$NF]++{print $NF} 
+```
+Find urls referencing domain
+```
+grep -rE "https?://.*domain.*" .
+```
+Find byte strings (often used to encode stuff)
+```
+grep -ir "final byte\[\]" | grep "\}"
 ```
 
 ## Insecure Storage
@@ -105,6 +109,9 @@ Check if any values are under user contol.
 ```
 Check the AndroidManifest.xml
 cat AndroidManifest.xml | grep "provider"
+
+run through adb with
+adb shell content –query –uri content://com.PackageName.ProviderName/PATH
 ```
 
 ## Exported Receivers
@@ -113,7 +120,7 @@ Receivers listen for broadcasts and perform action based upon intents received.
 Check the AndroidManifest.xml
 cat AndroidManifest.xml | grep "receiver" | grep exported=\"true\"
 
-run through 
+run through adb with
 adb shell am broadcast -a *android:name* -n com.packagename/x.BroadcastName
 ```
 
