@@ -11,6 +11,7 @@ permalink: /android/
 * [Insecure Logging](#insecure-logging)
 * [Exported Activities](#exported-activities)
 * [Exported Content Providers](#exported-content-providers)
+* [Exported Receivers](#exported-receivers)
 * [Deeplinks](#deeplinks)
 
 
@@ -104,6 +105,16 @@ Check if any values are under user contol.
 ```
 Check the AndroidManifest.xml
 cat AndroidManifest.xml | grep "provider"
+```
+
+## Exported Receivers
+Receivers listen for broadcasts and perform action based upon intents received.
+```
+Check the AndroidManifest.xml
+cat AndroidManifest.xml | grep "receiver" | grep exported=\"true\"
+
+run through 
+adb shell am broadcast -a *android:name* -n com.packagename/x.BroadcastName
 ```
 
 ## Deeplinks
