@@ -78,6 +78,18 @@ Search for SQL Injection points
 ```
 grep -ir "rawquery"
 ```
+Grep for AWS Keys
+```
+grep -RP '(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])' *
+```
+Grep for deeplinks
+```
+grep -ir "://"
+```
+Grep for suspicious methods
+```
+shouldOverrideUrlLoading, shouldInterceptRequest, onDownloadStart, FirebaseDatabase.getInstance(), setJavaScriptEnabled(true).
+```
 
 
 ## Insecure Storage
