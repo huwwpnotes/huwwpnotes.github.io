@@ -62,6 +62,19 @@ Find byte strings (often used to encode stuff)
 ```
 grep -ir "final byte\[\]" | grep "\}"
 ```
+Search to temporary file creation
+```
+grep -ir "file.Create"
+```
+Search for insecure external storage usage
+```
+grep -ir "ExternalStorage"
+```
+Search for SQL Injection points
+```
+grep -ir "rawquery"
+```
+
 
 ## Insecure Storage
 
