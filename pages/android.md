@@ -46,6 +46,10 @@ cat AndroidManifest.xml | "grep android:allowBackup"
 ```
 
 ## Search Patterns
+Check if any keys in build config files
+```
+find . -name "*BuildConfig*" -exec cat {} \;
+```
 Grep for high value strings
 ```
 grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into"
