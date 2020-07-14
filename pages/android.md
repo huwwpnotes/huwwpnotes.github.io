@@ -13,6 +13,7 @@ permalink: /android/
 * [Exported Activities](#exported-activities)
 * [Exported Content Providers](#exported-content-providers)
 * [Exported Receivers](#exported-receivers)
+* [Exported Services](#exported-services)
 * [Deeplinks](#deeplinks)
 
 
@@ -83,7 +84,7 @@ During runtime run logcat and check for data being logged
 adb logcat
 ```
 
-## Exported Activitiees
+## Exported Activities
 Exported activities can be called by other apps on the phone.
 ```
 Check the AndroidManifest.xml
@@ -122,6 +123,15 @@ cat AndroidManifest.xml | grep "receiver" | grep exported=\"true\"
 
 run through adb with
 adb shell am broadcast -a *android:name* -n com.packagename/x.BroadcastName
+```
+
+## Exported Services
+```
+Check the AndroidManifest.xml
+cat AndroidManifest.xml | grep "service" | grep exported=\"true\"
+
+run through adb with
+adb shell service call SERVICENAME args 
 ```
 
 ## Deeplinks
