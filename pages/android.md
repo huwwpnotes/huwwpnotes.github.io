@@ -44,6 +44,14 @@ Check if Application backups are enabled
 ```
 cat AndroidManifest.xml | "grep android:allowBackup"
 ```
+If the application is React Native then code will be stored in
+```
+index.android.bundle
+
+If index.android.bundle.map is present you can take advantage of this by creating a file named index.html in the same directory with the following within it:
+<script src="index.android.bundle"></script>
+Save this file and then open it in Google Chrome. Open up the Developer Toolbar (Command+Option+J for OS X or Control+Shift+J for Windows), and click on “Sources”.
+```
 
 ## Search Patterns
 Check if any keys in build config files
