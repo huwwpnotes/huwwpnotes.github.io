@@ -19,7 +19,7 @@ Todo:
 
 1. Start up burp & cherrytree, set to spider mode while we explore. Maybe look into xmind mapping.
 2. Begin subdomain enumeration
-    1. Amass
+    1. Subdomain Scraping
         ```
         amass enum -active -d domain.com > domain.txt
         ```
@@ -31,15 +31,14 @@ Todo:
         Web service offering the same dataset, might be less accurate but fast
         curl 'https://tls.bufferover.run/dns?q=.magisto.com 2>/dev/null | jq .Results > bufferover.txt
         ```
-    3. MassDNS
+    3. Subdomain Brute Forcinng
         ```
-        ./subbrute.py domain.com  | ./bin/massdns -r lists/resolvers.txt -t A -o S -w results.txt
+        shuffledns
         
-        For all live subdomains:
-        cat results.txt | cut -d ' ' -f 1
-        
-        From massdns results get a list of CNAMEs
-        cat results.txt | grep CNAME | cut --complement -d ' ' -f 2
+        shuffledns -d domain.com -w /opt/all-wordlist/all.txt -r /opt/massdns/lists/resolvers.txt > brute.txt
+               
+        Wordlists are very important here
+        Either jhaddix all or tomnomnom custom style
         ```
     4. Builtwith
        ```
@@ -73,15 +72,6 @@ Todo:
     9. Github Subdomain Discovery
        ```
        github-subdomains.py
-       ```
-    10. Bruteforce
-       ```
-       amass
-       shuffledns
-       ```
-    11. Combine all the above and resolve for master list
-       ```
-       massdns/shuffledns
        ```
 
 3. Service Identification
