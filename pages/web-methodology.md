@@ -18,15 +18,15 @@ Todo:
 ## Methodology
 
 1. Start up burp & cherrytree, set to spider mode while we explore. Maybe look into xmind mapping.
-2. Begin subdomain enumeration
+2. Begin automated subdomain enumeration
     1. Subdomain Scraping
         ```
-        amass enum -active -d domain.com > domain.txt
+        amass enum -active -d domain.com > amass.txt
         ```
     2. FDNS Dataset Query
         ```
         zcat fdns.json.gz | grep -F '.example.com"' > fqdns.txt
-        cat fqdns.txt | grep -F '.magisto.com"' | jq -r .name | sort | uniq > fqdns-cleaned.txt #might get cnames on wrong side
+        cat fqdns.txt | grep -F '.example.com"' | jq -r .name | sort | uniq > fqdns-cleaned.txt #might get cnames on wrong side
         
         Web service offering the same dataset, might be less accurate but fast
         curl 'https://tls.bufferover.run/dns?q=.magisto.com 2>/dev/null | jq .Results > bufferover.txt
@@ -40,11 +40,21 @@ Todo:
         Wordlists are very important here
         Either jhaddix all or tomnomnom custom style
         ```
-    4. Builtwith
+    4. Resolving Check
+       ```
+       Combine the three above, check what resolves and use as master list
+       
+       shuffledns -d example.com -list combined-list.txt -r /opt/massdns/lists/resolvers.txt > master.txt
+3. Manual subdomain enumeration
+    1. Builtwith
        ```
        Builtwith relationships tabs shows websites running same analytic tracking codes
        ```
-    5. Google Dorks
+    2. Github Subdomain Discovery
+       ```
+       github-subdomains.py -d domain.com > github-sub.txt
+       ```    
+    3. Google Dorks
        ```
        "® 2020 Businessname" inurl:businessname
        
@@ -52,44 +62,49 @@ Todo:
        
        site:business.com -www.business.com -obvious.business.com -etc
        ```
-    6. Shodan
+    4. Shodan
        ```
        search TLD
        https://github.com/incogbyte/shosubgo
        ```
-    7. Link Discovery
+    5. Link Discovery
        ```
        Do one of:
        1. Burp: Turn off active scanner, walk the site, spider all hosts discovered, can do recursively (over and over again). Export with analyze target
        2. GoSpider
        3. Hakrawler
        ```
-    8. Javascript Link Discovery
+    6. Javascript Link Discovery
        ```
        1. Subdomainizer
        2. Subscraper
        ```
-    9. Github Subdomain Discovery
-       ```
-       github-subdomains.py
-       ```
+    7. Validate with shuffledns what is resolving from manual checks
 
 3. Service Identification
-    1. Massscan to see what is running on hosts
+    1. Massdns to get IP addresses
+       ```
+       massdns -r /opt/massdns/lists/resolvers.txt -t A -q -o S master.txt > massdns.txt
+       
+       Get IP Addresses
+       
+       cat massdns.txt | grep "A " | cut -d " " -f 3 > ips.txt # Does this miss some cnames though?
+       ```
+    2. Massscan to see what is running on hosts
         ```
         massscan -p1-65535 -iL $TARGET_LIST --max-rate 10000 -oG $TARGET_OUTPUT (needs IP not hostname)
         ```
-    2. Brutespray for weak passwords on remote admin protocols
+    3. Brutespray for weak passwords on remote admin protocols
         ```
         brutespray.py
         ```
-    3. Eyewitness for visual identification and/or httpprobe
+    4. Eyewitness for visual identification and/or httpprobe
         ```
         Eyewitness.py
         httprobe
         ```
  
- 4. Other Enumeration/Wide Recons
+4. Other Enumeration/Wide Recons
     1. Github Dorks
         ```
         Gdorklinks.sh https://gist.githubusercontent.com/jhaddix/1fb7ab2409ab579178d2a79959909b33/raw/e9fea4c0f6982546d90d241bc3e19627a7083e5e/Gdorklinks.sh
@@ -105,8 +120,7 @@ Todo:
         s3scanner/Nuclei
         ```
         
-        
- 5. Application Testing
+5. Application Testing
     1. Wayback enumeration
         ```
         waybackurls
