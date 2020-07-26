@@ -170,21 +170,23 @@ Todo:
         - Change crawl max depth to 5
         - Audit can easily get you IP banned
         ```
-    
-10. Manual testing
-    1. Client Side Controls
-        ```
-        - Register a user, see if can include xss, null bytes, escape characters in name, address, etc
-        - Try register the same user with null byte, see if you can overtake
-        ```
-    2. Access Controls
-        ```
-        - Create a user map what they have access to inside authentication
-        - Try to access without being logged in
-        - Create a second user and try to access the first users stuff
-        ```
-    3. IDOR
-    4. Upload Functions
+
+## SSRF
+
+Anytime you find a URL/Header/Post data in an app that references another application/server/site, try to change it to hit a URL you control. Often need to bypass blacklists/whitelists. May need to add requests manipulating headers (e.g. X-Forwarded-For).
+
+https://portswigger.net/web-security/ssrf
+
+## Header Manipulation
+
+Sometimes messings with certain headers can modify the behaviour of an application. Can allow access to internal apps, bypass access controls, cause XSS, etc.
+- Host
+- X-Forwarded-For
+- Referer
+- User Agent String
+- Cookies
+
+While bruteforcing URLs can set "Host: Localhost" for potentially more access
 
 ## Open Redirect
 
@@ -200,7 +202,7 @@ Walk the page with burpsuite, interact wherever you can. Once you are done Analy
 Send these requests to burp intruder, set the payload for just these parameters and use an open redirect wordlist.
 
 
-## DOM XSS
+## DOM Manipulation
 
 ### Sources
 * document.url
@@ -226,6 +228,3 @@ Send these requests to burp intruder, set the payload for just these parameters 
 * location.href
 * location.replace
 * location.assign
-
-https://github.com/s0md3v/Arjun
-https://github.com/maK-/parameth
