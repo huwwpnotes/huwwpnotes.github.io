@@ -40,6 +40,10 @@ Todo:
         Wordlists are very important here
         Either jhaddix all or tomnomnom custom style
         ```
+    4. Github
+       ```
+       github-subdomains.py -d domain.com > github-sub.txt
+       ```
     4. Resolving Check
        ```
        Combine the three above, check what resolves and use as master list
@@ -50,36 +54,24 @@ Todo:
        ```
        Builtwith relationships tabs shows websites running same analytic tracking codes
        ```
-    2. Github Subdomain Discovery
-       ```
-       github-subdomains.py -d domain.com > github-sub.txt
-       ```    
-    3. Google Dorks
-       ```
-       "® 2020 Businessname" inurl:businessname
-       
-       Copyright/privacy text etc
-       
-       site:business.com -www.business.com -obvious.business.com -etc
-       ```
-    4. Shodan
+    2. Shodan
        ```
        search TLD
        https://github.com/incogbyte/shosubgo
        ```
-    5. Link Discovery
+    3. Link Discovery
        ```
        Do one of:
        1. Burp: Turn off active scanner, walk the site, spider all hosts discovered, can do recursively (over and over again). Export with analyze target
        2. GoSpider
        3. Hakrawler
        ```
-    6. Javascript Link Discovery
+    4. Javascript Link Discovery
        ```
        1. Subdomainizer
        2. Subscraper
        ```
-    7. Validate with shuffledns what is resolving from manual checks
+    5. Validate with shuffledns what is resolving from manual checks
 
 3. Service Identification
     1. Massdns to get IP addresses
@@ -134,7 +126,6 @@ Todo:
         ```
     3. Javascript Examination
         ```
-        ZAP Ajax Spider
         Linkfinder (probably better than JSParser)
         ```
     4. Content Discovery 
@@ -142,33 +133,6 @@ Todo:
         Gobuster
         Robots Disallowed
         Burp Content Discovery
-        ```
-    5. Parameter Bruting
-        ```
-        parameth
-        ```
-    
-7. Crawl websites for URLs
-    1. Hakrawler
-        ```
-        cat domain(+gobuster results) | ~/go/bin/hakrawler -depth x -usewayback -wayback -linkfinder -plain > urls.txt
-        ```
-    2. Validate if urls in txt file are live
-        ```
-        cat file | xargs -n 1 -P 50 curl --head -w "%{http_code} %{url_effective}\n" -s -o /dev/null -k
-        fails on apostrophe
-        cat file | grep -v \' | xargs ...
-        ```
-       
-8. Directory brute force
-    1. Gobuster
-
-9. Burp Suite
-    1. Set up a proxy/spider/audit, have manually active while you test the site
-        ```
-        - Change crawl to not submit forms/attempt to register users
-        - Change crawl max depth to 5
-        - Audit can easily get you IP banned
         ```
 
 ## SSRF
@@ -185,6 +149,13 @@ Sometimes messings with certain headers can modify the behaviour of an applicati
 - Referer
 - User Agent String
 - Cookies
+- X-Originating-IP: IP
+- X-Forwarded-For: IP
+- Remote-IP: IP
+- Remote-Addr: IP
+- Client-IP: IP
+- Host: IP
+- Forwared-Host: IP
 
 While bruteforcing URLs can set "Host: Localhost" for potentially more access
 
@@ -200,7 +171,6 @@ Walk the page with burpsuite, interact wherever you can. Once you are done Analy
 * etc
 
 Send these requests to burp intruder, set the payload for just these parameters and use an open redirect wordlist.
-
 
 ## DOM Manipulation
 
@@ -228,3 +198,5 @@ Send these requests to burp intruder, set the payload for just these parameters 
 * location.href
 * location.replace
 * location.assign
+
+## Add the rest of these https://portswigger.net/web-security/all-materials
