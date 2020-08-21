@@ -49,6 +49,11 @@ Todo:
        Combine the three above, check what resolves and use as master list
        
        shuffledns -d example.com -list combined-list.txt -r /opt/massdns/lists/resolvers.txt > master.txt
+       ```
+    5. Chaos
+       ```
+       https://chaos.projectdiscovery.io/#/
+       ```
 3. Manual subdomain enumeration
     1. Builtwith
        ```
