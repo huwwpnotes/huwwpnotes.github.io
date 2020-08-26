@@ -205,7 +205,7 @@ Send these requests to burp intruder, set the payload for just these parameters 
 * location.replace
 * location.assign
 
-## Onliners
+## Oneliners
 
 Bash loop
 
