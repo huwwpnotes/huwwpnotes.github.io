@@ -6,7 +6,11 @@ permalink: /web-methodology/
 
 # Index
 * [Methodology](#methodology)
-* [DOM XSS](#dom)
+* [SSRF](#ssrf)
+* [Header Manipulation](#header-manipulation)
+* [Open Redirect](#open-redirect)
+* [DOM Manipulation](#dom-manipulation)
+* [Oneliners](#oneliners)
 
 ---
 
@@ -149,18 +153,15 @@ https://portswigger.net/web-security/ssrf
 ## Header Manipulation
 
 Sometimes messings with certain headers can modify the behaviour of an application. Can allow access to internal apps, bypass access controls, cause XSS, etc.
-- Host
-- X-Forwarded-For
-- Referer
-- User Agent String
-- Cookies
-- X-Originating-IP: IP
-- X-Forwarded-For: IP
-- Remote-IP: IP
-- Remote-Addr: IP
-- Client-IP: IP
-- Host: IP
-- Forwared-Host: IP
+- Host: 127.0.0.1
+- X-Forwarded-For: 127.0.0.1
+- Referer: 127.0.0.1
+- X-Originating-IP: 127.0.0.1
+- Remote-IP: 127.0.0.1
+- Remote-Addr: 127.0.0.1
+- Client-IP: 127.0.0.1
+- Host: 127.0.0.1
+- Forwarded-Host: 127.0.0.1
 
 While bruteforcing URLs can set "Host: Localhost" for potentially more access
 
@@ -203,5 +204,21 @@ Send these requests to burp intruder, set the payload for just these parameters 
 * location.href
 * location.replace
 * location.assign
+
+## Onliners
+
+Bash loop
+
+```
+cat paths.txt | while read line; do ffuf -u http://domain.com/$line/FUZZ -w /opt/SecLists/Discovery/Web-Content/big.txt -e .html; done
+```
+Curl status codes, response sizes, only single threaded
+```
+cat urls.txt | while read LINE; do curl -o /dev/null --silent --head --write-out "%{http_code};%{size_download}; $LINE\n" "$LINE"; done > statuses.txt
+```
+Parallelised check status codes
+```
+cat urls.txt | xargs -n1 -P 10 curl -o /dev/null --silent --head --write-out  '%{url_effective} %{http_code} \n' >> statuscodes.txt
+```
 
 ## Add the rest of these https://portswigger.net/web-security/all-materials
