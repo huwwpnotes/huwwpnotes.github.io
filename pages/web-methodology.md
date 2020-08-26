@@ -220,5 +220,12 @@ Parallelised check status codes
 ```
 cat urls.txt | xargs -n1 -P 10 curl -o /dev/null --silent --head --write-out  ' %{http_code} %{url_effective} \n' >> statuscodes.txt
 ```
-
+Discover parameters
+```
+python3 /opt/arjun.py -u https://api.example.com/endpoint --get
+```
+Find XSS
+```
+echo https://www.domain.com/ | hakrawler -scope subs -depth 3 -plain -linkfinder | /opt/kxss/kxss
+```
 ## Add the rest of these https://portswigger.net/web-security/all-materials
