@@ -214,11 +214,11 @@ cat paths.txt | while read line; do ffuf -u http://domain.com/$line/FUZZ -w /opt
 ```
 Curl status codes, response sizes, only single threaded
 ```
-cat urls.txt | while read LINE; do curl -o /dev/null --silent --head --write-out "%{http_code};%{size_download}; $LINE\n" "$LINE"; done > statuses.txt
+cat urls.txt | while read LINE; do curl -o /dev/null --silent --head --write-out "%{http_code}; $LINE\n" "$LINE"; done > statuses.txt
 ```
 Parallelised check status codes
 ```
-cat urls.txt | xargs -n1 -P 10 curl -o /dev/null --silent --head --write-out  '%{url_effective} %{http_code} \n' >> statuscodes.txt
+cat urls.txt | xargs -n1 -P 10 curl -o /dev/null --silent --head --write-out  ' %{http_code} %{url_effective} \n' >> statuscodes.txt
 ```
 
 ## Add the rest of these https://portswigger.net/web-security/all-materials
