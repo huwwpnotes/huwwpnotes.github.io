@@ -142,6 +142,7 @@ Todo:
         Gobuster
         Robots Disallowed
         Burp Content Discovery
+        iis_shortname_scanner
         ```
 
 ## SSRF
