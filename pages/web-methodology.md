@@ -6,6 +6,7 @@ permalink: /web-methodology/
 
 # Index
 * [Methodology](#methodology)
+* [Access Control](#access-control)
 * [SSRF](#ssrf)
 * [Header Manipulation](#header-manipulation)
 * [Open Redirect](#open-redirect)
@@ -144,6 +145,22 @@ Todo:
         Burp Content Discovery
         iis_shortname_scanner
         ```
+
+## Access Control
+
+To test access controls including IDORs
+
+```
+1. Create two accounts.
+2. Capture the cookies from account 2 and enter into Autorize
+3. Log into the app as account 1 and try everything, Autorize will replay all requests as account 2
+```
+
+To test access controls not based upon cookies (URL parameters, UUIDs etc)
+
+```
+1. AutoRepeater, match string in proxied requests and replay with alternate values
+```
 
 ## SSRF
 
