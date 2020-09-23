@@ -227,7 +227,7 @@ Send these requests to burp intruder, set the payload for just these parameters 
 
 Bash loop
 ```
-cat paths.txt | while read line; do ffuf -u http://domain.com/$line/FUZZ -w /opt/SecLists/Discovery/Web-Content/big.txt -e .html; done
+cat paths.txt | while read line || [ -n "$line" ]; do ffuf -u http://domain.com/$line/FUZZ -w /opt/SecLists/Discovery/Web-Content/big.txt -e .html; done
 ```
 Curl status codes, response sizes, only single threaded
 ```
