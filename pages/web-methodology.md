@@ -226,7 +226,6 @@ Send these requests to burp intruder, set the payload for just these parameters 
 ## Oneliners
 
 Bash loop
-
 ```
 cat paths.txt | while read line; do ffuf -u http://domain.com/$line/FUZZ -w /opt/SecLists/Discovery/Web-Content/big.txt -e .html; done
 ```
@@ -246,4 +245,9 @@ Find XSS
 ```
 echo https://www.domain.com/ | hakrawler -scope subs -depth 3 -plain -linkfinder | /opt/kxss/kxss
 ```
+Get all first level subdomains from list of all subdomains
+```
+cat master.txt | awk -F "." '{print $(NF-2)"."$(NF-1)"."$NF}' | sort -u
+```
+
 ## Add the rest of these https://portswigger.net/web-security/all-materials
