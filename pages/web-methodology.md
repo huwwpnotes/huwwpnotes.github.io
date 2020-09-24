@@ -249,5 +249,9 @@ Get all first level subdomains from list of all subdomains
 ```
 cat master.txt | awk -F "." '{print $(NF-2)"."$(NF-1)"."$NF}' | sort -u
 ```
+ffuf recursion
+```
+ffuf -u https://test.com/FUZZ -w ./wordlist -recursion
+```
 
 ## Add the rest of these https://portswigger.net/web-security/all-materials
