@@ -252,6 +252,7 @@ cat master.txt | awk -F "." '{print $(NF-2)"."$(NF-1)"."$NF}' | sort -u
 ffuf recursion
 ```
 ffuf -u https://test.com/FUZZ -w ./wordlist -recursion
+https://codingo.io/tools/ffuf/bounty/2020/09/17/everything-you-need-to-know-about-ffuf.html
 ```
 
 ## Add the rest of these https://portswigger.net/web-security/all-materials
