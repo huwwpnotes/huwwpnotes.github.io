@@ -254,5 +254,9 @@ ffuf recursion
 ffuf -u https://test.com/FUZZ -w ./wordlist -recursion
 https://codingo.io/tools/ffuf/bounty/2020/09/17/everything-you-need-to-know-about-ffuf.html
 ```
+Find lines in file 1 that aren't in file 2
+```
+comm -23 <(sort -u file1.txt) <(sort -u file2.txt)
+```
 
 ## Add the rest of these https://portswigger.net/web-security/all-materials
