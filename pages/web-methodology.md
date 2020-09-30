@@ -178,7 +178,6 @@ Sometimes messings with certain headers can modify the behaviour of an applicati
 - Remote-IP: 127.0.0.1
 - Remote-Addr: 127.0.0.1
 - Client-IP: 127.0.0.1
-- Host: 127.0.0.1
 - Forwarded-Host: 127.0.0.1
 
 While bruteforcing URLs can set "Host: Localhost" for potentially more access
